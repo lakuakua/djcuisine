@@ -1,0 +1,1127 @@
+# Cursor Rules
+
+## Instructions
+
+- Record fixes for mistakes or corrections to avoid repetition in the `Lessons` section.
+- Organize thoughts and plan steps before starting a task in the `Scratchpad` section.
+- Clear old tasks if necessary.
+- Use TODO markers to track progress:
+    - "[X]" for completed tasks
+    - "[ ]" for pending tasks
+- Update the Scratchpad after completing each subtask.
+- Reflect and plan after reaching significant milestones for better management.
+- Always review the Scratchpad before starting the next step.
+
+## Scratchpad
+
+### DJ Cuisine Development Plan
+
+**Project Overview:**
+Next.js 14 ecommerce application for **DJ Cuisine BBQ & Catering**, a Houston-based BBQ and catering business. Selling big trays (catering), individual plates, and fresh juices with nationwide shipping via Stripe Checkout. Mobile-first, elegant design with black background and gold accents. Source of truth for products is local data file (`/lib/products.ts`).
+
+---
+
+## Phase 1: Project Setup & Core Foundation ✅ COMPLETED
+**Goal:** Initialize Next.js project, configure TypeScript, Tailwind CSS, and establish project structure.
+
+### Tasks:
+- [X] Initialize Next.js 14 project with App Router and TypeScript
+  - Configured `tsconfig.json` with strict mode and path aliases (@/)
+  - Set up Next.js App Router architecture
+  - Configured `next.config.js` for image optimization
+
+- [X] Install and configure core dependencies
+  - Zustand for cart state management with localStorage persistence
+  - Stripe and @stripe/stripe-js for payments
+  - Lucide React for icons
+  - All dependencies in package.json
+
+- [X] Set up Tailwind CSS with custom gold color palette
+  - Extended theme with gold colors (50-900 scale)
+  - Configured mobile-first responsive breakpoints
+  - Created globals.css with base styles
+
+- [X] Set up environment variables structure
+  - Created `.env.local` with Stripe keys (test mode)
+  - NEXT_PUBLIC_APP_URL for redirect URLs
+  - Added `.env.example` template
+
+- [X] Set up project folder structure
+  ```
+  app/                    ✅ Next.js App Router pages
+    api/checkout/         ✅ Stripe checkout API route
+    category/[slug]/      ✅ Dynamic category pages
+    success/              ✅ Order success page
+    page.tsx              ✅ Homepage
+    layout.tsx            ✅ Root layout
+    globals.css           ✅ Tailwind styles
+  components/             ✅ React components
+    Header.tsx            ✅ Navigation with cart
+    Footer.tsx            ✅ Site footer
+    Cart.tsx              ✅ Shopping cart drawer
+    ProductCard.tsx       ✅ Product display
+    CategorySection.tsx   ✅ Category cards
+  lib/                    ✅ Utilities & data
+    products.ts           ✅ Product catalog (source of truth)
+    utils.ts              ✅ Helper functions
+  store/                  ✅ State management
+    cartStore.ts          ✅ Zustand cart store
+  types/                  ✅ TypeScript definitions
+    index.ts              ✅ All type definitions
+  public/                 ✅ Static assets
+    logo.png              ✅ Business logo (SVG placeholder)
+    images/               ✅ Product images directory
+  ```
+
+- [X] Configure Git repository and .gitignore
+  - Excluded node_modules, .next, .env.local, build files
+
+---
+
+## Phase 2: Data Modeling & Product Catalog ✅ COMPLETED
+**Goal:** Define product structure and create complete product catalog with all menu items.
+
+### Tasks:
+- [X] Design TypeScript type system (`types/index.ts`)
+  ```typescript
+  export type ProductCategory = 'big-trays' | 'plates' | 'juices';
+  export type JuiceSize = '1-gallon' | 'half-gallon' | '16oz';
+  
+  export interface Product {
+    id: string;
+    name: string;
+    description: string;
+    price: number; // in cents
+    category: ProductCategory;
+    image?: string;
+    juiceSize?: JuiceSize;
+    isBigTray?: boolean;
+  }
+  
+  export interface CartItem {
+    product: Product;
+    quantity: number;
+  }
+  ```
+
+- [X] Create product catalog (`lib/products.ts`)
+  **Big Trays (6 items):**
+  - BBQ Ribs Tray - $129.99 (serves 8-10)
+  - Beef Brisket Tray - $149.99
+  - BBQ Chicken Tray - $99.99
+  - Pulled Pork Tray - $119.99
+  - Sausage Platter - $89.99
+  - BBQ Combo Tray - $179.99
+
+  **Plates (6 items):**
+  - BBQ Ribs Plate - $18.99 (includes 2 sides + cornbread)
+  - Beef Brisket Plate - $20.99
+  - BBQ Chicken Plate - $15.99
+  - Pulled Pork Plate - $16.99
+  - Sausage Plate - $14.99
+  - BBQ Combo Plate - $22.99
+
+  **Juices (9 items - 3 flavors × 3 sizes):**
+  - Fresh Lemonade: $12.99 (1 gal), $6.99 (half), $3.99 (16oz)
+  - Sweet Tea: $9.99 (1 gal), $5.49 (half), $2.99 (16oz)
+  - Fruit Punch: $11.99 (1 gal), $6.49 (half), $3.49 (16oz)
+
+- [X] Create utility functions
+  - `getProductById()` - fetch single product
+  - `getProductsByCategory()` - filter by category
+  - `formatPrice()` - convert cents to currency display
+  - `formatJuiceSize()` - display size labels
+
+---
+
+## Phase 3: State Management & Cart Logic ✅ COMPLETED
+**Goal:** Implement shopping cart with Zustand, localStorage persistence, and business rule validation.
+
+### Tasks:
+- [X] Create Zustand cart store (`store/cartStore.ts`)
+  - State: items array with product and quantity
+  - Actions:
+    - `addItem(product, quantity)` - add or increment
+    - `removeItem(productId)` - remove from cart
+    - `updateQuantity(productId, quantity)` - change quantity
+    - `clearCart()` - empty cart after successful order
+    - `getTotal()` - calculate total price
+    - `getItemCount()` - total items in cart
+    - `getGallonCount()` - count 1-gallon juices for validation
+  - Persist to localStorage automatically
+
+- [X] Implement business rule: Juice Gallon Minimum
+  - Orders with 1-gallon juices MUST have at least 2 gallons
+  - Validated in Cart.tsx (client-side)
+  - Validated in `/api/checkout` (server-side)
+  - Shows warning message in cart
+  - Disables checkout button if violated
+
+- [X] Cart persistence
+  - Automatically saves to localStorage on every change
+  - Restores cart on page reload
+  - Handles hydration properly (mounted state check)
+
+---
+
+## Phase 4: UI Components & Design System ✅ COMPLETED
+**Goal:** Build reusable components with mobile-first responsive design and brand styling.
+
+### Tasks:
+- [X] Create Header component (`components/Header.tsx`)
+  - Logo with DJ Cuisine branding
+  - Navigation: Home, Big Trays, Plates, Juices
+  - Cart icon with live item count badge
+  - Mobile hamburger menu
+  - Responsive breakpoints (md, lg)
+
+- [X] Create Footer component (`components/Footer.tsx`)
+  - Company info and tagline
+  - Quick links to categories
+  - Contact information (phone, email)
+  - Social media placeholders
+  - Copyright notice
+
+- [X] Create Cart drawer component (`components/Cart.tsx`)
+  - Slide-out from right side
+  - Overlay backdrop
+  - Cart items list with:
+    - Product name and details
+    - Quantity selector (+/- buttons)
+    - Remove button
+    - Line totals
+  - Gallon minimum warning (if applicable)
+  - Total calculation
+  - Checkout button (disabled if validation fails)
+  - Empty state: "Your cart is empty"
+
+- [X] Create ProductCard component (`components/ProductCard.tsx`)
+  - Product image (with fallback for missing images)
+  - Product name and description
+  - Juice size badge (if applicable)
+  - Price display (formatted as currency)
+  - "Add to Cart" button
+  - Hover effects and transitions
+
+- [X] Create CategorySection component (`components/CategorySection.tsx`)
+  - Large category card with icon
+  - Title and description
+  - Click to navigate to category page
+  - Hover effects with gold accent
+
+- [X] Implement color scheme consistently
+  - Background: `bg-black`, `bg-gray-900`
+  - Text: `text-gold-400`, `text-gold-300`, `text-gray-400`
+  - Borders: `border-gold-800`, `border-gold-700`
+  - Hover: `hover:bg-gold-500`, `hover:text-gold-300`
+  - Buttons: `bg-gold-600` primary
+
+- [X] Mobile-first responsive design
+  - All components tested on mobile viewports
+  - Large touch targets (min 44×44px)
+  - Readable fonts (16px+ body text)
+  - Proper spacing and padding
+
+---
+
+## Phase 5: Pages & User Flow ✅ COMPLETED
+**Goal:** Build customer-facing pages with complete shopping and checkout flow.
+
+### Tasks:
+- [X] Create Homepage (`app/page.tsx`)
+  - Hero section: "DJ Cuisine - The Best BBQ in H-Town"
+  - Tagline and value proposition
+  - Primary CTA: "Order Now" → scrolls to categories
+  - Secondary CTA: "Call to Order" with phone link
+  - Three category sections (Big Trays, Plates, Juices)
+  - "Why Choose DJ Cuisine" stats section
+  - Footer
+
+- [X] Create Category pages (`app/category/[slug]/page.tsx`)
+  - Dynamic routing for all three categories
+  - Category title and description
+  - Products grid (responsive: 1-3 columns)
+  - Special notice for juices (gallon minimum)
+  - Back to home link
+  - Footer
+
+- [X] Create Order Success page (`app/success/page.tsx`)
+  - Success checkmark icon
+  - "Order Successful!" message
+  - Order reference (Stripe session ID)
+  - What's next information
+  - Back to home button
+  - Contact information
+  - Clears cart automatically
+
+- [X] Create Error pages
+  - `app/error.tsx` - Generic error boundary
+  - `app/not-found.tsx` - 404 page
+  - `app/loading.tsx` - Loading spinner
+
+---
+
+## Phase 6: Stripe Payment Integration ✅ COMPLETED
+**Goal:** Implement secure Stripe Checkout for payment processing.
+
+### Tasks:
+- [X] Create Stripe checkout API route (`app/api/checkout/route.ts`)
+  - Accepts POST with cart items
+  - Validates gallon minimum rule (server-side)
+  - Creates Stripe line items from cart
+  - Creates Stripe Checkout Session
+  - Returns checkout URL for redirect
+  - Error handling with appropriate status codes
+
+- [X] Create Stripe client utility (`lib/stripe.ts`)
+  - Loads Stripe.js with publishable key
+  - Singleton pattern for client instance
+  - Used by frontend components
+
+- [X] Integrate checkout in Cart component
+  - "Checkout" button calls `/api/checkout`
+  - Shows loading state during API call
+  - Redirects to Stripe Checkout on success
+  - Displays error messages on failure
+  - Validates gallon minimum before allowing checkout
+
+- [X] Configure Stripe URLs
+  - Success URL: `/success?session_id={CHECKOUT_SESSION_ID}`
+  - Cancel URL: `/` (homepage)
+  - Both use NEXT_PUBLIC_APP_URL environment variable
+
+- [X] Test Stripe integration
+  - Test card: 4242 4242 4242 4242
+  - Successful payments redirect to success page
+  - Failed payments show error messages
+  - Webhook endpoint ready for future implementation
+
+---
+
+## Phase 7: Documentation & Developer Experience ✅ COMPLETED
+**Goal:** Create comprehensive documentation for setup, development, and deployment.
+
+### Tasks:
+- [X] Create README.md
+  - Project overview and features
+  - Tech stack list
+  - Getting started guide
+  - Installation instructions
+  - Environment variables setup
+  - Project structure explanation
+  - Development commands
+  - Deployment guide (Vercel)
+  - Future enhancements section
+
+- [X] Create SETUP.md
+  - Step-by-step setup instructions
+  - Stripe configuration guide
+  - Logo and image instructions
+  - Testing the checkout
+  - Common issues and solutions
+  - Production readiness checklist
+
+- [X] Create CONTRIBUTING.md
+  - Development workflow
+  - How to add new products
+  - How to add new categories
+  - Code quality standards
+  - Testing checklist
+  - Future features roadmap
+
+- [X] Create DEPLOYMENT.md
+  - Pre-deployment checklist
+  - Vercel deployment guide
+  - Netlify deployment option
+  - Self-hosted server option
+  - Post-deployment setup (webhooks, email, analytics)
+  - Monitoring and maintenance
+  - Troubleshooting guide
+
+- [X] Create PROJECT_SUMMARY.md
+  - Complete project overview
+  - Features implemented
+  - Product inventory list
+  - Technical architecture
+  - Cost estimates
+  - Quality checklist
+
+- [X] Create setup script (`scripts/setup.sh`)
+  - Automated setup process
+  - Dependency installation
+  - Environment file creation
+  - Validation checks
+
+---
+
+## Phase 8: Production Polish & Finalization ✅ COMPLETED
+**Goal:** Add final touches for production readiness and professional presentation.
+
+### Tasks:
+- [X] Create placeholder logo
+  - SVG logo with DJ Cuisine branding
+  - Gold on black design
+  - Properly sized for header
+
+- [X] Set up product images directory
+  - Created `/public/images/` with .gitkeep
+  - Documented naming convention
+  - Site works with or without images (graceful fallbacks)
+
+- [X] Add robots.txt
+  - Allow all crawlers
+  - Sitemap reference
+
+- [X] SEO optimization
+  - Meta tags in root layout
+  - Descriptive titles and descriptions
+  - Keywords for BBQ catering
+  - Proper heading hierarchy
+
+- [X] Accessibility improvements
+  - Semantic HTML elements
+  - ARIA labels on icon buttons
+  - Keyboard navigation support
+  - Color contrast compliance
+
+- [X] Code quality
+  - No linter errors
+  - TypeScript strict mode
+  - Consistent formatting
+  - Clean code structure
+
+---
+
+## Phase 9: Easyship Shipping Integration (Planned)
+**Goal:** Integrate Easyship API for real-time shipping rates, label generation, and tracking.
+
+### Tasks:
+- [ ] Install Easyship dependencies
+  - `npm install axios` - for Easyship API calls
+  - Configure API credentials in environment variables
+
+- [ ] Create Easyship API client (`lib/easyship/client.ts`)
+  ```typescript
+  import axios, { AxiosInstance } from 'axios'
+
+  export class EasyshipClient {
+    private client: AxiosInstance
+
+    constructor() {
+      const apiKey = process.env.EASYSHIP_API_KEY
+      const baseURL = process.env.EASYSHIP_SANDBOX_MODE === 'true'
+        ? 'https://api.easyship.com/api/v1'
+        : 'https://api.easyship.com/api/v1'
+
+      this.client = axios.create({
+        baseURL,
+        headers: {
+          'Authorization': `Bearer ${apiKey}`,
+          'Content-Type': 'application/json',
+        },
+        timeout: 30000,
+      })
+    }
+  }
+
+  export const easyshipClient = new EasyshipClient()
+  ```
+
+- [ ] Create shipping constants (`lib/constants.ts`)
+  - Define shipping origin (Houston, TX)
+  - Define package dimensions for each tray/plate size
+  - Define handling fee for packaging materials
+  - Map product variants to package specifications
+
+- [ ] Implement Easyship rate fetching (`lib/easyship/rates.ts`)
+  - Method: `getRates(destination, items, selectedService?)`
+  - Call Easyship `/rates` endpoint with:
+    - Origin: Houston, TX (DJ Cuisine location)
+    - Destination: customer shipping address
+    - Packages: map cart items to package specs
+    - Filter for desired carriers (USPS, UPS, FedEx)
+  - Return structured rate object with service options and prices
+
+- [ ] Create rate quote endpoint: POST `/api/shipping/quote`
+  - Accept request body:
+    ```json
+    {
+      "destination": { "city", "state", "postalCode", "country" },
+      "items": [{ "productId", "quantity" }]
+    }
+    ```
+  - Validate destination address
+  - Calculate total weight/dimensions from cart items
+  - Call `easyshipClient.getRates()`
+  - Return shipping options with prices and estimated delivery
+
+- [ ] Implement fallback shipping rates (`lib/easyship/fallback.ts`)
+  - If Easyship API fails, calculate zone-based flat rates
+  - Map US states to shipping zones
+  - Return fallback rates with `isFallback: true` flag
+  - Log fallback instances for monitoring
+
+- [ ] Update checkout flow with live shipping rates
+  - Add shipping address form step
+  - Fetch real-time rates after address entry
+  - Display shipping options with prices and delivery times
+  - Allow customer to select preferred shipping method
+  - Add shipping cost to order total
+
+- [ ] Implement Easyship shipment creation (`lib/easyship/shipment.ts`)
+  - Method: `createShipment(order, shippingAddress, selectedRateId)`
+  - Call after successful payment
+  - Generate shipping label
+  - Store tracking number and label URL
+
+- [ ] Create Easyship webhook handler: POST `/api/webhooks/easyship`
+  - Verify webhook signature
+  - Handle tracking status updates
+  - Update order status based on shipment events
+  - Trigger customer notifications (shipped, delivered)
+
+- [ ] Add shipping information to order confirmation
+  - Display selected shipping method
+  - Show estimated delivery date
+  - Include tracking number (once available)
+  - Link to carrier tracking page
+
+- [ ] Create order tracking page
+  - Display shipment status timeline
+  - Show current location (if available)
+  - Estimated/actual delivery date
+  - Link to carrier tracking
+
+- [ ] Error handling and logging
+  - Handle rate fetch failures gracefully
+  - Log all Easyship API errors
+  - Alert admin for shipment creation failures
+  - Provide fallback options for customers
+
+---
+
+## Phase 10: Database & Order Management (Planned)
+**Goal:** Add database for order persistence, customer records, and inventory management.
+
+### Tasks:
+- [ ] Database integration
+  - Prisma ORM setup
+  - PostgreSQL or MongoDB
+  - Design schema for orders, customers, products
+  - Create migrations
+
+- [ ] Store orders in database
+  - Create Order model with items, customer, shipping, payment info
+  - Store after successful Stripe payment
+  - Link to Easyship shipment data
+
+- [ ] Admin dashboard
+  - View all orders
+  - Filter by status (pending, paid, shipped, delivered)
+  - Manual shipment creation/retry
+  - Update prices and inventory
+  - View analytics
+
+- [ ] Inventory management
+  - Track stock levels for each product
+  - Low stock alerts
+  - Prevent overselling
+  - Automatic inventory updates on purchase
+
+---
+
+## Phase 11: Email & Notifications (Planned)
+**Goal:** Send transactional emails for order confirmation, shipping updates, and delivery.
+
+### Tasks:
+- [ ] Email service setup
+  - SendGrid, Postmark, or AWS SES
+  - Configure sender domain verification
+  - Create email templates
+
+- [ ] Order confirmation email
+  - Send after successful payment
+  - Include order summary, total, shipping address
+  - Estimated delivery timeframe
+
+- [ ] Shipping confirmation email
+  - Send when label is created
+  - Include tracking number and carrier link
+  - Estimated delivery date
+  - Reminder about perishable items (if applicable)
+
+- [ ] Delivery notification email
+  - Send when order is delivered
+  - Thank you message
+  - Request for review/feedback
+
+- [ ] Admin notifications
+  - Alert on shipment failures
+  - Low inventory warnings
+  - Daily order summary
+
+---
+
+## Phase 12: Enhanced Features (Planned)
+**Goal:** Add advanced functionality to improve customer experience and business operations.
+
+### Tasks:
+- [ ] Stripe webhook handler for order confirmation
+  - POST `/api/webhooks/stripe`
+  - Verify webhook signatures
+  - Handle `checkout.session.completed` event
+  - Trigger shipment creation automatically
+
+- [ ] User accounts and authentication
+  - NextAuth.js integration
+  - Customer profiles
+  - Order history
+  - Saved addresses
+  - Reorder functionality
+
+- [ ] Delivery scheduling
+  - Date and time picker
+  - Delivery windows
+  - Calendar integration
+  - Avoid weekend/holiday deliveries
+
+- [ ] Product reviews and ratings
+  - Customer feedback system
+  - Star ratings
+  - Photo uploads
+  - Moderation dashboard
+
+- [ ] Discount codes and promotions
+  - Coupon code system
+  - Percentage or fixed discounts
+  - Minimum order requirements
+  - First-time customer discounts
+  - Free shipping thresholds
+
+- [ ] Advanced analytics
+  - Google Analytics integration
+  - Sales reports
+  - Customer insights
+  - Conversion tracking
+  - Popular products analysis
+  - Geographic sales data
+
+- [ ] Multi-box shipping optimization
+  - Calculate if multiple boxes needed
+  - Optimize packaging for cost
+  - Handle multi-package shipments
+
+- [ ] Gift options
+  - Gift messages
+  - Special packaging
+  - Send to different address
+
+- [ ] Subscription service
+  - Weekly/monthly BBQ box subscriptions
+  - Recurring billing
+  - Subscription management
+
+---
+
+## Lessons
+(This section will be populated with fixes and corrections as development progresses to avoid repeating mistakes.)
+
+### Phase 1-8 Lessons:
+1. **Zustand Persistence Hydration**: When using Zustand persist with localStorage, always check for mounted state before rendering cart-dependent UI to avoid hydration mismatches. Use `useEffect` with `setMounted(true)` pattern. ✅
+
+2. **Next.js 14 Dynamic Routes**: Use `use(params)` to unwrap params promise in dynamic route components with App Router. The params object is now a Promise that needs to be awaited. ✅
+
+3. **Stripe API Version**: Always specify the Stripe API version in the server-side client initialization to ensure consistency. Current version: `2024-12-18.acacia`. ✅
+
+4. **Environment Variables**: Prefix client-side env vars with `NEXT_PUBLIC_` for access in browser. Never expose secret keys (STRIPE_SECRET_KEY) to client code. ✅
+
+5. **Mobile-First Tailwind**: Write base styles for mobile, then add `md:` and `lg:` modifiers for larger screens. This ensures better mobile UX and cleaner code. ✅
+
+6. **Image Fallbacks**: Always provide graceful fallbacks for missing product images in ecommerce sites. Show placeholder or gray box with "No image available" text. ✅
+
+7. **Cart Validation**: Validate business rules (like gallon minimum) on BOTH client and server. Client-side for UX, server-side for security. Never trust client-only validation. ✅
+
+8. **Price Storage**: Always store prices in cents (integers) to avoid floating-point arithmetic errors. Convert to dollars only for display using `formatPrice()` utility. ✅
+
+### Phase 9 Lessons (Easyship Integration - To Be Documented):
+9. **Easyship Package Specs**: Define exact package dimensions for each product type before integration. Create package presets in Easyship dashboard first, then map by ID in code.
+
+10. **Rate Fetch Fallbacks**: Always implement fallback shipping rates in case Easyship API is unavailable. Calculate zone-based flat rates as backup.
+
+11. **Perishable Shipping**: For food items, consider expedited shipping options and temperature control. Add clear delivery timeline expectations.
+
+12. **Shipment Timing**: Create shipment labels immediately after successful payment to ensure fastest delivery. Don't wait for manual processing.
+
+13. **Weight Calculations**: Account for packaging weight (box, insulation, ice packs) in addition to product weight for accurate shipping costs.
+
+---
+
+## Notes
+
+- **Tech Stack Summary:**
+  - Framework: Next.js 14.2.0 (App Router, TypeScript) ✅
+  - Styling: Tailwind CSS 3.4.0 ✅
+  - State Management: Zustand 4.5.0 (cart with localStorage) ✅
+  - Payments: Stripe + @stripe/stripe-js ✅
+  - Shipping: Easyship API (planned)
+  - Icons: Lucide React 0.344.0 ✅
+  - HTTP Client: Axios (for Easyship API calls, planned)
+  - Database: Prisma ORM + PostgreSQL (planned)
+  - Email: SendGrid/Postmark/AWS SES (planned)
+  - Hosting: Vercel (recommended)
+  - Node.js: 18+ required
+
+- **Key Business Rules:**
+  1. **Juice Gallon Minimum**: Orders containing 1-gallon juices MUST have at least 2 gallons total
+  2. **Tray Pricing**: Small tray = 50% of big tray price (for future implementation)
+  3. **Price Format**: All prices stored in cents, displayed as currency
+  4. **Product Categories**: big-trays, plates, juices (fixed, no dynamic categories in MVP)
+  5. **Cart Persistence**: Cart saved to localStorage, survives page refresh
+  6. **Source of Truth**: `/lib/products.ts` is the single source of truth for all product data
+
+- **Branding Guidelines:**
+  - Business Name: DJ Cuisine
+  - Tagline: "The Best BBQ in H-Town"
+  - Location: Houston, Texas
+  - Color Scheme:
+    - Primary Background: Black (#000000)
+    - Primary Accent: Gold (#ca8a04)
+    - Card Background: Gray-900 (#111827)
+    - Borders: Gold-800 (#854d0e)
+    - Text: Gold-300/400 for headings, Gray-400 for body
+  - Logo: Available at `/public/logo.png`
+
+- **Environment Variables Required:**
+  ```
+  # Stripe (Payment Processing)
+  NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_... (or pk_live_...)
+  STRIPE_SECRET_KEY=sk_test_... (or sk_live_...)
+  STRIPE_WEBHOOK_SECRET=whsec_... (for webhook verification)
+  
+  # Easyship (Shipping Integration)
+  EASYSHIP_API_KEY=your_api_key_here
+  EASYSHIP_SANDBOX_MODE=true (false for production)
+  
+  # App Configuration
+  NEXT_PUBLIC_APP_URL=http://localhost:3000 (or production URL)
+  
+  # Database (when implemented)
+  DATABASE_URL=postgresql://... (or mongodb://...)
+  
+  # Email Service (when implemented)
+  EMAIL_SERVICE_API_KEY=your_email_api_key
+  EMAIL_FROM_ADDRESS=orders@djcuisine.com
+  ```
+
+- **Stripe-Specific Notes:**
+  - Using Checkout (not Elements) for simpler integration
+  - Test mode for development, live mode for production
+  - Webhook endpoint needed for production: `/api/webhooks/stripe`
+  - Test card: 4242 4242 4242 4242 (any future date, any CVC)
+
+- **Easyship-Specific Notes:**
+  - Origin: Houston, Texas (DJ Cuisine location)
+  - Ship nationwide within USA
+  - Support multiple carriers: USPS, UPS, FedEx
+  - Real-time rate shopping for best prices
+  - Automatic label generation after payment
+  - Package dimensions vary by product:
+    - Big Trays: larger boxes (need to define exact dimensions)
+    - Plates: medium boxes (insulated for freshness)
+    - Juices: varies by size (1 gal, half gal, 16oz)
+  - Consider temperature control for perishable items
+  - Add handling fee for insulation/ice packs if needed
+  - Test in sandbox mode before production
+  - Webhook endpoint: `/api/webhooks/easyship` for tracking updates
+
+- **Product Catalog Structure:**
+  - 6 Big Trays (catering, serves 8-10)
+  - 6 Individual Plates (single meals with sides)
+  - 9 Juice Variants (3 flavors × 3 sizes)
+  - Total: 21 products
+  - All prices, descriptions, and specs in `/lib/products.ts`
+
+- **File Naming Conventions:**
+  - Components: PascalCase (ProductCard.tsx)
+  - Utilities: camelCase (utils.ts)
+  - Types: PascalCase interfaces (Product, CartItem)
+  - Constants: UPPER_SNAKE_CASE
+  - Pages: lowercase (page.tsx, [slug]/page.tsx)
+
+---
+
+**END OF DEVELOPMENT PLAN**
+
+## Code Style & Standards
+
+### TypeScript
+- Always use TypeScript, never plain JavaScript
+- Define proper types for all functions, components, and data structures
+- Use interfaces for object shapes, types for unions/primitives
+- Import types from `@/types/index.ts`
+- Avoid `any` type unless absolutely necessary
+- Use strict mode settings from tsconfig.json
+
+### React & Next.js
+- Use functional components with hooks
+- Prefer server components by default (no 'use client' unless needed)
+- Add 'use client' only when using:
+  - useState, useEffect, or other React hooks
+  - Event handlers (onClick, onChange, etc.)
+  - Browser APIs (localStorage, window, etc.)
+  - Third-party libraries that require client-side
+- Use Next.js App Router conventions (app directory)
+- Use `next/image` for all images
+- Use `next/link` for all internal navigation
+- Follow file-based routing structure
+
+### Component Structure
+- Keep components in `/components` directory
+- One component per file
+- Export default for main component
+- Use named exports for helper components
+- Component files use PascalCase: `ProductCard.tsx`
+- Props interfaces named: `ComponentNameProps`
+
+Example:
+```typescript
+interface ProductCardProps {
+  product: Product;
+}
+
+export default function ProductCard({ product }: ProductCardProps) {
+  // component logic
+}
+```
+
+### State Management
+- Use Zustand for global state (cart)
+- Store files in `/store` directory
+- Persist cart state to localStorage
+- Use React hooks for local component state
+- Don't prop-drill more than 2 levels deep
+
+### Styling with Tailwind
+- Use Tailwind utility classes exclusively
+- No custom CSS unless absolutely necessary
+- Follow mobile-first approach (base styles are mobile)
+- Use responsive modifiers: `md:`, `lg:`
+- Color scheme:
+  - Background: `bg-black`, `bg-gray-900`
+  - Text: `text-gold-400`, `text-gold-300`, `text-gray-400`
+  - Borders: `border-gold-800`, `border-gold-700`
+  - Hover states: `hover:bg-gold-500`, `hover:text-gold-300`
+- No inline styles
+- Use `cn()` utility for conditional classes
+
+### File Organization
+```
+app/              # Next.js App Router pages & API routes
+  api/            # API route handlers
+  category/       # Category pages
+  layout.tsx      # Root layout
+  page.tsx        # Routes
+components/       # React components
+lib/              # Utilities, helpers, data
+  products.ts     # Product catalog (source of truth)
+  utils.ts        # Helper functions
+store/            # Zustand stores
+types/            # TypeScript type definitions
+public/           # Static assets
+```
+
+### Naming Conventions
+- Files: PascalCase for components, camelCase for utilities
+- Variables: camelCase
+- Constants: UPPER_SNAKE_CASE
+- Types/Interfaces: PascalCase
+- CSS classes: Use Tailwind utilities only
+
+### API Routes
+- Place in `/app/api/[name]/route.ts`
+- Use Next.js Route Handlers (not pages API)
+- Always validate input data
+- Return proper HTTP status codes
+- Use try-catch for error handling
+- Example structure:
+```typescript
+export async function POST(request: NextRequest) {
+  try {
+    const data = await request.json();
+    // validation
+    // processing
+    return NextResponse.json({ success: true });
+  } catch (error) {
+    return NextResponse.json({ error: 'Message' }, { status: 500 });
+  }
+}
+```
+
+## Business Logic Rules
+
+### Product Management
+- All products defined in `/lib/products.ts`
+- Prices stored in CENTS (e.g., $19.99 = 1999)
+- Three categories: 'big-trays', 'plates', 'juices'
+- Use `formatPrice()` to display prices
+- Product IDs must be unique across all categories
+
+### Shopping Cart
+- Use `useCartStore()` from `/store/cartStore.ts`
+- Cart persists to localStorage automatically
+- Methods available:
+  - `addItem(product, quantity?)`
+  - `removeItem(productId)`
+  - `updateQuantity(productId, quantity)`
+  - `clearCart()`
+  - `getTotal()`
+  - `getItemCount()`
+  - `getGallonCount()`
+
+### Business Rules (ENFORCE THESE)
+1. **Juice Gallon Minimum**: Orders containing 1-gallon juices MUST have at least 2 gallons total
+   - Validate on client side (Cart.tsx)
+   - Validate on server side (checkout API)
+   - Show warning message to user
+   - Disable checkout if violated
+
+2. **Tray Pricing**: Small tray = 50% of big tray price (for future implementation)
+
+3. **Quantity Validation**: Minimum quantity = 1, no maximum
+
+### Stripe Integration
+- Use Stripe Checkout (not Elements)
+- Test mode keys in `.env.local`
+- Live keys only in production
+- Prices sent in cents
+- Success URL: `/success?session_id={CHECKOUT_SESSION_ID}`
+- Cancel URL: `/` (homepage)
+
+## Error Handling
+
+### Client-Side
+- Show user-friendly error messages
+- Use toast notifications or alerts
+- Log errors to console in development
+- Never expose sensitive error details
+
+### Server-Side
+- Always use try-catch in API routes
+- Return appropriate status codes:
+  - 200: Success
+  - 400: Bad request/validation error
+  - 500: Server error
+- Log errors with context
+
+### Loading States
+- Show loading indicator for async operations
+- Use Suspense boundaries where appropriate
+- Provide feedback for user actions
+
+## Accessibility
+
+- Use semantic HTML elements
+- Add `aria-label` to icon-only buttons
+- Ensure keyboard navigation works
+- Maintain color contrast ratios
+- Use `alt` text for images
+
+## Performance
+
+- Optimize images (WebP format preferred)
+- Use Next.js Image component with proper sizing
+- Lazy load below-the-fold content
+- Minimize client-side JavaScript
+- Use server components when possible
+
+## Security
+
+- Never commit `.env.local` or secrets
+- Validate all user input (client AND server)
+- Use environment variables for API keys
+- Sanitize data before displaying
+- Keep dependencies updated
+
+## Testing
+
+### Before Committing
+- Run `npm run lint` (no errors)
+- Run `npm run build` (successful build)
+- Test on mobile viewport
+- Test cart functionality
+- Verify checkout flow
+
+### Manual Testing Checklist
+- [ ] Add items to cart
+- [ ] Update quantities
+- [ ] Remove items
+- [ ] Cart persists on refresh
+- [ ] Gallon minimum validation works
+- [ ] Checkout redirects to Stripe
+- [ ] Success page shows after payment
+- [ ] Mobile menu works
+- [ ] All links work
+
+## Common Patterns
+
+### Adding a New Product
+1. Open `/lib/products.ts`
+2. Add to appropriate array (bigTrays, plates, juices)
+3. Follow existing structure
+4. Price in cents
+5. Add image to `/public/images/` (optional)
+
+### Adding a New Component
+1. Create in `/components/ComponentName.tsx`
+2. Define Props interface
+3. Export default function
+4. Use TypeScript
+5. Add 'use client' if needed
+6. Style with Tailwind
+
+### Creating a New Page
+1. Create in `/app/page-name/page.tsx`
+2. Use server component if possible
+3. Import and use Header/Footer
+4. Follow layout patterns from existing pages
+
+### Adding an API Route
+1. Create `/app/api/route-name/route.ts`
+2. Export named functions (GET, POST, etc.)
+3. Validate input
+4. Handle errors
+5. Return JSON responses
+
+## Environment Variables
+
+Required in `.env.local`:
+```
+NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY=pk_test_...
+STRIPE_SECRET_KEY=sk_test_...
+NEXT_PUBLIC_APP_URL=http://localhost:3000
+```
+
+- Prefix with `NEXT_PUBLIC_` for client-side access
+- Never expose secret keys to client
+- Use different keys for dev/production
+
+## Dependencies
+
+### When Adding New Packages
+- Prefer packages with TypeScript support
+- Check bundle size impact
+- Verify maintenance status
+- Update package.json
+- Run `npm install`
+
+### Current Stack (Don't Change Without Reason)
+- Next.js 14
+- React 18
+- TypeScript 5
+- Tailwind CSS 3
+- Zustand 4
+- Stripe
+- Lucide React (icons)
+
+## Git Workflow
+
+- Commit messages: Clear and descriptive
+- Don't commit node_modules, .next, .env.local
+- Test before committing
+- Keep commits focused and atomic
+
+## Documentation
+
+- Update README.md for major changes
+- Comment complex logic
+- Use JSDoc for utility functions
+- Keep documentation in sync with code
+
+## Deployment
+
+- Build must succeed: `npm run build`
+- No TypeScript errors
+- No linting errors
+- Environment variables configured
+- Test in production mode locally
+
+## Future Enhancements (When Requested)
+
+### Priority Order
+1. Stripe webhook handler
+2. Email notifications
+3. Admin dashboard
+4. User accounts/auth
+5. Database integration
+6. Delivery scheduling
+
+### When Adding Features
+- Maintain existing patterns
+- Update types as needed
+- Add to documentation
+- Test thoroughly
+- Consider mobile UX
+
+## Code Quality Standards
+
+- **Readability**: Code should be self-documenting
+- **Simplicity**: Prefer simple over clever
+- **Consistency**: Follow existing patterns
+- **DRY**: Don't repeat yourself
+- **Performance**: Optimize when needed, not prematurely
+
+## AI Assistant Guidelines
+
+When helping with this project:
+1. Always check existing code patterns first
+2. Follow the tech stack (don't suggest alternatives)
+3. Maintain TypeScript types
+4. Use Tailwind for styling
+5. Test suggestions work with Next.js 14 App Router
+6. Respect the business rules (gallon minimum, etc.)
+7. Keep mobile-first approach
+8. Suggest complete code, not partial snippets
+9. Consider both dev and production environments
+10. Update documentation when making significant changes
+
+## Questions to Ask Before Coding
+
+- Is this a client or server component?
+- Does this need to be in the cart state?
+- Are there similar patterns in the codebase?
+- What's the mobile experience?
+- Does this follow TypeScript best practices?
+- Is error handling included?
+- Are business rules enforced?
+
+## Common Issues & Solutions
+
+**Issue**: Component not updating
+- Solution: Check if state is properly managed, verify Zustand subscription
+
+**Issue**: Styles not applying
+- Solution: Verify Tailwind classes, check for typos, ensure proper color scheme
+
+**Issue**: Type errors
+- Solution: Import types from `@/types/index.ts`, define proper interfaces
+
+**Issue**: Cart not persisting
+- Solution: Check localStorage permissions, verify Zustand persist config
+
+**Issue**: Stripe not working
+- Solution: Verify API keys in .env.local, check console for errors
+
+## Remember
+
+- **Mobile-first**: Design for mobile, enhance for desktop
+- **User experience**: Every feature should improve UX
+- **Performance**: Fast load times matter
+- **Security**: Validate everything, trust nothing
+- **Accessibility**: Everyone should be able to use the site
+- **Production-ready**: Code quality matters
+
+---
+
+**Project Goal**: Create a professional, reliable ecommerce site for DJ Cuisine that delights customers and drives sales.
+
+**Tagline**: The Best BBQ in H-Town 🍖
