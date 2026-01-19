@@ -84,7 +84,7 @@ export const useCartStore = create<CartStore>()(
       },
     }),
     {
-      name: 'dj-cuisine-cart',
+      name: 'djcuisine_cart',
       storage: createJSONStorage(() => localStorage),
     }
   )

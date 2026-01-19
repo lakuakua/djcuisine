@@ -24,7 +24,7 @@ git init
 git add .
 git commit -m "Initial commit: DJ Cuisine ecommerce site"
 git branch -M main
-git remote add origin https://github.com/yourusername/dj-cuisine.git
+git remote add origin https://github.com/yourusername/djcuisine.git
 git push -u origin main
 ```
 
@@ -33,7 +33,7 @@ git push -u origin main
 1. Go to [vercel.com](https://vercel.com)
 2. Sign up/login with GitHub
 3. Click "New Project"
-4. Import your `dj-cuisine` repository
+4. Import your `djcuisine` repository
 5. Configure project:
    - Framework Preset: Next.js
    - Root Directory: `./`
@@ -103,7 +103,7 @@ npm run build
 
 ```bash
 npm install -g pm2
-pm2 start npm --name "dj-cuisine" -- start
+pm2 start npm --name "djcuisine" -- start
 pm2 save
 pm2 startup
 ```
