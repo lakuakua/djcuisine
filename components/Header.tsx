@@ -16,8 +16,13 @@ export default function Header({ onCartOpen }: HeaderProps) {
 
   const navigation = [
     { name: 'Home', href: '/' },
-    { name: 'Big Trays', href: '/category/big-trays' },
-    { name: 'Plates', href: '/category/plates' },
+    { name: 'Chicken', href: '/category/chicken' },
+    { name: 'Turkey', href: '/category/turkey' },
+    { name: 'Beef', href: '/category/beef' },
+    { name: 'Lamb', href: '/category/lamb' },
+    { name: 'Seafood', href: '/category/seafood' },
+    { name: 'Whole Poultry', href: '/category/whole-poultry' },
+    { name: 'Sausage', href: '/category/sausage' },
     { name: 'Juices', href: '/category/juices' },
   ];
 

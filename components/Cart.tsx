@@ -1,7 +1,7 @@
 'use client';
 
 import { useCartStore } from '@/store/cartStore';
-import { formatPrice, formatJuiceSize } from '@/lib/utils';
+import { formatPrice } from '@/lib/utils';
 import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -26,7 +26,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
 
   const gallonCount = getGallonCount();
   const hasGallonMinimumIssue = items.some(
-    (item) => item.product.juiceSize === '1-gallon'
+    (item) => item.selectedVariant.size === '1 Gallon'
   ) && gallonCount < 2;
 
   const handleCheckout = async () => {
@@ -93,9 +93,9 @@ export default function Cart({ isOpen, onClose }: CartProps) {
               </div>
             ) : (
               <div className="space-y-4">
-                {items.map((item) => (
+                {items.map((item, index) => (
                   <div
-                    key={item.product.id}
+                    key={`${item.product.id}-${item.selectedVariant.id}-${index}`}
                     className="bg-gray-800 border border-gold-900 rounded-lg p-4"
                   >
                     <div className="flex justify-between items-start mb-3">
@@ -103,14 +103,13 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                         <h3 className="font-semibold text-gold-300">
                           {item.product.name}
                         </h3>
-                        {item.product.juiceSize && (
-                          <p className="text-xs text-gray-400">
-                            {formatJuiceSize(item.product.juiceSize)}
-                          </p>
-                        )}
+                        <p className="text-xs text-gray-400">
+                          {item.selectedVariant.size}
+                          {item.selectedVariant.servings && ` • ${item.selectedVariant.servings}`}
+                        </p>
                       </div>
                       <button
-                        onClick={() => removeItem(item.product.id)}
+                        onClick={() => removeItem(item.product.id, item.selectedVariant.id)}
                         className="text-red-400 hover:text-red-300 text-sm"
                       >
                         Remove
@@ -121,7 +120,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                       <div className="flex items-center space-x-3 bg-gray-900 rounded-lg p-1">
                         <button
                           onClick={() =>
-                            updateQuantity(item.product.id, item.quantity - 1)
+                            updateQuantity(item.product.id, item.selectedVariant.id, item.quantity - 1)
                           }
                           className="p-1 hover:bg-gray-800 rounded"
                           aria-label="Decrease quantity"
@@ -133,7 +132,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                         </span>
                         <button
                           onClick={() =>
-                            updateQuantity(item.product.id, item.quantity + 1)
+                            updateQuantity(item.product.id, item.selectedVariant.id, item.quantity + 1)
                           }
                           className="p-1 hover:bg-gray-800 rounded"
                           aria-label="Increase quantity"
@@ -142,7 +141,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                         </button>
                       </div>
                       <span className="text-gold-400 font-semibold">
-                        {formatPrice(item.product.price * item.quantity)}
+                        {formatPrice(item.selectedVariant.price * item.quantity)}
                       </span>
                     </div>
                   </div>

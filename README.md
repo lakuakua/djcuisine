@@ -1,6 +1,6 @@
-# DJ Cuisine - BBQ & Catering E-commerce
+# DJ Cuisine - African & International Cuisine E-commerce
 
-A production-ready e-commerce website for DJ Cuisine, Houston's premier BBQ and catering service.
+A production-ready e-commerce website for DJ Cuisine, Houston's premier African and International cuisine catering service.
 
 ## 🎯 Features
 
@@ -15,9 +15,10 @@ A production-ready e-commerce website for DJ Cuisine, Houston's premier BBQ and 
 
 ## 📦 Product Categories
 
-1. **Big Trays** - Catering trays serving 8-10 people
-2. **Plates** - Individual meals with sides
-3. **Juices** - Fresh beverages in 1 Gallon, Half Gallon, and 16 oz sizes
+1. **Big Trays** - Premium catering trays serving 8-10 people (Chicken, Turkey, Beef, Lamb, Shrimp, Kabobs)
+2. **Half Trays** - Perfect for smaller gatherings serving 4-5 people
+3. **Plates & Specialties** - Individual servings, whole smoked/grilled poultry, deer meat sausage
+4. **Juices** - Fresh natural beverages including Zobo, tropical blends, and healthy combinations
 
 ## 🚀 Getting Started
 

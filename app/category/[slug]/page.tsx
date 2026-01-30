@@ -16,15 +16,25 @@ interface CategoryPageProps {
 }
 
 const categoryTitles: Record<string, string> = {
-  'big-trays': 'Big Trays - Catering',
-  'plates': 'Individual Plates',
-  'juices': 'Fresh Juices',
+  'chicken': 'Chicken',
+  'turkey': 'Turkey',
+  'beef': 'Beef',
+  'lamb': 'Lamb',
+  'seafood': 'Seafood',
+  'whole-poultry': 'Whole Poultry',
+  'sausage': 'Sausage',
+  'juices': 'DJ Cuisine Juices',
 };
 
 const categoryDescriptions: Record<string, string> = {
-  'big-trays': 'Perfect for parties and events. Each tray serves 8-10 people.',
-  'plates': 'Delicious individual meals with your choice of meat, two sides, and cornbread.',
-  'juices': 'Freshly made beverages to complement your meal. Gallon orders require a minimum of 2 gallons.',
+  'chicken': 'Chicken legs & thighs and wings. Choose your size: Big Tray (serves 8-10), Half Tray (serves 4-5), or individual Plate.',
+  'turkey': 'Turkey wings and legs available in Big Tray (serves 8-10) or Half Tray (serves 4-5) sizes.',
+  'beef': 'Premium beef ribs, steak tips, and kabobs. Available in Big Tray, Half Tray, or Plate sizes.',
+  'lamb': 'Premium lamb cuts available in Big Tray (serves 8-10), Half Tray (serves 4-5), or individual Plate.',
+  'seafood': 'Fresh grilled shrimp. Choose Big Tray, Half Tray, or 5 Sticks for individual servings.',
+  'whole-poultry': 'Whole smoked and grilled poultry including rooster, guinea fowl, hen, and rabbit. Perfect for special occasions.',
+  'sausage': 'Premium grilled deer meat sausage. Each order includes 5 pieces.',
+  'juices': 'Fresh, natural juices including traditional Zobo and tropical blends. Available in Gallon, Half Gallon, and 16oz sizes. Gallon orders require a minimum of 2 gallons.',
 };
 
 export default function CategoryPage({ params }: CategoryPageProps) {

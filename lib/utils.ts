@@ -23,3 +23,22 @@ export function formatJuiceSize(size?: string): string {
       return size;
   }
 }
+
+export function formatServingSize(size?: string): string {
+  if (!size) return '';
+  
+  switch (size) {
+    case 'big-tray':
+      return 'Big Tray';
+    case 'half-tray':
+      return 'Half Tray';
+    case 'plate':
+      return 'Plate';
+    case 'whole':
+      return 'Whole';
+    case '5-sticks':
+      return '5 Sticks';
+    default:
+      return size;
+  }
+}

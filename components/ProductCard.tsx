@@ -1,10 +1,11 @@
 'use client';
 
 import { Product } from '@/types';
-import { formatPrice, formatJuiceSize } from '@/lib/utils';
+import { formatPrice } from '@/lib/utils';
 import { useCartStore } from '@/store/cartStore';
 import { ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
+import { useState } from 'react';
 
 interface ProductCardProps {
   product: Product;
@@ -12,9 +13,14 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem);
+  const [selectedVariantId, setSelectedVariantId] = useState(product.variants[0]?.id || '');
+
+  const selectedVariant = product.variants.find(v => v.id === selectedVariantId) || product.variants[0];
 
   const handleAddToCart = () => {
-    addItem(product);
+    if (selectedVariant) {
+      addItem(product, selectedVariant);
+    }
   };
 
   return (
@@ -37,22 +43,44 @@ export default function ProductCard({ product }: ProductCardProps) {
 
       {/* Product Details */}
       <div className="p-5">
-        <div className="flex items-start justify-between mb-2">
-          <h3 className="text-lg font-semibold text-gold-300">{product.name}</h3>
-          {product.juiceSize && (
-            <span className="text-xs bg-gold-900/50 text-gold-400 px-2 py-1 rounded">
-              {formatJuiceSize(product.juiceSize)}
-            </span>
-          )}
-        </div>
+        <h3 className="text-lg font-semibold text-gold-300 mb-2">{product.name}</h3>
 
         <p className="text-sm text-gray-400 mb-4 line-clamp-2">
           {product.description}
         </p>
 
+        {/* Size Selector (if product has multiple variants) */}
+        {product.variants.length > 1 && !product.isSingleSize && (
+          <div className="mb-4">
+            <label className="text-xs text-gray-500 mb-1 block">Select Size:</label>
+            <select
+              value={selectedVariantId}
+              onChange={(e) => setSelectedVariantId(e.target.value)}
+              className="w-full bg-gray-800 border border-gold-800 text-gold-300 rounded px-3 py-2 text-sm focus:outline-none focus:border-gold-600"
+            >
+              {product.variants.map((variant) => (
+                <option key={variant.id} value={variant.id}>
+                  {variant.size} - {formatPrice(variant.price)}
+                  {variant.servings && ` (${variant.servings})`}
+                </option>
+              ))}
+            </select>
+          </div>
+        )}
+
+        {/* Single size indicator */}
+        {product.isSingleSize && (
+          <div className="mb-3">
+            <span className="text-xs bg-gold-900/50 text-gold-400 px-2 py-1 rounded inline-block">
+              {selectedVariant?.size}
+              {selectedVariant?.servings && ` • ${selectedVariant.servings}`}
+            </span>
+          </div>
+        )}
+
         <div className="flex items-center justify-between">
           <span className="text-2xl font-bold text-gold-400">
-            {formatPrice(product.price)}
+            {formatPrice(selectedVariant?.price || 0)}
           </span>
           <button
             onClick={handleAddToCart}

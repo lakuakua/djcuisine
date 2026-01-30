@@ -17,7 +17,7 @@
 ### DJ Cuisine Development Plan
 
 **Project Overview:**
-Next.js 14 ecommerce application for **DJ Cuisine BBQ & Catering**, a Houston-based BBQ and catering business. Selling big trays (catering), individual plates, and fresh juices with nationwide shipping via Stripe Checkout. Mobile-first, elegant design with black background and gold accents. Source of truth for products is local data file (`/lib/products.ts`).
+Next.js 14 ecommerce application for **DJ Cuisine**, a Houston-based African & International cuisine catering business. Selling big trays, half trays, individual plates, whole poultry, and fresh juices with nationwide shipping via Stripe Checkout and Easyship. Mobile-first, elegant design with black background and gold accents. Source of truth for products is local data file (`/lib/products.ts`).
 
 ---
 
@@ -105,26 +105,37 @@ Next.js 14 ecommerce application for **DJ Cuisine BBQ & Catering**, a Houston-ba
   ```
 
 - [X] Create product catalog (`lib/products.ts`)
-  **Big Trays (6 items):**
-  - BBQ Ribs Tray - $129.99 (serves 8-10)
-  - Beef Brisket Tray - $149.99
-  - BBQ Chicken Tray - $99.99
-  - Pulled Pork Tray - $119.99
-  - Sausage Platter - $89.99
-  - BBQ Combo Tray - $179.99
+  **Big Trays (9 items) - serves 8-10 people:**
+  - Chicken Leg & Thighs - $160.00
+  - Turkey Wings - $250.00
+  - Turkey Legs - $220.00
+  - Chicken Wings - $185.00
+  - Beef Ribs - $250.00
+  - Beef Steak Tips - $300.00
+  - Lamb - $350.00
+  - Shrimp - $300.00
+  - Beef Kabob/Brochettes - $300.00
 
-  **Plates (6 items):**
-  - BBQ Ribs Plate - $18.99 (includes 2 sides + cornbread)
-  - Beef Brisket Plate - $20.99
-  - BBQ Chicken Plate - $15.99
-  - Pulled Pork Plate - $16.99
-  - Sausage Plate - $14.99
-  - BBQ Combo Plate - $22.99
+  **Half Trays (9 items) - serves 4-5 people:**
+  - Chicken Leg & Thighs - $80.00
+  - Turkey Wings - $125.00
+  - Turkey Legs - $110.00
+  - Chicken Wings - $93.00
+  - Beef Ribs - $125.00
+  - Beef Steak Tips - $150.00
+  - Lamb - $175.00
+  - Shrimp - $150.00
+  - Beef Kabob/Brochettes - $150.00
 
-  **Juices (9 items - 3 flavors × 3 sizes):**
-  - Fresh Lemonade: $12.99 (1 gal), $6.99 (half), $3.99 (16oz)
-  - Sweet Tea: $9.99 (1 gal), $5.49 (half), $2.99 (16oz)
-  - Fruit Punch: $11.99 (1 gal), $6.49 (half), $3.49 (16oz)
+  **Plates & Specialties (13 items):**
+  - Individual Plates: Chicken Leg & Thighs ($25), Chicken Wings ($25), Beef Ribs ($25), Beef Steak Tips ($25), Lamb ($30)
+  - Whole Poultry: Smoked Rooster ($35), Smoked Guinea Fowl ($45), Smoked Hen ($35), Smoked Rabbit ($70), Grilled Rooster ($35), Grilled Guinea Fowl ($45)
+  - Specialties: Shrimp 5 Sticks ($20), Deer Meat Sausage 5 Pieces ($20)
+
+  **Juices (13 items):**
+  - Zobo: Gallon ($35), Half Gallon ($18), 16oz ($6)
+  - Pineapple Ginger: Gallon ($35), Half Gallon ($18), 16oz ($6)
+  - Gallon only: Watermelon/Ginger/Pineapple ($40), Mango ($45), Orange ($40), Watermelon ($40), Mango Mandarin/Pineapple ($40), Ginger/Lemon/Orange/Pineapple ($40), Carrot/Apple/Orange/Ginger ($40)
 
 - [X] Create utility functions
   - `getProductById()` - fetch single product
@@ -681,7 +692,7 @@ Next.js 14 ecommerce application for **DJ Cuisine BBQ & Catering**, a Houston-ba
 
 - **Branding Guidelines:**
   - Business Name: DJ Cuisine
-  - Tagline: "The Best BBQ in H-Town"
+  - Tagline: "Authentic African & International Cuisine"
   - Location: Houston, Texas
   - Color Scheme:
     - Primary Background: Black (#000000)
@@ -735,10 +746,11 @@ Next.js 14 ecommerce application for **DJ Cuisine BBQ & Catering**, a Houston-ba
   - Webhook endpoint: `/api/webhooks/easyship` for tracking updates
 
 - **Product Catalog Structure:**
-  - 6 Big Trays (catering, serves 8-10)
-  - 6 Individual Plates (single meals with sides)
-  - 9 Juice Variants (3 flavors × 3 sizes)
-  - Total: 21 products
+  - 9 Big Trays (catering, serves 8-10): Chicken, Turkey, Beef, Lamb, Shrimp, Kabobs
+  - 9 Half Trays (serves 4-5): Same varieties as big trays
+  - 13 Plates & Specialties: Individual plates, whole poultry, deer sausage, shrimp sticks
+  - 13 Juice Variants: Zobo, Pineapple Ginger, and tropical/healthy blends
+  - Total: 44 products
   - All prices, descriptions, and specs in `/lib/products.ts`
 
 - **File Naming Conventions:**

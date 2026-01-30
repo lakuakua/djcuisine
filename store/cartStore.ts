@@ -1,12 +1,12 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Product, CartItem } from '@/types';
+import { Product, ProductVariant, CartItem } from '@/types';
 
 interface CartStore {
   items: CartItem[];
-  addItem: (product: Product, quantity?: number) => void;
-  removeItem: (productId: string) => void;
-  updateQuantity: (productId: string, quantity: number) => void;
+  addItem: (product: Product, selectedVariant: ProductVariant, quantity?: number) => void;
+  removeItem: (productId: string, variantId: string) => void;
+  updateQuantity: (productId: string, variantId: string, quantity: number) => void;
   clearCart: () => void;
   getTotal: () => number;
   getItemCount: () => number;
@@ -18,16 +18,17 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
 
-      addItem: (product: Product, quantity = 1) => {
+      addItem: (product: Product, selectedVariant: ProductVariant, quantity = 1) => {
         set((state) => {
+          // Check if this exact product + variant combination exists
           const existingItem = state.items.find(
-            (item) => item.product.id === product.id
+            (item) => item.product.id === product.id && item.selectedVariant.id === selectedVariant.id
           );
 
           if (existingItem) {
             return {
               items: state.items.map((item) =>
-                item.product.id === product.id
+                item.product.id === product.id && item.selectedVariant.id === selectedVariant.id
                   ? { ...item, quantity: item.quantity + quantity }
                   : item
               ),
@@ -35,26 +36,30 @@ export const useCartStore = create<CartStore>()(
           }
 
           return {
-            items: [...state.items, { product, quantity }],
+            items: [...state.items, { product, selectedVariant, quantity }],
           };
         });
       },
 
-      removeItem: (productId: string) => {
+      removeItem: (productId: string, variantId: string) => {
         set((state) => ({
-          items: state.items.filter((item) => item.product.id !== productId),
+          items: state.items.filter(
+            (item) => !(item.product.id === productId && item.selectedVariant.id === variantId)
+          ),
         }));
       },
 
-      updateQuantity: (productId: string, quantity: number) => {
+      updateQuantity: (productId: string, variantId: string, quantity: number) => {
         if (quantity <= 0) {
-          get().removeItem(productId);
+          get().removeItem(productId, variantId);
           return;
         }
 
         set((state) => ({
           items: state.items.map((item) =>
-            item.product.id === productId ? { ...item, quantity } : item
+            item.product.id === productId && item.selectedVariant.id === variantId
+              ? { ...item, quantity }
+              : item
           ),
         }));
       },
@@ -66,7 +71,7 @@ export const useCartStore = create<CartStore>()(
       getTotal: () => {
         const state = get();
         return state.items.reduce(
-          (total, item) => total + item.product.price * item.quantity,
+          (total, item) => total + item.selectedVariant.price * item.quantity,
           0
         );
       },
@@ -79,7 +84,7 @@ export const useCartStore = create<CartStore>()(
       getGallonCount: () => {
         const state = get();
         return state.items
-          .filter((item) => item.product.juiceSize === '1-gallon')
+          .filter((item) => item.selectedVariant.size === '1 Gallon')
           .reduce((count, item) => count + item.quantity, 0);
       },
     }),

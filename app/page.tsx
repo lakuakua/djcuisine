@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import CategorySection from '@/components/CategorySection';
-import { UtensilsCrossed, Salad, Coffee } from 'lucide-react';
+import { ChefHat, Bird, Beef, Sheep, Fish, Flame, Sausage, Coffee } from 'lucide-react';
 
 export default function Home() {
   const [cartOpen, setCartOpen] = useState(false);
@@ -22,12 +22,12 @@ export default function Home() {
             DJ Cuisine
           </h1>
           <p className="text-2xl sm:text-3xl text-gold-500 mb-8">
-            The Best BBQ in H-Town
+            Authentic African & International Cuisine
           </p>
           <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-12">
-            From intimate family dinners to large catering events, we bring authentic 
-            Houston BBQ to your table. Slow-smoked meats, homemade sides, and fresh juices 
-            made with love.
+            From intimate family dinners to large catering events, we bring the finest 
+            grilled and smoked meats to your table. Premium lamb, beef, poultry, and fresh juices 
+            made with authentic flavors and love.
           </p>
           <div className="flex flex-wrap justify-center gap-4">
             <a
@@ -59,22 +59,52 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
             <CategorySection
-              title="Big Trays"
-              description="Perfect for parties and events. Feed 8-10 people with our catering trays."
-              href="/category/big-trays"
-              icon={<UtensilsCrossed className="h-12 w-12" />}
+              title="Chicken"
+              description="Chicken legs & thighs, wings. Choose Big Tray, Half Tray, or Plate."
+              href="/category/chicken"
+              icon={<ChefHat className="h-12 w-12" />}
             />
             <CategorySection
-              title="Plates"
-              description="Individual meals with your choice of meat, two sides, and cornbread."
-              href="/category/plates"
-              icon={<Salad className="h-12 w-12" />}
+              title="Turkey"
+              description="Turkey wings and legs in Big Tray or Half Tray sizes."
+              href="/category/turkey"
+              icon={<Bird className="h-12 w-12" />}
+            />
+            <CategorySection
+              title="Beef"
+              description="Beef ribs, steak tips, and kabobs. Multiple sizes available."
+              href="/category/beef"
+              icon={<Beef className="h-12 w-12" />}
+            />
+            <CategorySection
+              title="Lamb"
+              description="Premium lamb in Big Tray, Half Tray, or Plate."
+              href="/category/lamb"
+              icon={<Sheep className="h-12 w-12" />}
+            />
+            <CategorySection
+              title="Seafood"
+              description="Fresh grilled shrimp. Big Tray, Half Tray, or 5 Sticks."
+              href="/category/seafood"
+              icon={<Fish className="h-12 w-12" />}
+            />
+            <CategorySection
+              title="Whole Poultry"
+              description="Whole smoked and grilled rooster, guinea fowl, hen, and rabbit."
+              href="/category/whole-poultry"
+              icon={<Flame className="h-12 w-12" />}
+            />
+            <CategorySection
+              title="Sausage"
+              description="Grilled deer meat sausage - 5 pieces per order."
+              href="/category/sausage"
+              icon={<Sausage className="h-12 w-12" />}
             />
             <CategorySection
               title="Juices"
-              description="Fresh lemonade, sweet tea, and fruit punch in various sizes."
+              description="Zobo, pineapple ginger, and fresh tropical blends."
               href="/category/juices"
               icon={<Coffee className="h-12 w-12" />}
             />

@@ -19,7 +19,7 @@ export async function POST(request: NextRequest) {
 
     // Validate gallon minimum
     const gallonItems = items.filter(
-      (item) => item.product.juiceSize === '1-gallon'
+      (item) => item.selectedVariant.size === '1 Gallon'
     );
     const totalGallons = gallonItems.reduce(
       (sum, item) => sum + item.quantity,
@@ -39,11 +39,11 @@ export async function POST(request: NextRequest) {
         price_data: {
           currency: 'usd',
           product_data: {
-            name: item.product.name,
-            description: item.product.description,
+            name: `${item.product.name} (${item.selectedVariant.size})`,
+            description: `${item.product.description}${item.selectedVariant.servings ? ` - ${item.selectedVariant.servings}` : ''}`,
             images: item.product.image ? [item.product.image] : [],
           },
-          unit_amount: item.product.price,
+          unit_amount: item.selectedVariant.price,
         },
         quantity: item.quantity,
       })
