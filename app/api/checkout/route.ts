@@ -2,13 +2,25 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { CartItem } from '@/types';
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
+// Validate environment variables
+if (!process.env.STRIPE_SECRET_KEY) {
+  throw new Error('STRIPE_SECRET_KEY is not configured');
+}
+
+if (!process.env.NEXT_PUBLIC_APP_URL) {
+  throw new Error('NEXT_PUBLIC_APP_URL is not configured');
+}
+
+const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
   apiVersion: '2023-10-16',
 });
 
 export async function POST(request: NextRequest) {
+  console.log('Checkout API: Request received');
+  
   try {
     const { items }: { items: CartItem[] } = await request.json();
+    console.log('Checkout API: Processing', items.length, 'items');
 
     if (!items || items.length === 0) {
       return NextResponse.json(
@@ -50,6 +62,7 @@ export async function POST(request: NextRequest) {
     );
 
     // Create Stripe checkout session
+    console.log('Checkout API: Creating Stripe session...');
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: lineItems,
@@ -61,11 +74,22 @@ export async function POST(request: NextRequest) {
       },
     });
 
+    console.log('Checkout API: Session created successfully:', session.id);
     return NextResponse.json({ url: session.url, sessionId: session.id });
   } catch (error: any) {
-    console.error('Stripe checkout error:', error);
+    console.error('Checkout API: Error occurred:', error);
+    console.error('Error details:', {
+      message: error.message,
+      type: error.type,
+      code: error.code,
+      statusCode: error.statusCode
+    });
+    
     return NextResponse.json(
-      { error: error.message || 'Internal server error' },
+      { 
+        error: error.message || 'Internal server error',
+        details: process.env.NODE_ENV === 'development' ? error.toString() : undefined
+      },
       { status: 500 }
     );
   }

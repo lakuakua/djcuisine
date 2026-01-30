@@ -12,6 +12,7 @@ interface CartProps {
 
 export default function Cart({ isOpen, onClose }: CartProps) {
   const [mounted, setMounted] = useState(false);
+  const [isCheckingOut, setIsCheckingOut] = useState(false);
   const items = useCartStore((state) => state.items);
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
@@ -35,6 +36,14 @@ export default function Cart({ isOpen, onClose }: CartProps) {
       return;
     }
 
+    if (items.length === 0) {
+      alert('Your cart is empty. Please add items before checkout.');
+      return;
+    }
+
+    setIsCheckingOut(true);
+    console.log('Starting checkout...', { itemCount: items.length, total: getTotal() });
+
     try {
       const response = await fetch('/api/checkout', {
         method: 'POST',
@@ -44,14 +53,27 @@ export default function Cart({ isOpen, onClose }: CartProps) {
         body: JSON.stringify({ items }),
       });
 
+      console.log('Checkout API response status:', response.status);
+
+      if (!response.ok) {
+        const errorData = await response.json();
+        console.error('Checkout API error:', errorData);
+        throw new Error(errorData.error || 'Checkout failed');
+      }
+
       const data = await response.json();
+      console.log('Checkout data:', data);
 
       if (data.url) {
+        console.log('Redirecting to Stripe Checkout:', data.url);
         window.location.href = data.url;
+      } else {
+        throw new Error('No checkout URL received');
       }
-    } catch (error) {
+    } catch (error: any) {
       console.error('Checkout error:', error);
-      alert('There was an error processing your checkout. Please try again.');
+      alert(`Checkout Error: ${error.message || 'There was an error processing your checkout. Please try again.'}`);
+      setIsCheckingOut(false);
     }
   };
 
@@ -170,10 +192,10 @@ export default function Cart({ isOpen, onClose }: CartProps) {
               </div>
               <button
                 onClick={handleCheckout}
-                disabled={hasGallonMinimumIssue}
+                disabled={hasGallonMinimumIssue || isCheckingOut}
                 className="w-full bg-gold-600 hover:bg-gold-500 disabled:bg-gray-700 disabled:cursor-not-allowed text-black disabled:text-gray-500 py-4 rounded-lg font-bold text-lg transition-colors duration-200"
               >
-                Checkout
+                {isCheckingOut ? 'Processing...' : 'Checkout'}
               </button>
             </div>
           )}
