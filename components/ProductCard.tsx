@@ -13,13 +13,32 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem);
-  const [selectedVariantId, setSelectedVariantId] = useState(product.variants[0]?.id || '');
+  const [selectedVariantId, setSelectedVariantId] = useState(product.variants?.[0]?.id || '');
+  const [isAdding, setIsAdding] = useState(false);
+
+  // Ensure product has variants
+  if (!product.variants || product.variants.length === 0) {
+    console.error(`Product ${product.name} has no variants!`, product);
+    return (
+      <div className="bg-gray-900 border border-red-800 rounded-lg p-4">
+        <p className="text-red-400">Error: Product configuration issue</p>
+      </div>
+    );
+  }
 
   const selectedVariant = product.variants.find(v => v.id === selectedVariantId) || product.variants[0];
 
   const handleAddToCart = () => {
+    console.log('Add to cart clicked', { product: product.name, selectedVariant });
     if (selectedVariant) {
+      setIsAdding(true);
       addItem(product, selectedVariant);
+      console.log('Item added successfully');
+      
+      // Visual feedback
+      setTimeout(() => setIsAdding(false), 500);
+    } else {
+      console.error('No variant selected!');
     }
   };
 
@@ -84,10 +103,15 @@ export default function ProductCard({ product }: ProductCardProps) {
           </span>
           <button
             onClick={handleAddToCart}
-            className="bg-gold-600 hover:bg-gold-500 text-black px-4 py-2 rounded-lg font-semibold flex items-center space-x-2 transition-colors duration-200"
+            disabled={isAdding}
+            className={`px-4 py-2 rounded-lg font-semibold flex items-center space-x-2 transition-all duration-200 ${
+              isAdding 
+                ? 'bg-green-600 text-white' 
+                : 'bg-gold-600 hover:bg-gold-500 text-black'
+            }`}
           >
             <ShoppingCart className="h-4 w-4" />
-            <span>Add</span>
+            <span>{isAdding ? 'Added!' : 'Add'}</span>
           </button>
         </div>
       </div>
