@@ -10,7 +10,7 @@ export default function ContactPage() {
   const [cartOpen, setCartOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-stone-950 to-black">
+    <div className="min-h-screen bg-gradient-to-b from-stone-900 via-stone-800 to-stone-900">
       <Header onCartOpen={() => setCartOpen(true)} />
       <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
@@ -28,7 +28,7 @@ export default function ContactPage() {
         {/* Contact Information Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8 mb-12">
           {/* Phone */}
-          <div className="bg-stone-950/80 border-2 border-red-900/40 rounded-lg p-8 shadow-xl hover:shadow-red-700/30 transition-all">
+          <div className="bg-stone-800/70 border-2 border-red-700/50 rounded-lg p-8 shadow-xl hover:shadow-red-600/40 transition-all">
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-red-600 to-orange-500 rounded-full flex items-center justify-center">
                 <Phone className="h-6 w-6 text-white" />
@@ -44,7 +44,7 @@ export default function ContactPage() {
           </div>
 
           {/* Email */}
-          <div className="bg-stone-950/80 border-2 border-red-900/40 rounded-lg p-8 shadow-xl hover:shadow-red-700/30 transition-all">
+          <div className="bg-stone-800/70 border-2 border-red-700/50 rounded-lg p-8 shadow-xl hover:shadow-red-600/40 transition-all">
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-red-600 to-orange-500 rounded-full flex items-center justify-center">
                 <Mail className="h-6 w-6 text-white" />
@@ -60,7 +60,7 @@ export default function ContactPage() {
           </div>
 
           {/* Location */}
-          <div className="bg-stone-950/80 border-2 border-red-900/40 rounded-lg p-8 shadow-xl hover:shadow-red-700/30 transition-all">
+          <div className="bg-stone-800/70 border-2 border-red-700/50 rounded-lg p-8 shadow-xl hover:shadow-red-600/40 transition-all">
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-red-600 to-orange-500 rounded-full flex items-center justify-center">
                 <MapPin className="h-6 w-6 text-white" />
@@ -76,7 +76,7 @@ export default function ContactPage() {
           </div>
 
           {/* Hours */}
-          <div className="bg-stone-950/80 border-2 border-red-900/40 rounded-lg p-8 shadow-xl hover:shadow-red-700/30 transition-all">
+          <div className="bg-stone-800/70 border-2 border-red-700/50 rounded-lg p-8 shadow-xl hover:shadow-red-600/40 transition-all">
             <div className="flex items-start gap-4">
               <div className="flex-shrink-0 w-12 h-12 bg-gradient-to-br from-red-600 to-orange-500 rounded-full flex items-center justify-center">
                 <Clock className="h-6 w-6 text-white" />

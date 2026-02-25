@@ -27,7 +27,7 @@ export default function Home() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-black/75 lg:bg-gradient-to-r lg:from-black/90 lg:via-black/70 lg:to-transparent"></div>
+          <div className="absolute inset-0 bg-black/50 lg:bg-gradient-to-r lg:from-black/70 lg:via-black/50 lg:to-transparent"></div>
         </div>
         
         <div className="relative w-full px-4 sm:px-8 lg:px-12 py-16">
@@ -51,7 +51,7 @@ export default function Home() {
             </h1>
 
             {/* Info Box */}
-            <div className="bg-stone-900/70 backdrop-blur-md rounded-lg p-6 mb-8 shadow-2xl border border-orange-600/30 mx-auto lg:mx-0 max-w-lg">
+            <div className="bg-stone-900/50 backdrop-blur-md rounded-lg p-6 mb-8 shadow-2xl border border-orange-600/30 mx-auto lg:mx-0 max-w-lg">
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-red-600 to-orange-500 rounded-full flex items-center justify-center">
                   <Flame className="h-5 w-5 text-white" />
@@ -169,21 +169,21 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-stone-950 via-black to-stone-950">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-stone-800 via-stone-900 to-stone-800">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-5xl font-bold bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent mb-6 drop-shadow-lg">
             Why Choose DJCUISINE?
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 mb-12">
-            <div className="bg-stone-900/60 backdrop-blur-sm rounded-lg p-8 border-2 border-red-800/40 shadow-xl hover:shadow-red-700/30 transition-all hover:scale-105">
+            <div className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-8 border-2 border-red-700/50 shadow-xl hover:shadow-red-600/40 transition-all hover:scale-105">
               <div className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent text-6xl font-bold mb-3">15+</div>
               <p className="text-orange-200 text-lg font-semibold">Years of Experience</p>
             </div>
-            <div className="bg-stone-900/60 backdrop-blur-sm rounded-lg p-8 border-2 border-red-800/40 shadow-xl hover:shadow-red-700/30 transition-all hover:scale-105">
+            <div className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-8 border-2 border-red-700/50 shadow-xl hover:shadow-red-600/40 transition-all hover:scale-105">
               <div className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent text-6xl font-bold mb-3">100%</div>
               <p className="text-orange-200 text-lg font-semibold">Quality Ingredients</p>
             </div>
-            <div className="bg-stone-900/60 backdrop-blur-sm rounded-lg p-8 border-2 border-red-800/40 shadow-xl hover:shadow-red-700/30 transition-all hover:scale-105">
+            <div className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-8 border-2 border-red-700/50 shadow-xl hover:shadow-red-600/40 transition-all hover:scale-105">
               <div className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent text-6xl font-bold mb-3">24/7</div>
               <p className="text-orange-200 text-lg font-semibold">Order Anytime</p>
             </div>

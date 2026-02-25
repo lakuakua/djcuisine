@@ -11,7 +11,7 @@ export default function AboutPage() {
   const [cartOpen, setCartOpen] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-stone-950 to-black">
+    <div className="min-h-screen bg-gradient-to-b from-stone-900 via-stone-800 to-stone-900">
       <Header onCartOpen={() => setCartOpen(true)} />
       <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
@@ -24,7 +24,7 @@ export default function AboutPage() {
             fill
             className="object-cover opacity-30"
           />
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black/90"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/60 via-black/50 to-black/70"></div>
         </div>
 
         <div className="relative max-w-4xl mx-auto text-center">
@@ -68,7 +68,7 @@ export default function AboutPage() {
       </section>
 
       {/* Why Choose Us */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-stone-950 to-black">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-stone-800 to-stone-900">
         <div className="max-w-6xl mx-auto">
           <h2 className="text-4xl font-bold bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent mb-12 text-center">
             Why Choose DJCUISINE?

@@ -30,7 +30,7 @@ export default function ShopPage() {
     : allProducts.filter(p => p.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-black via-stone-950 to-black">
+    <div className="min-h-screen bg-gradient-to-b from-stone-900 via-stone-800 to-stone-900">
       <Header onCartOpen={() => setCartOpen(true)} />
       <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
