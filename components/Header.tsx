@@ -28,16 +28,14 @@ export default function Header({ onCartOpen }: HeaderProps) {
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
-            <Link href="/" className="flex items-center">
-              <div className="relative h-16 w-48 sm:w-56">
-                <Image
-                  src="/images/namepng.png"
-                  alt="DJCUISINE Logo"
-                  fill
-                  className="object-contain object-left"
-                  priority
-                />
-              </div>
+            <Link href="/" className="flex flex-col">
+              <span className="text-2xl sm:text-3xl font-bold">
+                <span className="bg-gradient-to-r from-red-500 to-red-600 bg-clip-text text-transparent">DJ</span>
+                <span className="bg-gradient-to-r from-orange-400 to-gold-400 bg-clip-text text-transparent">CUISINE</span>
+              </span>
+              <span className="text-xs sm:text-sm italic text-orange-300 font-serif">
+                the best bbq in H-Town
+              </span>
             </Link>
           </div>
 
