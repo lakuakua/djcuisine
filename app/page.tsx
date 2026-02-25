@@ -108,60 +108,69 @@ export default function Home() {
             </p>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
             <CategorySection
               title="Chicken"
               description="Chicken legs & thighs, wings. Choose Big Tray, Half Tray, or Plate."
               href="/category/chicken"
               icon={<ChefHat className="h-12 w-12" />}
+              image="/images/Chicken legs and thighs.png"
             />
             <CategorySection
               title="Turkey"
               description="Turkey wings and legs in Big Tray or Half Tray sizes."
               href="/category/turkey"
               icon={<Bird className="h-12 w-12" />}
+              image="/images/Smoked Turkey wing.png"
             />
             <CategorySection
               title="Beef"
               description="Beef ribs, steak tips, and kabobs. Multiple sizes available."
               href="/category/beef"
               icon={<Beef className="h-12 w-12" />}
+              image="/images/beef ribs.jpg"
             />
             <CategorySection
               title="Lamb"
               description="Premium lamb in Big Tray, Half Tray, or Plate."
               href="/category/lamb"
               icon={<Cookie className="h-12 w-12" />}
+              image="/images/grilled lamb.jpg"
             />
             <CategorySection
               title="Seafood"
               description="Fresh grilled shrimp. Big Tray, Half Tray, or 5 Sticks."
               href="/category/seafood"
               icon={<Fish className="h-12 w-12" />}
+              image="/images/shrimp on the stick.jpg"
             />
             <CategorySection
               title="Whole Poultry"
               description="Whole smoked and grilled rooster, guinea fowl, hen, and rabbit."
               href="/category/whole-poultry"
               icon={<Flame className="h-12 w-12" />}
+              image="/images/Grilled Rooster.png"
             />
             <CategorySection
               title="Sausage"
               description="Grilled deer meat sausage - 5 pieces per order."
               href="/category/sausage"
               icon={<Drumstick className="h-12 w-12" />}
+              image="/images/deer meat sausage 1.jpg"
             />
             <CategorySection
               title="Sides"
               description="Potatoes au gratin, corn, seafood noodles, mac & cheese, and fresh salads."
               href="/category/sides"
               icon={<UtensilsCrossed className="h-12 w-12" />}
+              image="/images/sides-menu.png"
             />
             <CategorySection
               title="Juices"
               description="Zobo, pineapple ginger, and fresh tropical blends."
               href="/category/juices"
               icon={<Coffee className="h-12 w-12" />}
+              image="/images/sides-menu.png"
             />
           </div>
         </div>
