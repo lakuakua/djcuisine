@@ -16,41 +16,51 @@ export default function Home() {
       <Header onCartOpen={() => setCartOpen(true)} />
       <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
-      {/* Hero Section - Modern Clean Layout */}
-      <section className="relative min-h-[600px] lg:min-h-[700px] flex items-center overflow-hidden">
+      {/* Hero Section - Vibrant Modern Layout */}
+      <section className="relative min-h-[500px] lg:min-h-[600px] flex items-center overflow-hidden">
         {/* Lamb Background Image */}
         <div className="absolute inset-0">
           <Image
             src="/images/grilled lamb.jpg"
             alt="Grilled Lamb"
             fill
-            className="object-cover"
+            className="object-cover brightness-110"
             priority
           />
-          <div className="absolute inset-0 bg-black/50 lg:bg-gradient-to-r lg:from-black/70 lg:via-black/50 lg:to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/30 to-transparent"></div>
         </div>
         
-        <div className="relative w-full px-4 sm:px-6 lg:px-8 py-16">
-          <div className="max-w-xl mx-auto lg:mx-0 lg:ml-0 text-center lg:text-left">
+        <div className="relative w-full px-6 sm:px-8 lg:px-12 py-12 lg:py-16">
+          <div className="max-w-3xl mx-auto text-center">
             {/* Main Heading */}
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6 leading-tight">
-              Premium Grilled & Smoked Meats
+            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-2xl">
+              A Taste of Home in Every Bite
             </h1>
+            <p className="text-lg sm:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-lg">
+              Experience the rich flavors of authentic African & International cuisine, 
+              grilled and smoked using traditional methods
+            </p>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
+            <div className="flex flex-wrap gap-4 justify-center">
               <a
                 href="#categories"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white px-8 py-4 rounded-lg font-bold text-base transition-all duration-200 shadow-xl hover:shadow-2xl hover:scale-105"
               >
-                Shop Now
-                <ChevronRight className="h-4 w-4" />
+                Order Now
+                <ChevronRight className="h-5 w-5" />
+              </a>
+              <a
+                href="/shop"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white px-8 py-4 rounded-lg font-bold text-base transition-all duration-200 shadow-xl hover:shadow-2xl hover:scale-105"
+              >
+                Catering Menu
               </a>
               <a
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-transparent border-2 border-white hover:bg-white/10 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200"
+                className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-900 px-8 py-4 rounded-lg font-bold text-base transition-all duration-200 shadow-xl hover:shadow-2xl hover:scale-105"
               >
-                Learn More
+                Event Booking
               </a>
             </div>
           </div>
@@ -139,29 +149,32 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-stone-800 via-stone-900 to-stone-800">
-        <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-5xl font-bold bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent mb-6 drop-shadow-lg">
+      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
+        <div className="max-w-6xl mx-auto text-center">
+          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
             Why Choose DJCUISINE?
           </h2>
+          <p className="text-gray-600 text-lg mb-12 max-w-2xl mx-auto">
+            Authentic flavors, traditional methods, exceptional service
+          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 mb-12">
-            <div className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-8 border-2 border-red-700/50 shadow-xl hover:shadow-red-600/40 transition-all hover:scale-105">
-              <div className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent text-6xl font-bold mb-3">15+</div>
-              <p className="text-orange-200 text-lg font-semibold">Years of Experience</p>
+            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all hover:scale-105 border border-gray-200">
+              <div className="text-red-600 text-6xl font-bold mb-3">15+</div>
+              <p className="text-gray-700 text-lg font-semibold">Years of Experience</p>
             </div>
-            <div className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-8 border-2 border-red-700/50 shadow-xl hover:shadow-red-600/40 transition-all hover:scale-105">
-              <div className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent text-6xl font-bold mb-3">100%</div>
-              <p className="text-orange-200 text-lg font-semibold">Quality Ingredients</p>
+            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all hover:scale-105 border border-gray-200">
+              <div className="text-orange-600 text-6xl font-bold mb-3">100%</div>
+              <p className="text-gray-700 text-lg font-semibold">Quality Ingredients</p>
             </div>
-            <div className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-8 border-2 border-red-700/50 shadow-xl hover:shadow-red-600/40 transition-all hover:scale-105">
-              <div className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent text-6xl font-bold mb-3">24/7</div>
-              <p className="text-orange-200 text-lg font-semibold">Order Anytime</p>
+            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all hover:scale-105 border border-gray-200">
+              <div className="text-green-600 text-6xl font-bold mb-3">24/7</div>
+              <p className="text-gray-700 text-lg font-semibold">Order Anytime</p>
             </div>
           </div>
           
           <a 
             href="/about"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white px-8 py-3 rounded-lg font-bold text-lg transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
           >
             Learn More About Us
             <ChevronRight className="h-5 w-5" />

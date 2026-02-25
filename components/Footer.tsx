@@ -1,68 +1,74 @@
 export default function Footer() {
   return (
-    <footer className="bg-gradient-to-b from-stone-950 via-black to-black border-t border-red-900/30 py-8 px-4 shadow-inner">
+    <footer className="bg-gray-900 border-t border-gray-800 py-12 px-4">
       <div className="max-w-7xl mx-auto">
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <h3 className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent font-bold text-lg mb-4">DJCUISINE</h3>
-            <p className="italic text-orange-200 text-sm mb-2 font-semibold">
+            <h3 className="text-white font-bold text-lg mb-4">DJCUISINE</h3>
+            <p className="italic text-orange-400 text-sm mb-2 font-semibold">
               the best bbq in H-Town
             </p>
-            <p className="text-stone-400 text-sm">
+            <p className="text-gray-400 text-sm">
               Serving Houston with authentic BBQ and catering since 2010.
             </p>
           </div>
 
           {/* Quick Links */}
           <div>
-            <h3 className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent font-bold text-lg mb-4">Quick Links</h3>
+            <h3 className="text-white font-bold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="/category/chicken" className="text-orange-300 hover:text-red-400 transition-colors">
-                  Chicken
+                <a href="/" className="text-gray-400 hover:text-orange-400 transition-colors">
+                  Home
                 </a>
               </li>
               <li>
-                <a href="/category/beef" className="text-orange-300 hover:text-red-400 transition-colors">
-                  Beef
+                <a href="/#categories" className="text-gray-400 hover:text-orange-400 transition-colors">
+                  Our Menu
                 </a>
               </li>
               <li>
-                <a href="/category/sides" className="text-orange-300 hover:text-red-400 transition-colors">
-                  Sides
+                <a href="/shop" className="text-gray-400 hover:text-orange-400 transition-colors">
+                  Shop
                 </a>
               </li>
               <li>
-                <a href="/category/juices" className="text-orange-300 hover:text-red-400 transition-colors">
-                  Juices
+                <a href="/contact" className="text-gray-400 hover:text-orange-400 transition-colors">
+                  Contact
+                </a>
+              </li>
+              <li>
+                <a href="/about" className="text-gray-400 hover:text-orange-400 transition-colors">
+                  About Us
                 </a>
               </li>
             </ul>
           </div>
 
-          {/* Contact */}
+          {/* Important Info */}
           <div>
-            <h3 className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent font-bold text-lg mb-4">Contact Us</h3>
-            <ul className="space-y-2 text-sm text-orange-200">
-              <li>
-                <a href="tel:+19792213114" className="hover:text-red-400 transition-colors font-medium">
-                  (979) 221-3114
-                </a>
+            <h3 className="text-white font-bold text-lg mb-4">Important</h3>
+            <ul className="space-y-2 text-sm text-gray-400">
+              <li className="font-medium text-orange-400">
+                ⏰ 24 Hour Notice Required
               </li>
               <li>
-                <a href="mailto:orders@djcuisine.com" className="hover:text-red-400 transition-colors font-medium">
-                  orders@djcuisine.com
-                </a>
+                BBQ on the Spot Available
               </li>
-              <li className="text-stone-400">
-                Richmond, Texas
+              <li>
+                Private Dinners & Catering
+              </li>
+              <li>
+                <a href="/contact" className="hover:text-orange-400 transition-colors underline">
+                  Contact Us for Details
+                </a>
               </li>
             </ul>
           </div>
         </div>
 
-        <div className="border-t border-red-900/30 pt-6 text-center text-stone-400 text-sm">
+        <div className="border-t border-gray-800 pt-6 text-center text-gray-500 text-sm">
           <p>&copy; {new Date().getFullYear()} DJCUISINE. All rights reserved.</p>
         </div>
       </div>

@@ -20,7 +20,7 @@ export default function CategorySection({
   return (
     <Link
       href={href}
-      className="group relative bg-gradient-to-br from-stone-950 to-black border-2 border-red-900/40 rounded-lg overflow-hidden hover:border-red-600 hover:shadow-2xl hover:shadow-red-700/40 transition-all duration-300 h-48 hover:scale-105"
+      className="group relative bg-white rounded-xl overflow-hidden hover:shadow-2xl transition-all duration-300 h-56 hover:scale-105 shadow-md border border-gray-200"
     >
       {/* Background Image */}
       {image && (
@@ -29,20 +29,20 @@ export default function CategorySection({
             src={image}
             alt={title}
             fill
-            className="object-cover opacity-80 group-hover:opacity-95 group-hover:scale-110 transition-all duration-500"
+            className="object-cover brightness-105 group-hover:scale-110 transition-all duration-500"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black/95 via-stone-950/50 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/40 to-transparent"></div>
         </div>
       )}
       
       {/* Content - Positioned at bottom */}
-      <div className="relative h-full flex flex-col justify-end p-4">
+      <div className="relative h-full flex flex-col justify-end p-5">
         <div className="flex items-end justify-between">
           <div className="flex-1">
-            <h3 className="text-xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent mb-1 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">{title}</h3>
-            <p className="text-orange-200 text-xs leading-snug drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{description}</p>
+            <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-lg">{title}</h3>
+            <p className="text-white/90 text-sm leading-snug drop-shadow-md">{description}</p>
           </div>
-          <ChevronRight className="h-5 w-5 text-orange-400 group-hover:text-red-400 group-hover:translate-x-1 transition-all drop-shadow-lg mb-1" />
+          <ChevronRight className="h-6 w-6 text-white group-hover:translate-x-1 transition-all drop-shadow-lg mb-1" />
         </div>
       </div>
     </Link>
