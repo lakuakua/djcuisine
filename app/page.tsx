@@ -50,22 +50,7 @@ export default function Home() {
               Premium Grilled & Smoked Meats
             </h1>
 
-            {/* Info Box */}
-            <div className="bg-stone-900/50 backdrop-blur-md rounded-lg p-6 mb-8 shadow-2xl border border-orange-600/30 mx-auto lg:mx-0 max-w-lg">
-              <div className="flex items-start gap-4">
-                <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-red-600 to-orange-500 rounded-full flex items-center justify-center">
-                  <Flame className="h-5 w-5 text-white" />
-                </div>
-                <div className="text-left">
-                  <h2 className="text-lg font-bold text-orange-300 mb-2">
-                    The Difference: Traditional Wood & Charcoal Smoked
-                  </h2>
-                  <p className="text-stone-200 text-sm leading-relaxed">
-                    Our authentic <span className="font-bold">African & International cuisine</span> is locally smoked using <span className="font-bold">traditional wood and charcoal</span> - never oven smoked. This gives it that rich, authentic smoky taste that makes it an excellent seasoning ingredient in your cooking. Unlike dry, imported fish from Africa, our fish stays <span className="font-bold">tender, moist, and bursting with flavor</span>. Experience the real difference!
-                  </p>
-                </div>
-              </div>
-            </div>
+            
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
