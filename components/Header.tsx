@@ -29,9 +29,9 @@ export default function Header({ onCartOpen }: HeaderProps) {
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <div className="relative h-16 w-48 sm:w-56">
+              <div className="relative h-16 w-40 sm:h-20 sm:w-48">
                 <Image
-                  src="/images/namepng.png"
+                  src="/images/LogoGIF.png"
                   alt="DJCUISINE Logo"
                   fill
                   className="object-contain object-left"
