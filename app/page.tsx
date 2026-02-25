@@ -17,10 +17,10 @@ export default function Home() {
 
       {/* Hero Section with Image Gallery */}
       <section className="relative bg-gradient-to-b from-gray-900 via-black to-gray-900 py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-25">
-          <div className="absolute inset-0 bg-[url('/images/Chicken%20legs%20and%20thighs.png')] bg-cover bg-center"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black"></div>
+        {/* Background Image - Using beef ribs for more dramatic appeal */}
+        <div className="absolute inset-0 opacity-40">
+          <div className="absolute inset-0 bg-[url('/images/beef%20ribs.jpg')] bg-cover bg-center"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/90"></div>
         </div>
         
         <div className="relative max-w-7xl mx-auto">
