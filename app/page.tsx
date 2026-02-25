@@ -32,19 +32,6 @@ export default function Home() {
         
         <div className="relative w-full px-4 sm:px-8 lg:px-12 py-16">
           <div className="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left">
-            {/* Brand Logo */}
-            <div className="mb-8 flex justify-center lg:justify-start">
-              <div className="relative w-full max-w-md h-24 sm:h-28 lg:h-32">
-                <Image
-                  src="/images/namepng.png"
-                  alt="DJCUISINE"
-                  fill
-                  className="object-contain drop-shadow-2xl"
-                  priority
-                />
-              </div>
-            </div>
-
             {/* Main Heading */}
             <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-8 leading-tight">
               Premium Grilled & Smoked Meats
