@@ -5,7 +5,7 @@ import Header from '@/components/Header';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import CategorySection from '@/components/CategorySection';
-import { ChefHat, Bird, Beef, Cookie, Fish, Flame, Drumstick, Coffee } from 'lucide-react';
+import { ChefHat, Bird, Beef, Cookie, Fish, Flame, Drumstick, UtensilsCrossed, Coffee } from 'lucide-react';
 
 export default function Home() {
   const [cartOpen, setCartOpen] = useState(false);
@@ -101,6 +101,12 @@ export default function Home() {
               description="Grilled deer meat sausage - 5 pieces per order."
               href="/category/sausage"
               icon={<Drumstick className="h-12 w-12" />}
+            />
+            <CategorySection
+              title="Sides"
+              description="Potatoes au gratin, corn, seafood noodles, mac & cheese, and fresh salads."
+              href="/category/sides"
+              icon={<UtensilsCrossed className="h-12 w-12" />}
             />
             <CategorySection
               title="Juices"

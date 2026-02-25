@@ -1,4 +1,4 @@
-export type ProductCategory = 'chicken' | 'turkey' | 'beef' | 'lamb' | 'seafood' | 'whole-poultry' | 'sausage' | 'juices';
+export type ProductCategory = 'chicken' | 'turkey' | 'beef' | 'lamb' | 'seafood' | 'whole-poultry' | 'sausage' | 'sides' | 'juices';
 
 export interface ProductVariant {
   id: string;

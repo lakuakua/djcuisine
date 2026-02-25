@@ -2,21 +2,30 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { CartItem } from '@/types';
 
-// Validate environment variables
-if (!process.env.STRIPE_SECRET_KEY) {
-  throw new Error('STRIPE_SECRET_KEY is not configured');
-}
-
-if (!process.env.NEXT_PUBLIC_APP_URL) {
-  throw new Error('NEXT_PUBLIC_APP_URL is not configured');
-}
-
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
-  apiVersion: '2023-10-16',
-});
-
 export async function POST(request: NextRequest) {
   console.log('Checkout API: Request received');
+  
+  // Validate environment variables at runtime
+  if (!process.env.STRIPE_SECRET_KEY) {
+    console.error('STRIPE_SECRET_KEY is not configured');
+    return NextResponse.json(
+      { error: 'Payment system not configured. Please contact support.' },
+      { status: 500 }
+    );
+  }
+
+  if (!process.env.NEXT_PUBLIC_APP_URL) {
+    console.error('NEXT_PUBLIC_APP_URL is not configured');
+    return NextResponse.json(
+      { error: 'App configuration error. Please contact support.' },
+      { status: 500 }
+    );
+  }
+
+  // Initialize Stripe client
+  const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, {
+    apiVersion: '2023-10-16',
+  });
   
   try {
     const { items }: { items: CartItem[] } = await request.json();

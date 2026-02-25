@@ -210,7 +210,66 @@ export const sausageProducts: Product[] = [
   }
 ];
 
-// CATEGORY 8 & 9: JUICES
+// CATEGORY 8: SIDES (PER TRAY)
+export const sidesProducts: Product[] = [
+  {
+    id: 'potatoes-au-gratin',
+    name: 'Potatoes Au Gratin',
+    description: 'Silken layers of potato folded with seasoned ground beef, cream and premium cheese, slow-baked to a bubbling, golden gratin.',
+    category: 'sides',
+    image: '/images/potatoes-au-gratin.jpg',
+    isSingleSize: true,
+    variants: [
+      { id: 'tray', size: 'Tray', price: 16000, servings: 'Serves 8-10 people' }
+    ]
+  },
+  {
+    id: 'corn-on-the-cob',
+    name: 'Corn On The Cob',
+    description: 'Fresh corn on the cob slow-cooked in seasoned milky with traditional spices for deep, comforting flavor.',
+    category: 'sides',
+    image: '/images/corn-on-the-cob.jpg',
+    isSingleSize: true,
+    variants: [
+      { id: 'tray', size: 'Tray', price: 8500, servings: 'Serves 8-10 people' }
+    ]
+  },
+  {
+    id: 'stir-fried-seafood-noodles',
+    name: 'Stir Fried Seafood Noodles',
+    description: 'Savory stir-fried noodles loaded with shrimp, calamari, and mussels. Sautéed with vegetables and tossed in a perfectly balanced soy-based sauce.',
+    category: 'sides',
+    image: '/images/stir-fried-seafood-noodles.jpg',
+    isSingleSize: true,
+    variants: [
+      { id: 'tray', size: 'Tray', price: 20000, servings: 'Serves 8-10 people' }
+    ]
+  },
+  {
+    id: 'seafood-mac-and-cheese',
+    name: 'Seafood Mac & Cheese',
+    description: 'Decadent mac & cheese infused with a creamy blend of premium cheeses and tender seafood, baked until bubbly with a perfectly crisp finish.',
+    category: 'sides',
+    image: '/images/seafood-mac-and-cheese.jpg',
+    isSingleSize: true,
+    variants: [
+      { id: 'tray', size: 'Tray', price: 16000, servings: 'Serves 8-10 people' }
+    ]
+  },
+  {
+    id: 'chef-dj-salad',
+    name: "Chef DJ's Salad",
+    description: 'Delicately diced cucumbers coated in a light, creamy mustard mayo dressing with a subtle tang.',
+    category: 'sides',
+    image: '/images/chef-dj-salad.jpg',
+    isSingleSize: true,
+    variants: [
+      { id: 'tray', size: 'Tray', price: 11000, servings: 'Serves 8-10 people' }
+    ]
+  }
+];
+
+// CATEGORY 9: JUICES
 export const juiceProducts: Product[] = [
   // Zobo (Category 8)
   {
@@ -327,6 +386,7 @@ export const allProducts: Product[] = [
   ...seafoodProducts,
   ...wholePoultryProducts,
   ...sausageProducts,
+  ...sidesProducts,
   ...juiceProducts
 ];
 

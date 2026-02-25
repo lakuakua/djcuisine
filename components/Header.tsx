@@ -23,6 +23,7 @@ export default function Header({ onCartOpen }: HeaderProps) {
     { name: 'Seafood', href: '/category/seafood' },
     { name: 'Whole Poultry', href: '/category/whole-poultry' },
     { name: 'Sausage', href: '/category/sausage' },
+    { name: 'Sides', href: '/category/sides' },
     { name: 'Juices', href: '/category/juices' },
   ];
 

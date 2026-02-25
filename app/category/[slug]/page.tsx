@@ -23,6 +23,7 @@ const categoryTitles: Record<string, string> = {
   'seafood': 'Seafood',
   'whole-poultry': 'Whole Poultry',
   'sausage': 'Sausage',
+  'sides': 'Sides Per Tray',
   'juices': 'DJ Cuisine Juices',
 };
 
@@ -34,6 +35,7 @@ const categoryDescriptions: Record<string, string> = {
   'seafood': 'Fresh grilled shrimp. Choose Big Tray, Half Tray, or 5 Sticks for individual servings.',
   'whole-poultry': 'Whole smoked and grilled poultry including rooster, guinea fowl, hen, and rabbit. Perfect for special occasions.',
   'sausage': 'Premium grilled deer meat sausage. Each order includes 5 pieces.',
+  'sides': 'Delicious side dishes perfect for any meal. Each tray serves 8-10 people. Choose from potatoes au gratin, corn on the cob, seafood noodles, mac & cheese, and our signature salad.',
   'juices': 'Fresh, natural juices including traditional Zobo and tropical blends. Available in Gallon, Half Gallon, and 16oz sizes. Gallon orders require a minimum of 2 gallons.',
 };
 
