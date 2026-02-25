@@ -43,15 +43,15 @@ export default function ProductCard({ product }: ProductCardProps) {
   };
 
   return (
-    <div className="bg-gray-900 border border-gold-800 rounded-lg overflow-hidden hover:border-gold-600 transition-all duration-300 shadow-lg hover:shadow-gold-900/50">
+    <div className="bg-gray-900 border-2 border-gold-700 rounded-lg overflow-hidden hover:border-gold-500 transition-all duration-300 shadow-lg hover:shadow-gold-600/50 hover:shadow-xl">
       {/* Product Image */}
-      <div className="relative h-56 bg-gray-800">
+      <div className="relative h-56 bg-gray-800 group/image">
         {product.image ? (
           <Image
             src={product.image}
             alt={product.name}
             fill
-            className="object-cover"
+            className="object-cover brightness-105 group-hover/image:brightness-110 transition-all duration-300"
           />
         ) : (
           <div className="h-full flex items-center justify-center text-gray-600">

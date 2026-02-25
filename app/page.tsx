@@ -18,8 +18,9 @@ export default function Home() {
       {/* Hero Section with Image Gallery */}
       <section className="relative bg-gradient-to-b from-gray-900 via-black to-gray-900 py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
         {/* Background Pattern */}
-        <div className="absolute inset-0 opacity-10">
-          <div className="absolute inset-0 bg-[url('/images/Chicken%20legs%20and%20thighs.png')] bg-cover bg-center blur-sm"></div>
+        <div className="absolute inset-0 opacity-25">
+          <div className="absolute inset-0 bg-[url('/images/Chicken%20legs%20and%20thighs.png')] bg-cover bg-center"></div>
+          <div className="absolute inset-0 bg-gradient-to-b from-black/80 via-black/70 to-black"></div>
         </div>
         
         <div className="relative max-w-7xl mx-auto">
@@ -67,28 +68,28 @@ export default function Home() {
 
           {/* Featured Images Gallery */}
           <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
-            <div className="relative h-48 rounded-lg overflow-hidden group">
-              <img src="/images/Chicken%20legs%20and%20thighs.png" alt="Chicken Legs & Thighs" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-                <p className="text-white font-semibold text-sm">Chicken</p>
+            <div className="relative h-48 rounded-lg overflow-hidden group border-2 border-gold-800 shadow-lg shadow-gold-900/30">
+              <img src="/images/Chicken%20legs%20and%20thighs.png" alt="Chicken Legs & Thighs" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 brightness-100" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
+                <p className="text-white font-semibold text-sm drop-shadow-lg">Chicken</p>
               </div>
             </div>
-            <div className="relative h-48 rounded-lg overflow-hidden group">
-              <img src="/images/beef%20ribs.jpg" alt="Beef Ribs" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-                <p className="text-white font-semibold text-sm">Beef Ribs</p>
+            <div className="relative h-48 rounded-lg overflow-hidden group border-2 border-gold-800 shadow-lg shadow-gold-900/30">
+              <img src="/images/beef%20ribs.jpg" alt="Beef Ribs" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 brightness-100" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
+                <p className="text-white font-semibold text-sm drop-shadow-lg">Beef Ribs</p>
               </div>
             </div>
-            <div className="relative h-48 rounded-lg overflow-hidden group">
-              <img src="/images/grilled%20lamb.jpg" alt="Grilled Lamb" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-                <p className="text-white font-semibold text-sm">Lamb</p>
+            <div className="relative h-48 rounded-lg overflow-hidden group border-2 border-gold-800 shadow-lg shadow-gold-900/30">
+              <img src="/images/grilled%20lamb.jpg" alt="Grilled Lamb" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 brightness-100" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
+                <p className="text-white font-semibold text-sm drop-shadow-lg">Lamb</p>
               </div>
             </div>
-            <div className="relative h-48 rounded-lg overflow-hidden group">
-              <img src="/images/Smoked%20Turkey%20wing.png" alt="Turkey Wings" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
-                <p className="text-white font-semibold text-sm">Turkey</p>
+            <div className="relative h-48 rounded-lg overflow-hidden group border-2 border-gold-800 shadow-lg shadow-gold-900/30">
+              <img src="/images/Smoked%20Turkey%20wing.png" alt="Turkey Wings" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300 brightness-100" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
+                <p className="text-white font-semibold text-sm drop-shadow-lg">Turkey</p>
               </div>
             </div>
           </div>

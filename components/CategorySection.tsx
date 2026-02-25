@@ -29,9 +29,9 @@ export default function CategorySection({
             src={image}
             alt={title}
             fill
-            className="object-cover opacity-30 group-hover:opacity-40 group-hover:scale-110 transition-all duration-500"
+            className="object-cover opacity-70 group-hover:opacity-90 group-hover:scale-110 transition-all duration-500"
           />
-          <div className="absolute inset-0 bg-gradient-to-t from-black via-black/80 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/90 via-black/60 to-black/30"></div>
         </div>
       )}
       
@@ -39,11 +39,11 @@ export default function CategorySection({
       <div className="relative h-full flex flex-col justify-between p-8">
         <div className="flex items-start justify-between">
           <div className="flex-1">
-            <div className="text-gold-400 mb-4 bg-black/50 rounded-full p-3 inline-flex">{icon}</div>
-            <h3 className="text-2xl font-bold text-gold-300 mb-2 drop-shadow-lg">{title}</h3>
-            <p className="text-gray-300 text-sm drop-shadow-md">{description}</p>
+            <div className="text-gold-400 mb-4 bg-black/70 rounded-full p-3 inline-flex shadow-lg">{icon}</div>
+            <h3 className="text-2xl font-bold text-white mb-2 drop-shadow-[0_2px_8px_rgba(0,0,0,0.9)]">{title}</h3>
+            <p className="text-gray-100 text-sm drop-shadow-[0_2px_4px_rgba(0,0,0,0.8)]">{description}</p>
           </div>
-          <ChevronRight className="h-6 w-6 text-gold-600 group-hover:text-gold-400 group-hover:translate-x-1 transition-all" />
+          <ChevronRight className="h-6 w-6 text-gold-400 group-hover:text-gold-300 group-hover:translate-x-1 transition-all drop-shadow-lg" />
         </div>
       </div>
     </Link>
