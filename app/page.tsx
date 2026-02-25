@@ -30,27 +30,25 @@ export default function Home() {
           <div className="absolute inset-0 bg-black/50 lg:bg-gradient-to-r lg:from-black/70 lg:via-black/50 lg:to-transparent"></div>
         </div>
         
-        <div className="relative w-full px-4 sm:px-8 lg:px-12 py-16">
-          <div className="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left">
+        <div className="relative w-full px-4 sm:px-6 lg:px-8 py-16">
+          <div className="max-w-xl mx-auto lg:mx-0 lg:ml-0 text-center lg:text-left">
             {/* Main Heading */}
-            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-8 leading-tight">
+            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6 leading-tight">
               Premium Grilled & Smoked Meats
             </h1>
 
-            
-
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
+            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
               <a
                 href="#categories"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white px-8 py-4 rounded-lg font-bold text-base transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105"
               >
                 Shop Now
-                <ChevronRight className="h-5 w-5" />
+                <ChevronRight className="h-4 w-4" />
               </a>
               <a
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-transparent border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-lg font-bold text-base transition-all duration-200"
+                className="inline-flex items-center gap-2 bg-transparent border-2 border-white hover:bg-white/10 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200"
               >
                 Learn More
               </a>
