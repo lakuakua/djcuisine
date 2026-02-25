@@ -5,7 +5,7 @@ export default function Footer() {
         <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mb-8">
           {/* Company Info */}
           <div>
-            <h3 className="text-gold-400 font-bold text-lg mb-4">DJ Cuisine</h3>
+            <h3 className="text-gold-400 font-bold text-lg mb-4">DJCUISINE</h3>
             <p className="text-gray-400 text-sm mb-2">
               The Best BBQ in H-Town
             </p>
@@ -63,7 +63,7 @@ export default function Footer() {
         </div>
 
         <div className="border-t border-gold-900 pt-6 text-center text-gray-400 text-sm">
-          <p>&copy; {new Date().getFullYear()} DJ Cuisine. All rights reserved.</p>
+          <p>&copy; {new Date().getFullYear()} DJCUISINE. All rights reserved.</p>
         </div>
       </div>
     </footer>

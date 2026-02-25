@@ -37,14 +37,14 @@ export default function Header({ onCartOpen }: HeaderProps) {
               <div className="relative h-12 w-12">
                 <Image
                   src="/logo.png"
-                  alt="DJ Cuisine Logo"
+                  alt="DJCUISINE Logo"
                   fill
                   className="object-contain"
                   priority
                 />
               </div>
               <div className="hidden sm:block">
-                <span className="text-2xl font-bold text-gold-400">DJ Cuisine</span>
+                <span className="text-2xl font-bold text-gold-400">DJCUISINE</span>
                 <p className="text-xs text-gold-500">The Best BBQ in H-Town</p>
               </div>
             </Link>

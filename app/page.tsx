@@ -26,7 +26,7 @@ export default function Home() {
           {/* Hero Content */}
           <div className="text-center mb-12">
             <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gold-400 mb-6 drop-shadow-lg">
-              DJ Cuisine
+              DJCUISINE
             </h1>
             <p className="text-2xl sm:text-3xl text-gold-500 mb-4">
               Authentic African & International Cuisine
@@ -179,9 +179,9 @@ export default function Home() {
       {/* About Section */}
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900">
         <div className="max-w-4xl mx-auto text-center">
-          <h2 className="text-4xl font-bold text-gold-400 mb-6">
-            Why Choose DJ Cuisine?
-          </h2>
+            <h2 className="text-4xl font-bold text-gold-400 mb-6">
+              Why Choose DJCUISINE?
+            </h2>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
             <div>
               <div className="text-gold-400 text-5xl font-bold mb-2">15+</div>

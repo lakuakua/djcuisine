@@ -24,7 +24,7 @@ const categoryTitles: Record<string, string> = {
   'whole-poultry': 'Whole Poultry',
   'sausage': 'Sausage',
   'sides': 'Sides Per Tray',
-  'juices': 'DJ Cuisine Juices',
+  'juices': 'DJCUISINE Juices',
 };
 
 const categoryDescriptions: Record<string, string> = {

@@ -5,9 +5,9 @@ import './globals.css';
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'DJ Cuisine - The Best BBQ in H-Town',
+  title: 'DJCUISINE - The Best BBQ in H-Town',
   description: 'Premium BBQ catering and plates in Houston. Order big trays, individual plates, and fresh juices for your next event.',
-  keywords: 'BBQ, catering, Houston, H-Town, ribs, brisket, pulled pork, catering trays',
+  keywords: 'DJCUISINE, BBQ, catering, Houston, H-Town, ribs, brisket, pulled pork, catering trays',
 };
 
 export default function RootLayout({
