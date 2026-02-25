@@ -27,21 +27,19 @@ export default function Home() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent"></div>
+          <div className="absolute inset-0 bg-black/75 lg:bg-gradient-to-r lg:from-black/90 lg:via-black/70 lg:to-transparent"></div>
         </div>
         
         <div className="relative w-full px-4 sm:px-8 lg:px-12 py-16">
-          <div className="max-w-2xl">
-            {/* Orange Badge */}
-            
+          <div className="max-w-2xl mx-auto lg:mx-0 text-center lg:text-left">
             {/* Brand Logo */}
-            <div className="mb-8">
+            <div className="mb-8 flex justify-center lg:justify-start">
               <div className="relative w-full max-w-md h-24 sm:h-28 lg:h-32">
                 <Image
                   src="/images/namepng.png"
                   alt="DJCUISINE"
                   fill
-                  className="object-contain object-left drop-shadow-2xl"
+                  className="object-contain drop-shadow-2xl"
                   priority
                 />
               </div>
@@ -53,12 +51,12 @@ export default function Home() {
             </h1>
 
             {/* Info Box */}
-            <div className="bg-stone-900/70 backdrop-blur-md rounded-lg p-6 mb-8 shadow-2xl border border-orange-600/30 max-w-lg">
+            <div className="bg-stone-900/70 backdrop-blur-md rounded-lg p-6 mb-8 shadow-2xl border border-orange-600/30 mx-auto lg:mx-0 max-w-lg">
               <div className="flex items-start gap-4">
                 <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-red-600 to-orange-500 rounded-full flex items-center justify-center">
                   <Flame className="h-5 w-5 text-white" />
                 </div>
-                <div>
+                <div className="text-left">
                   <h2 className="text-lg font-bold text-orange-300 mb-2">
                     The Difference: Traditional Wood & Charcoal Smoked
                   </h2>
@@ -70,7 +68,7 @@ export default function Home() {
             </div>
 
             {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4">
+            <div className="flex flex-wrap gap-4 justify-center lg:justify-start">
               <a
                 href="#categories"
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white px-8 py-4 rounded-lg font-bold text-base transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105"
