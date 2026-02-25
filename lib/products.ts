@@ -7,10 +7,10 @@ export const chickenProducts: Product[] = [
     name: 'Chicken Leg & Thighs',
     description: 'Succulent chicken legs and thighs, perfectly seasoned and cooked to perfection.',
     category: 'chicken',
-    image: '/images/chicken-leg-thighs.jpg',
+    image: '/images/Chicken legs and thighs.png',
     variants: [
-      { id: 'big', size: 'Big Tray', price: 16000, servings: 'Serves 8-10 people' },
-      { id: 'half', size: 'Half Tray', price: 8000, servings: 'Serves 4-5 people' },
+      { id: 'big', size: 'Big Tray', price: 16000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 8000, servings: 'Serves 10-15 people' },
       { id: 'plate', size: 'Plate', price: 2500, servings: '1 person with sides' }
     ]
   },
@@ -19,11 +19,22 @@ export const chickenProducts: Product[] = [
     name: 'Chicken Wings',
     description: 'Crispy and flavorful chicken wings with signature seasonings.',
     category: 'chicken',
-    image: '/images/chicken-wings.jpg',
+    image: '/images/grilled chicken wings.jpg',
     variants: [
-      { id: 'big', size: 'Big Tray', price: 18500, servings: 'Serves 8-10 people' },
-      { id: 'half', size: 'Half Tray', price: 9300, servings: 'Serves 4-5 people' },
+      { id: 'big', size: 'Big Tray', price: 18500, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 9300, servings: 'Serves 10-15 people' },
       { id: 'plate', size: 'Plate', price: 2500, servings: '1 person with sides' }
+    ]
+  },
+  {
+    id: 'chicken-breast',
+    name: 'Chicken Breast',
+    description: 'Premium grilled chicken breast, tender and juicy with authentic seasonings.',
+    category: 'chicken',
+    image: '/images/Grilled Chicken breast 2.jpg',
+    variants: [
+      { id: 'big', size: 'Big Tray', price: 17000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 8500, servings: 'Serves 10-15 people' }
     ]
   }
 ];
@@ -35,10 +46,10 @@ export const turkeyProducts: Product[] = [
     name: 'Turkey Wings',
     description: 'Juicy smoked turkey wings with authentic flavors that fall off the bone.',
     category: 'turkey',
-    image: '/images/turkey-wings.jpg',
+    image: '/images/Smoked Turkey wing.png',
     variants: [
-      { id: 'big', size: 'Big Tray', price: 25000, servings: 'Serves 8-10 people' },
-      { id: 'half', size: 'Half Tray', price: 12500, servings: 'Serves 4-5 people' }
+      { id: 'big', size: 'Big Tray', price: 25000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 12500, servings: 'Serves 10-15 people' }
     ]
   },
   {
@@ -46,10 +57,10 @@ export const turkeyProducts: Product[] = [
     name: 'Turkey Legs',
     description: 'Tender, smoky turkey legs expertly prepared with traditional seasonings.',
     category: 'turkey',
-    image: '/images/turkey-legs.jpg',
+    image: '/images/smoked turkey legs.jpg',
     variants: [
-      { id: 'big', size: 'Big Tray', price: 22000, servings: 'Serves 8-10 people' },
-      { id: 'half', size: 'Half Tray', price: 11000, servings: 'Serves 4-5 people' }
+      { id: 'big', size: 'Big Tray', price: 22000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 11000, servings: 'Serves 10-15 people' }
     ]
   }
 ];
@@ -61,10 +72,10 @@ export const beefProducts: Product[] = [
     name: 'Beef Ribs',
     description: 'Premium beef ribs, slow-cooked to perfection with rich, smoky flavor.',
     category: 'beef',
-    image: '/images/beef-ribs.jpg',
+    image: '/images/beef ribs.jpg',
     variants: [
-      { id: 'big', size: 'Big Tray', price: 25000, servings: 'Serves 8-10 people' },
-      { id: 'half', size: 'Half Tray', price: 12500, servings: 'Serves 4-5 people' },
+      { id: 'big', size: 'Big Tray', price: 25000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 12500, servings: 'Serves 10-15 people' },
       { id: 'plate', size: 'Plate', price: 2500, servings: '1 person with sides' }
     ]
   },
@@ -73,10 +84,10 @@ export const beefProducts: Product[] = [
     name: 'Beef Steak Tips',
     description: 'Tender beef steak tips marinated with premium spices and grilled to perfection.',
     category: 'beef',
-    image: '/images/beef-steak-tips.jpg',
+    image: '/images/beef steak tips.jpg',
     variants: [
-      { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 8-10 people' },
-      { id: 'half', size: 'Half Tray', price: 15000, servings: 'Serves 4-5 people' },
+      { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 15000, servings: 'Serves 10-15 people' },
       { id: 'plate', size: 'Plate', price: 2500, servings: '1 person with sides' }
     ]
   },
@@ -85,10 +96,10 @@ export const beefProducts: Product[] = [
     name: 'Beef Kabob / Brochettes',
     description: 'Authentic beef kabobs with traditional African spices, flame-grilled to perfection.',
     category: 'beef',
-    image: '/images/beef-kabob.jpg',
+    image: '/images/Beef kabob.jpg',
     variants: [
-      { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 8-10 people' },
-      { id: 'half', size: 'Half Tray', price: 15000, servings: 'Serves 4-5 people' }
+      { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 15000, servings: 'Serves 10-15 people' }
     ]
   }
 ];
@@ -100,10 +111,10 @@ export const lambProducts: Product[] = [
     name: 'Lamb',
     description: 'Premium lamb cuts, expertly marinated and grilled with authentic spices.',
     category: 'lamb',
-    image: '/images/lamb.jpg',
+    image: '/images/grilled lamb.jpg',
     variants: [
-      { id: 'big', size: 'Big Tray', price: 35000, servings: 'Serves 8-10 people' },
-      { id: 'half', size: 'Half Tray', price: 17500, servings: 'Serves 4-5 people' },
+      { id: 'big', size: 'Big Tray', price: 35000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 17500, servings: 'Serves 10-15 people' },
       { id: 'plate', size: 'Plate', price: 3000, servings: '1 person with sides' }
     ]
   }
@@ -116,10 +127,10 @@ export const seafoodProducts: Product[] = [
     name: 'Shrimp',
     description: 'Fresh grilled shrimp with signature seasoning, perfectly cooked.',
     category: 'seafood',
-    image: '/images/shrimp.jpg',
+    image: '/images/shrimp on the stick.jpg',
     variants: [
-      { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 8-10 people' },
-      { id: 'half', size: 'Half Tray', price: 15000, servings: 'Serves 4-5 people' },
+      { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 15000, servings: 'Serves 10-15 people' },
       { id: '5-sticks', size: '5 Sticks', price: 2000, servings: 'Individual serving' }
     ]
   }
@@ -132,7 +143,7 @@ export const wholePoultryProducts: Product[] = [
     name: 'Whole Smoked Rooster',
     description: 'Whole rooster, perfectly smoked with authentic African spices.',
     category: 'whole-poultry',
-    image: '/images/smoked-rooster.jpg',
+    image: '/images/Smoked Whole Rooster.png',
     isSingleSize: true,
     variants: [
       { id: 'whole', size: 'Whole', price: 3500, servings: 'Serves 2-3 people' }
@@ -143,7 +154,7 @@ export const wholePoultryProducts: Product[] = [
     name: 'Whole Smoked Guinea Fowl',
     description: 'Whole guinea fowl, expertly smoked for maximum flavor.',
     category: 'whole-poultry',
-    image: '/images/smoked-guinea-fowl.jpg',
+    image: '/images/whole Smoked guinea fowl.png',
     isSingleSize: true,
     variants: [
       { id: 'whole', size: 'Whole', price: 4500, servings: 'Serves 2-3 people' }
@@ -154,7 +165,7 @@ export const wholePoultryProducts: Product[] = [
     name: 'Whole Smoked Hen',
     description: 'Whole hen, slow-smoked to perfection with traditional seasonings.',
     category: 'whole-poultry',
-    image: '/images/smoked-hen.jpg',
+    image: '/images/whole smoked hen.jpg',
     isSingleSize: true,
     variants: [
       { id: 'whole', size: 'Whole', price: 3500, servings: 'Serves 2-3 people' }
@@ -165,7 +176,7 @@ export const wholePoultryProducts: Product[] = [
     name: 'Whole Smoked Rabbit',
     description: 'Whole rabbit, delicately smoked with traditional African seasonings.',
     category: 'whole-poultry',
-    image: '/images/smoked-rabbit.jpg',
+    image: '/images/whole smoked rabbit.jpg',
     isSingleSize: true,
     variants: [
       { id: 'whole', size: 'Whole', price: 7000, servings: 'Serves 2-3 people' }
@@ -176,7 +187,7 @@ export const wholePoultryProducts: Product[] = [
     name: 'Whole Grilled Rooster',
     description: 'Whole rooster, char-grilled to perfection over open flame.',
     category: 'whole-poultry',
-    image: '/images/grilled-rooster.jpg',
+    image: '/images/Grilled Rooster.png',
     isSingleSize: true,
     variants: [
       { id: 'whole', size: 'Whole', price: 3500, servings: 'Serves 2-3 people' }
@@ -187,7 +198,7 @@ export const wholePoultryProducts: Product[] = [
     name: 'Grilled Guinea Fowl',
     description: 'Whole guinea fowl, flame-grilled with signature spices.',
     category: 'whole-poultry',
-    image: '/images/grilled-guinea-fowl.jpg',
+    image: '/images/Grilled Guinea Fowl.png',
     isSingleSize: true,
     variants: [
       { id: 'whole', size: 'Whole', price: 4500, servings: 'Serves 2-3 people' }
@@ -202,7 +213,7 @@ export const sausageProducts: Product[] = [
     name: 'Deer Meat Sausage',
     description: 'Five pieces of premium grilled deer meat sausage with authentic seasonings.',
     category: 'sausage',
-    image: '/images/deer-sausage.jpg',
+    image: '/images/deer meat sausage 1.jpg',
     isSingleSize: true,
     variants: [
       { id: '5-pieces', size: '5 Pieces', price: 2000, servings: 'Grilled, individual serving' }
@@ -210,28 +221,28 @@ export const sausageProducts: Product[] = [
   }
 ];
 
-// CATEGORY 8: SIDES (PER TRAY)
+// CATEGORY 8: SIDES (FULL AND HALF PAN)
 export const sidesProducts: Product[] = [
   {
     id: 'potatoes-au-gratin',
     name: 'Potatoes Au Gratin',
     description: 'Silken layers of potato folded with seasoned ground beef, cream and premium cheese, slow-baked to a bubbling, golden gratin.',
     category: 'sides',
-    image: '/images/potatoes-au-gratin.jpg',
-    isSingleSize: true,
+    image: '/images/sides-menu.png',
     variants: [
-      { id: 'tray', size: 'Tray', price: 16000, servings: 'Serves 8-10 people' }
+      { id: 'full', size: 'Full Pan', price: 16000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Pan', price: 8000, servings: 'Serves 10-15 people' }
     ]
   },
   {
     id: 'corn-on-the-cob',
     name: 'Corn On The Cob',
-    description: 'Fresh corn on the cob slow-cooked in seasoned milky with traditional spices for deep, comforting flavor.',
+    description: 'Fresh corn on the cob slow-cooked in seasoned milk with traditional spices for deep, comforting flavor.',
     category: 'sides',
-    image: '/images/corn-on-the-cob.jpg',
-    isSingleSize: true,
+    image: '/images/sides-menu.png',
     variants: [
-      { id: 'tray', size: 'Tray', price: 8500, servings: 'Serves 8-10 people' }
+      { id: 'full', size: 'Full Pan', price: 8500, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Pan', price: 4250, servings: 'Serves 10-15 people' }
     ]
   },
   {
@@ -239,10 +250,10 @@ export const sidesProducts: Product[] = [
     name: 'Stir Fried Seafood Noodles',
     description: 'Savory stir-fried noodles loaded with shrimp, calamari, and mussels. Sautéed with vegetables and tossed in a perfectly balanced soy-based sauce.',
     category: 'sides',
-    image: '/images/stir-fried-seafood-noodles.jpg',
-    isSingleSize: true,
+    image: '/images/sides-menu.png',
     variants: [
-      { id: 'tray', size: 'Tray', price: 20000, servings: 'Serves 8-10 people' }
+      { id: 'full', size: 'Full Pan', price: 20000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Pan', price: 10000, servings: 'Serves 10-15 people' }
     ]
   },
   {
@@ -250,10 +261,10 @@ export const sidesProducts: Product[] = [
     name: 'Seafood Mac & Cheese',
     description: 'Decadent mac & cheese infused with a creamy blend of premium cheeses and tender seafood, baked until bubbly with a perfectly crisp finish.',
     category: 'sides',
-    image: '/images/seafood-mac-and-cheese.jpg',
-    isSingleSize: true,
+    image: '/images/sides-menu.png',
     variants: [
-      { id: 'tray', size: 'Tray', price: 16000, servings: 'Serves 8-10 people' }
+      { id: 'full', size: 'Full Pan', price: 16000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Pan', price: 8000, servings: 'Serves 10-15 people' }
     ]
   },
   {
@@ -261,49 +272,51 @@ export const sidesProducts: Product[] = [
     name: "Chef DJ's Salad",
     description: 'Delicately diced cucumbers coated in a light, creamy mustard mayo dressing with a subtle tang.',
     category: 'sides',
-    image: '/images/chef-dj-salad.jpg',
-    isSingleSize: true,
+    image: '/images/sides-menu.png',
     variants: [
-      { id: 'tray', size: 'Tray', price: 11000, servings: 'Serves 8-10 people' }
+      { id: 'full', size: 'Full Pan', price: 11000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Pan', price: 5500, servings: 'Serves 10-15 people' }
     ]
   }
 ];
 
 // CATEGORY 9: JUICES
 export const juiceProducts: Product[] = [
-  // Zobo (Category 8)
+  // Zobo - All sizes
   {
     id: 'zobo',
     name: 'Zobo',
-    description: 'Traditional hibiscus drink with natural sweetness and health benefits.',
+    description: 'Traditional hibiscus drink with natural sweetness and health benefits. Choose sweetened or unsweetened.',
     category: 'juices',
-    image: '/images/zobo.jpg',
+    image: '/images/sides-menu.png',
     variants: [
       { id: '1gal', size: '1 Gallon', price: 3500 },
       { id: 'half', size: 'Half Gallon', price: 1800 },
+      { id: '32oz', size: '32 oz Bottle', price: 1000 },
       { id: '16oz', size: '16 oz', price: 600 }
     ]
   },
-  // Pineapple Ginger (Category 8)
+  // Pineapple Ginger - All sizes
   {
     id: 'pineapple-ginger',
     name: 'Pineapple Ginger',
-    description: 'Refreshing pineapple juice with a zesty ginger kick.',
+    description: 'Refreshing pineapple juice with a zesty ginger kick. Choose sweetened or unsweetened.',
     category: 'juices',
-    image: '/images/pineapple-ginger.jpg',
+    image: '/images/sides-menu.png',
     variants: [
       { id: '1gal', size: '1 Gallon', price: 3500 },
       { id: 'half', size: 'Half Gallon', price: 1800 },
+      { id: '32oz', size: '32 oz Bottle', price: 1000 },
       { id: '16oz', size: '16 oz', price: 600 }
     ]
   },
-  // Fresh Juice (Category 9 - Gallon only)
+  // Fresh Juice (Gallon only)
   {
     id: 'watermelon-ginger-pineapple',
     name: 'Watermelon, Ginger & Pineapple',
     description: 'Tropical blend of watermelon, ginger, and pineapple - refreshing and healthy.',
     category: 'juices',
-    image: '/images/watermelon-ginger-pineapple.jpg',
+    image: '/images/sides-menu.png',
     isSingleSize: true,
     variants: [
       { id: '1gal', size: '1 Gallon', price: 4000 }
@@ -314,7 +327,7 @@ export const juiceProducts: Product[] = [
     name: 'Mango',
     description: 'Pure, sweet mango juice made from ripe, fresh mangoes.',
     category: 'juices',
-    image: '/images/mango.jpg',
+    image: '/images/sides-menu.png',
     isSingleSize: true,
     variants: [
       { id: '1gal', size: '1 Gallon', price: 4500 }
@@ -325,7 +338,7 @@ export const juiceProducts: Product[] = [
     name: 'Orange',
     description: 'Freshly squeezed orange juice, packed with vitamin C.',
     category: 'juices',
-    image: '/images/orange.jpg',
+    image: '/images/sides-menu.png',
     isSingleSize: true,
     variants: [
       { id: '1gal', size: '1 Gallon', price: 4000 }
@@ -336,7 +349,7 @@ export const juiceProducts: Product[] = [
     name: 'Watermelon',
     description: 'Pure watermelon juice, naturally sweet and hydrating.',
     category: 'juices',
-    image: '/images/watermelon.jpg',
+    image: '/images/sides-menu.png',
     isSingleSize: true,
     variants: [
       { id: '1gal', size: '1 Gallon', price: 4000 }
@@ -347,7 +360,7 @@ export const juiceProducts: Product[] = [
     name: 'Mango Mandarin & Pineapple',
     description: 'Tropical fusion of mango, mandarin, and pineapple - a taste of paradise.',
     category: 'juices',
-    image: '/images/mango-mandarin-pineapple.jpg',
+    image: '/images/sides-menu.png',
     isSingleSize: true,
     variants: [
       { id: '1gal', size: '1 Gallon', price: 4000 }
@@ -358,7 +371,7 @@ export const juiceProducts: Product[] = [
     name: 'Ginger, Lemon, Orange & Pineapple',
     description: 'Zesty citrus blend with a healthy ginger twist - immune booster.',
     category: 'juices',
-    image: '/images/ginger-lemon-orange-pineapple.jpg',
+    image: '/images/sides-menu.png',
     isSingleSize: true,
     variants: [
       { id: '1gal', size: '1 Gallon', price: 4000 }
@@ -369,7 +382,7 @@ export const juiceProducts: Product[] = [
     name: 'Carrot, Apple, Orange & Ginger',
     description: 'Healthy blend of carrot, apple, orange, and ginger - packed with nutrients.',
     category: 'juices',
-    image: '/images/carrot-apple-orange-ginger.jpg',
+    image: '/images/sides-menu.png',
     isSingleSize: true,
     variants: [
       { id: '1gal', size: '1 Gallon', price: 4000 }

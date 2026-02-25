@@ -20,7 +20,19 @@ const config: Config = {
           700: '#a16207',
           800: '#854d0e',
           900: '#713f12',
+          950: '#422006',
         },
+        brand: {
+          primary: '#ca8a04', // Gold
+          secondary: '#f59e0b', // Amber
+          accent: '#fbbf24', // Light Gold
+          dark: '#1f2937', // Gray-800
+          darker: '#111827', // Gray-900
+        },
+      },
+      boxShadow: {
+        'gold': '0 4px 14px 0 rgba(202, 138, 4, 0.39)',
+        'gold-lg': '0 10px 40px 0 rgba(202, 138, 4, 0.5)',
       },
     },
   },

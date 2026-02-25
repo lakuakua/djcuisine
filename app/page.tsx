@@ -15,33 +15,82 @@ export default function Home() {
       <Header onCartOpen={() => setCartOpen(true)} />
       <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
-      {/* Hero Section */}
-      <section className="relative bg-gradient-to-b from-black via-gray-900 to-black py-20 px-4 sm:px-6 lg:px-8">
-        <div className="max-w-7xl mx-auto text-center">
-          <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gold-400 mb-6">
-            DJ Cuisine
-          </h1>
-          <p className="text-2xl sm:text-3xl text-gold-500 mb-8">
-            Authentic African & International Cuisine
-          </p>
-          <p className="text-lg text-gray-300 max-w-2xl mx-auto mb-12">
-            From intimate family dinners to large catering events, we bring the finest 
-            grilled and smoked meats to your table. Premium lamb, beef, poultry, and fresh juices 
-            made with authentic flavors and love.
-          </p>
-          <div className="flex flex-wrap justify-center gap-4">
-            <a
-              href="#categories"
-              className="bg-gold-600 hover:bg-gold-500 text-black px-8 py-4 rounded-lg font-bold text-lg transition-colors duration-200"
-            >
-              Order Now
-            </a>
-            <a
-              href="tel:+1234567890"
-              className="bg-transparent border-2 border-gold-600 hover:bg-gold-600 text-gold-400 hover:text-black px-8 py-4 rounded-lg font-bold text-lg transition-colors duration-200"
-            >
-              Call to Order
-            </a>
+      {/* Hero Section with Image Gallery */}
+      <section className="relative bg-gradient-to-b from-gray-900 via-black to-gray-900 py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
+        {/* Background Pattern */}
+        <div className="absolute inset-0 opacity-10">
+          <div className="absolute inset-0 bg-[url('/images/Chicken%20legs%20and%20thighs.png')] bg-cover bg-center blur-sm"></div>
+        </div>
+        
+        <div className="relative max-w-7xl mx-auto">
+          {/* Hero Content */}
+          <div className="text-center mb-12">
+            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gold-400 mb-6 drop-shadow-lg">
+              DJ Cuisine
+            </h1>
+            <p className="text-2xl sm:text-3xl text-gold-500 mb-4">
+              Authentic African & International Cuisine
+            </p>
+            <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
+              From intimate family dinners to large catering events, we bring the finest 
+              grilled and smoked meats to your table. Premium lamb, beef, poultry, and fresh juices 
+              made with authentic flavors and love.
+            </p>
+            
+            {/* Important Notices */}
+            <div className="max-w-4xl mx-auto space-y-3 mb-8">
+              <div className="bg-gold-600/20 border-2 border-gold-600 rounded-lg p-4">
+                <p className="text-gold-300 font-semibold text-lg">⏰ 24 Hour Notice Required for All Orders</p>
+              </div>
+              <div className="bg-blue-600/20 border-2 border-blue-500 rounded-lg p-4">
+                <p className="text-blue-300 font-semibold">
+                  🔥 BBQ On The Spot & Private Dinners Available • Call for Details
+                </p>
+              </div>
+            </div>
+
+            <div className="flex flex-wrap justify-center gap-4">
+              <a
+                href="#categories"
+                className="bg-gold-600 hover:bg-gold-500 text-black px-8 py-4 rounded-lg font-bold text-lg transition-all duration-200 shadow-lg hover:shadow-gold-600/50"
+              >
+                Order Now
+              </a>
+              <a
+                href="tel:+19792213114"
+                className="bg-transparent border-2 border-gold-600 hover:bg-gold-600 text-gold-400 hover:text-black px-8 py-4 rounded-lg font-bold text-lg transition-all duration-200"
+              >
+                📞 (979) 221-3114
+              </a>
+            </div>
+          </div>
+
+          {/* Featured Images Gallery */}
+          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mt-16">
+            <div className="relative h-48 rounded-lg overflow-hidden group">
+              <img src="/images/Chicken%20legs%20and%20thighs.png" alt="Chicken Legs & Thighs" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <p className="text-white font-semibold text-sm">Chicken</p>
+              </div>
+            </div>
+            <div className="relative h-48 rounded-lg overflow-hidden group">
+              <img src="/images/beef%20ribs.jpg" alt="Beef Ribs" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <p className="text-white font-semibold text-sm">Beef Ribs</p>
+              </div>
+            </div>
+            <div className="relative h-48 rounded-lg overflow-hidden group">
+              <img src="/images/grilled%20lamb.jpg" alt="Grilled Lamb" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <p className="text-white font-semibold text-sm">Lamb</p>
+              </div>
+            </div>
+            <div className="relative h-48 rounded-lg overflow-hidden group">
+              <img src="/images/Smoked%20Turkey%20wing.png" alt="Turkey Wings" className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-300" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-transparent flex items-end p-4">
+                <p className="text-white font-semibold text-sm">Turkey</p>
+              </div>
+            </div>
           </div>
         </div>
       </section>

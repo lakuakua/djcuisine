@@ -19,13 +19,18 @@ export default function Footer() {
             <h3 className="text-gold-400 font-bold text-lg mb-4">Quick Links</h3>
             <ul className="space-y-2 text-sm">
               <li>
-                <a href="/category/big-trays" className="text-gray-400 hover:text-gold-400 transition-colors">
-                  Big Trays
+                <a href="/category/chicken" className="text-gray-400 hover:text-gold-400 transition-colors">
+                  Chicken
                 </a>
               </li>
               <li>
-                <a href="/category/plates" className="text-gray-400 hover:text-gold-400 transition-colors">
-                  Plates
+                <a href="/category/beef" className="text-gray-400 hover:text-gold-400 transition-colors">
+                  Beef
+                </a>
+              </li>
+              <li>
+                <a href="/category/sides" className="text-gray-400 hover:text-gold-400 transition-colors">
+                  Sides
                 </a>
               </li>
               <li>
@@ -41,17 +46,17 @@ export default function Footer() {
             <h3 className="text-gold-400 font-bold text-lg mb-4">Contact Us</h3>
             <ul className="space-y-2 text-sm text-gray-400">
               <li>
-                <a href="tel:+1234567890" className="hover:text-gold-400 transition-colors">
-                  (123) 456-7890
+                <a href="tel:+19792213114" className="hover:text-gold-400 transition-colors">
+                  (979) 221-3114
                 </a>
               </li>
               <li>
-                <a href="mailto:info@djcuisine.com" className="hover:text-gold-400 transition-colors">
-                  info@djcuisine.com
+                <a href="mailto:orders@djcuisine.com" className="hover:text-gold-400 transition-colors">
+                  orders@djcuisine.com
                 </a>
               </li>
               <li className="text-gray-500">
-                Houston, TX
+                Richmond, Texas
               </li>
             </ul>
           </div>

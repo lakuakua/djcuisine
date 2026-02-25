@@ -2,7 +2,8 @@
 
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
-import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
+import { calculateOrderTotal, getShippingMessage } from '@/lib/shipping';
+import { X, Minus, Plus, ShoppingBag, Truck } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface CartProps {
@@ -29,6 +30,11 @@ export default function Cart({ isOpen, onClose }: CartProps) {
   const hasGallonMinimumIssue = items.some(
     (item) => item.selectedVariant.size === '1 Gallon'
   ) && gallonCount < 2;
+
+  // Calculate order totals with shipping and tax
+  const subtotal = getTotal();
+  const orderCalculation = calculateOrderTotal(subtotal, false); // false = not local delivery
+  const shippingMessage = getShippingMessage(subtotal);
 
   const handleCheckout = async () => {
     if (hasGallonMinimumIssue) {
@@ -184,12 +190,43 @@ export default function Cart({ isOpen, onClose }: CartProps) {
           {/* Footer */}
           {items.length > 0 && (
             <div className="border-t border-gold-800 p-6 bg-gray-900">
-              <div className="flex justify-between items-center mb-4">
-                <span className="text-lg font-semibold text-white">Total</span>
-                <span className="text-2xl font-bold text-gold-400">
-                  {formatPrice(getTotal())}
-                </span>
+              {/* Price Breakdown */}
+              <div className="space-y-3 mb-4">
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-400">Subtotal</span>
+                  <span className="text-white">{formatPrice(subtotal)}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-400">Tax (8.25%)</span>
+                  <span className="text-white">{formatPrice(orderCalculation.tax)}</span>
+                </div>
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-gray-400 flex items-center gap-1">
+                    <Truck className="h-4 w-4" />
+                    Shipping
+                  </span>
+                  <span className={orderCalculation.isFreeShipping ? 'text-green-400 font-semibold' : 'text-white'}>
+                    {orderCalculation.isFreeShipping ? 'FREE' : formatPrice(orderCalculation.shippingFee)}
+                  </span>
+                </div>
+                
+                {/* Shipping Message */}
+                {!orderCalculation.isFreeShipping && (
+                  <div className="text-xs text-center py-2 px-3 bg-blue-600/20 border border-blue-500/50 rounded">
+                    <p className="text-blue-300">{shippingMessage}</p>
+                  </div>
+                )}
+                
+                <div className="border-t border-gold-800 pt-3">
+                  <div className="flex justify-between items-center">
+                    <span className="text-lg font-semibold text-white">Total</span>
+                    <span className="text-2xl font-bold text-gold-400">
+                      {formatPrice(orderCalculation.total)}
+                    </span>
+                  </div>
+                </div>
               </div>
+              
               <button
                 onClick={handleCheckout}
                 disabled={hasGallonMinimumIssue || isCheckingOut}
@@ -197,6 +234,11 @@ export default function Cart({ isOpen, onClose }: CartProps) {
               >
                 {isCheckingOut ? 'Processing...' : 'Checkout'}
               </button>
+              
+              {/* Order Notice */}
+              <p className="text-xs text-center text-gray-500 mt-3">
+                ⏰ 24-hour notice required for all orders
+              </p>
             </div>
           )}
         </div>
