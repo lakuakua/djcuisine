@@ -1,11 +1,12 @@
 'use client';
 
 import { useState } from 'react';
+import Image from 'next/image';
 import Header from '@/components/Header';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import CategorySection from '@/components/CategorySection';
-import { ChefHat, Bird, Beef, Cookie, Fish, Flame, Drumstick, UtensilsCrossed, Coffee } from 'lucide-react';
+import { ChefHat, Bird, Beef, Cookie, Fish, Flame, Drumstick, UtensilsCrossed, Coffee, ChevronRight } from 'lucide-react';
 
 export default function Home() {
   const [cartOpen, setCartOpen] = useState(false);
@@ -15,68 +16,87 @@ export default function Home() {
       <Header onCartOpen={() => setCartOpen(true)} />
       <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
-      {/* Hero Section with Image Gallery */}
-      <section className="relative bg-gradient-to-b from-gray-900 via-black to-gray-900 py-20 px-4 sm:px-6 lg:px-8 overflow-hidden">
-        {/* Background Image - Using beef ribs for more dramatic appeal */}
-        <div className="absolute inset-0 opacity-40">
-          <div className="absolute inset-0 bg-[url('/images/beef%20ribs.jpg')] bg-cover bg-center"></div>
-          <div className="absolute inset-0 bg-gradient-to-b from-black/70 via-black/60 to-black/90"></div>
+      {/* Hero Section - Modern Clean Layout */}
+      <section className="relative min-h-[600px] lg:min-h-[700px] flex items-center overflow-hidden">
+        {/* Lamb Background Image */}
+        <div className="absolute inset-0">
+          <Image
+            src="/images/grilled lamb.jpg"
+            alt="Grilled Lamb"
+            fill
+            className="object-cover"
+            priority
+          />
+          <div className="absolute inset-0 bg-gradient-to-r from-black/90 via-black/70 to-transparent"></div>
         </div>
         
-        <div className="relative max-w-7xl mx-auto">
-          {/* Hero Content */}
-          <div className="text-center mb-12">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-bold text-gold-400 mb-6 drop-shadow-lg">
-              DJCUISINE
-            </h1>
-            <p className="text-2xl sm:text-3xl text-gold-500 mb-4">
-              Authentic African & International Cuisine
-            </p>
-            <p className="text-lg text-gray-300 max-w-3xl mx-auto mb-8">
-              From intimate family dinners to large catering events, we bring the finest 
-              grilled and smoked meats to your table. Premium lamb, beef, poultry, and fresh juices 
-              made with authentic flavors and love.
-            </p>
+        <div className="relative w-full px-4 sm:px-8 lg:px-12 py-16">
+          <div className="max-w-2xl">
+            {/* Orange Badge */}
             
-            {/* Important Notices */}
-            <div className="max-w-4xl mx-auto space-y-3 mb-8">
-              <div className="bg-gold-600/20 border-2 border-gold-600 rounded-lg p-4">
-                <p className="text-gold-300 font-semibold text-lg">⏰ 24 Hour Notice Required for All Orders</p>
-              </div>
-              <div className="bg-blue-600/20 border-2 border-blue-500 rounded-lg p-4">
-                <p className="text-blue-300 font-semibold">
-                  🔥 BBQ On The Spot & Private Dinners Available • Call for Details
-                </p>
+            {/* Brand Logo */}
+            <div className="mb-8">
+              <div className="relative w-full max-w-md h-24 sm:h-28 lg:h-32">
+                <Image
+                  src="/images/namepng.png"
+                  alt="DJCUISINE"
+                  fill
+                  className="object-contain object-left drop-shadow-2xl"
+                  priority
+                />
               </div>
             </div>
 
-            <div className="flex flex-wrap justify-center gap-4">
+            {/* Main Heading */}
+            <h1 className="text-3xl sm:text-4xl lg:text-5xl font-bold text-white mb-8 leading-tight">
+              Premium Grilled & Smoked Meats
+            </h1>
+
+            {/* Info Box */}
+            <div className="bg-stone-900/70 backdrop-blur-md rounded-lg p-6 mb-8 shadow-2xl border border-orange-600/30 max-w-lg">
+              <div className="flex items-start gap-4">
+                <div className="flex-shrink-0 w-10 h-10 bg-gradient-to-br from-red-600 to-orange-500 rounded-full flex items-center justify-center">
+                  <Flame className="h-5 w-5 text-white" />
+                </div>
+                <div>
+                  <h2 className="text-lg font-bold text-orange-300 mb-2">
+                    The Difference: Traditional Wood & Charcoal Smoked
+                  </h2>
+                  <p className="text-stone-200 text-sm leading-relaxed">
+                    Our authentic <span className="font-bold">African & International cuisine</span> is locally smoked using <span className="font-bold">traditional wood and charcoal</span> - never oven smoked. This gives it that rich, authentic smoky taste that makes it an excellent seasoning ingredient in your cooking. Unlike dry, imported fish from Africa, our fish stays <span className="font-bold">tender, moist, and bursting with flavor</span>. Experience the real difference!
+                  </p>
+                </div>
+              </div>
+            </div>
+
+            {/* CTA Buttons */}
+            <div className="flex flex-wrap gap-4">
               <a
                 href="#categories"
-                className="bg-gold-600 hover:bg-gold-500 text-black px-8 py-4 rounded-lg font-bold text-lg transition-all duration-200 shadow-lg hover:shadow-gold-600/50"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white px-8 py-4 rounded-lg font-bold text-base transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105"
               >
-                Order Now
+                Shop Now
+                <ChevronRight className="h-5 w-5" />
               </a>
               <a
-                href="tel:+19792213114"
-                className="bg-transparent border-2 border-gold-600 hover:bg-gold-600 text-gold-400 hover:text-black px-8 py-4 rounded-lg font-bold text-lg transition-all duration-200"
+                href="/contact"
+                className="inline-flex items-center gap-2 bg-transparent border-2 border-white hover:bg-white/10 text-white px-8 py-4 rounded-lg font-bold text-base transition-all duration-200"
               >
-                📞 (979) 221-3114
+                Learn More
               </a>
             </div>
           </div>
-
         </div>
       </section>
 
       {/* Categories Section */}
-      <section id="categories" className="py-16 px-4 sm:px-6 lg:px-8 bg-black">
+      <section id="categories" className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-7xl mx-auto">
           <div className="text-center mb-12">
-            <h2 className="text-4xl font-bold text-gold-400 mb-4">
+            <h2 className="text-5xl font-bold bg-gradient-to-r from-red-600 via-orange-500 to-red-600 bg-clip-text text-transparent mb-4">
               Our Menu
             </h2>
-            <p className="text-gray-400 text-lg max-w-2xl mx-auto">
+            <p className="text-gray-700 text-xl max-w-2xl mx-auto font-medium">
               Choose from our selection of catering trays, individual plates, or 
               refreshing beverages
             </p>
@@ -151,25 +171,33 @@ export default function Home() {
       </section>
 
       {/* About Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gray-900">
+      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-stone-950 via-black to-stone-950">
         <div className="max-w-4xl mx-auto text-center">
-            <h2 className="text-4xl font-bold text-gold-400 mb-6">
-              Why Choose DJCUISINE?
-            </h2>
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12">
-            <div>
-              <div className="text-gold-400 text-5xl font-bold mb-2">15+</div>
-              <p className="text-gray-300">Years of Experience</p>
+          <h2 className="text-5xl font-bold bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent mb-6 drop-shadow-lg">
+            Why Choose DJCUISINE?
+          </h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 mb-12">
+            <div className="bg-stone-900/60 backdrop-blur-sm rounded-lg p-8 border-2 border-red-800/40 shadow-xl hover:shadow-red-700/30 transition-all hover:scale-105">
+              <div className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent text-6xl font-bold mb-3">15+</div>
+              <p className="text-orange-200 text-lg font-semibold">Years of Experience</p>
             </div>
-            <div>
-              <div className="text-gold-400 text-5xl font-bold mb-2">100%</div>
-              <p className="text-gray-300">Quality Ingredients</p>
+            <div className="bg-stone-900/60 backdrop-blur-sm rounded-lg p-8 border-2 border-red-800/40 shadow-xl hover:shadow-red-700/30 transition-all hover:scale-105">
+              <div className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent text-6xl font-bold mb-3">100%</div>
+              <p className="text-orange-200 text-lg font-semibold">Quality Ingredients</p>
             </div>
-            <div>
-              <div className="text-gold-400 text-5xl font-bold mb-2">24/7</div>
-              <p className="text-gray-300">Order Anytime</p>
+            <div className="bg-stone-900/60 backdrop-blur-sm rounded-lg p-8 border-2 border-red-800/40 shadow-xl hover:shadow-red-700/30 transition-all hover:scale-105">
+              <div className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent text-6xl font-bold mb-3">24/7</div>
+              <p className="text-orange-200 text-lg font-semibold">Order Anytime</p>
             </div>
           </div>
+          
+          <a 
+            href="/about"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white px-8 py-3 rounded-lg font-bold text-lg transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105"
+          >
+            Learn More About Us
+            <ChevronRight className="h-5 w-5" />
+          </a>
         </div>
       </section>
 

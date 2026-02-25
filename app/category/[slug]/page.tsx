@@ -45,7 +45,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
   const products = getProductsByCategory(slug);
 
   return (
-    <div className="min-h-screen bg-black">
+    <div className="min-h-screen bg-gradient-to-b from-black via-stone-950 to-black">
       <Header onCartOpen={() => setCartOpen(true)} />
       <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
@@ -53,7 +53,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
         {/* Back Button */}
         <Link
           href="/"
-          className="inline-flex items-center text-gold-400 hover:text-gold-300 mb-8 transition-colors"
+          className="inline-flex items-center text-orange-300 hover:text-red-400 mb-8 transition-colors font-medium"
         >
           <ArrowLeft className="h-5 w-5 mr-2" />
           Back to Home
@@ -61,10 +61,10 @@ export default function CategoryPage({ params }: CategoryPageProps) {
 
         {/* Category Header */}
         <div className="mb-12">
-          <h1 className="text-4xl sm:text-5xl font-bold text-gold-400 mb-4">
+          <h1 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent mb-4">
             {categoryTitles[slug] || 'Products'}
           </h1>
-          <p className="text-gray-400 text-lg">
+          <p className="text-orange-200 text-lg">
             {categoryDescriptions[slug]}
           </p>
         </div>
@@ -78,7 +78,7 @@ export default function CategoryPage({ params }: CategoryPageProps) {
           </div>
         ) : (
           <div className="text-center py-16">
-            <p className="text-gray-400 text-lg">No products found in this category.</p>
+            <p className="text-orange-300 text-lg">No products found in this category.</p>
           </div>
         )}
       </div>
