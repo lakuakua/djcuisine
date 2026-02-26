@@ -23,13 +23,13 @@ export default function Header({ onCartOpen }: HeaderProps) {
   ];
 
   return (
-    <header className="bg-white border-b border-gray-200 shadow-sm sticky top-0 z-50">
+    <header className="bg-gradient-to-r from-black via-stone-950 to-black border-b border-red-900/30 shadow-lg sticky top-0 z-50 backdrop-blur-md">
       <nav className="mx-auto max-w-7xl px-4 sm:px-6 lg:px-8">
         <div className="flex h-20 items-center justify-between">
           {/* Logo */}
           <div className="flex items-center">
             <Link href="/" className="flex items-center">
-              <div className="relative h-14 w-40 sm:h-16 sm:w-48">
+              <div className="relative h-16 w-48 sm:h-20 sm:w-56">
                 <Image
                   src="/images/namepng.png"
                   alt="DJCUISINE Logo"
@@ -42,12 +42,12 @@ export default function Header({ onCartOpen }: HeaderProps) {
           </div>
 
           {/* Desktop Navigation */}
-          <div className="hidden md:flex md:items-center md:space-x-8">
+          <div className="hidden md:flex md:items-center md:space-x-6">
             {navigation.map((item) => (
               <Link
                 key={item.name}
                 href={item.href}
-                className="text-gray-700 hover:text-red-600 transition-colors text-sm font-semibold"
+                className="text-orange-200 hover:text-red-400 transition-colors text-sm font-bold"
               >
                 {item.name}
               </Link>
@@ -58,7 +58,7 @@ export default function Header({ onCartOpen }: HeaderProps) {
           <div className="flex items-center space-x-4">
             <button
               onClick={onCartOpen}
-              className="relative p-2 text-gray-700 hover:text-red-600 transition-colors"
+              className="relative p-2 text-orange-300 hover:text-red-400 transition-colors"
               aria-label="Shopping cart"
             >
               <ShoppingCart className="h-6 w-6" />
@@ -72,7 +72,7 @@ export default function Header({ onCartOpen }: HeaderProps) {
             {/* Mobile menu button */}
             <button
               onClick={() => setMobileMenuOpen(!mobileMenuOpen)}
-              className="md:hidden p-2 text-gray-700 hover:text-red-600"
+              className="md:hidden p-2 text-orange-300 hover:text-red-400"
               aria-label="Toggle menu"
             >
               {mobileMenuOpen ? (
@@ -86,14 +86,14 @@ export default function Header({ onCartOpen }: HeaderProps) {
 
         {/* Mobile Navigation */}
         {mobileMenuOpen && (
-          <div className="md:hidden py-4 border-t border-gray-200 bg-white">
+          <div className="md:hidden py-4 border-t border-red-900/30 bg-gradient-to-b from-black to-stone-950">
             <div className="flex flex-col space-y-3">
               {navigation.map((item) => (
                 <Link
                   key={item.name}
                   href={item.href}
                   onClick={() => setMobileMenuOpen(false)}
-                  className="text-gray-700 hover:text-red-600 transition-colors text-base font-semibold py-2"
+                  className="text-orange-200 hover:text-red-400 transition-colors text-base font-semibold py-2"
                 >
                   {item.name}
                 </Link>
