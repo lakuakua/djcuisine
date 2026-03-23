@@ -30,7 +30,7 @@ export default function ShopPage() {
     : allProducts.filter(p => p.category === selectedCategory);
 
   return (
-    <div className="min-h-screen bg-gradient-to-b from-stone-900 via-stone-800 to-stone-900">
+    <div className="min-h-screen bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950">
       <Header onCartOpen={() => setCartOpen(true)} />
       <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
@@ -43,8 +43,8 @@ export default function ShopPage() {
               Shop All Products
             </h1>
           </div>
-          <p className="text-orange-200 text-xl max-w-2xl mx-auto">
-            Browse our complete selection of premium grilled and smoked meats
+          <p className="mx-auto max-w-2xl text-lg text-stone-400">
+            Browse catering trays, plates, sides, and juices—add to cart and checkout when you&apos;re ready.
           </p>
         </div>
 
@@ -55,10 +55,10 @@ export default function ShopPage() {
               <button
                 key={cat.id}
                 onClick={() => setSelectedCategory(cat.id)}
-                className={`px-6 py-2 rounded-lg font-semibold transition-all ${
+                className={`rounded-lg px-5 py-2 text-sm font-semibold transition-all ${
                   selectedCategory === cat.id
-                    ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-lg shadow-red-500/50'
-                    : 'bg-stone-900 text-orange-300 border border-red-900/40 hover:border-red-600 hover:text-red-400'
+                    ? 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md shadow-red-900/30'
+                    : 'border border-stone-700 bg-stone-900/80 text-stone-300 hover:border-gold-700/50 hover:text-white'
                 }`}
               >
                 {cat.name}

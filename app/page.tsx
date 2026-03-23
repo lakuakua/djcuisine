@@ -6,13 +6,13 @@ import Header from '@/components/Header';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import CategorySection from '@/components/CategorySection';
-import { ChefHat, Bird, Beef, Cookie, Fish, Flame, Drumstick, UtensilsCrossed, Coffee, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 export default function Home() {
   const [cartOpen, setCartOpen] = useState(false);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-stone-950">
       <Header onCartOpen={() => setCartOpen(true)} />
       <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
@@ -27,15 +27,21 @@ export default function Home() {
             className="object-cover"
             priority
           />
-          <div className="absolute inset-0 bg-black/50 lg:bg-gradient-to-r lg:from-black/70 lg:via-black/50 lg:to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/25 lg:bg-gradient-to-r lg:from-black/75 lg:via-black/45 lg:to-black/10" />
         </div>
         
         <div className="relative w-full px-4 sm:px-6 lg:px-8 py-16">
           <div className="max-w-xl mx-auto lg:mx-0 lg:ml-0 text-center lg:text-left">
             {/* Main Heading */}
-            <h1 className="text-2xl sm:text-3xl lg:text-4xl font-bold text-white mb-6 leading-tight">
-              Premium Grilled & Smoked Meats
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-gold-400/95 drop-shadow">
+              Houston · Catering · Nationwide shipping
+            </p>
+            <h1 className="mb-4 text-3xl font-bold leading-tight tracking-tight text-white drop-shadow-md sm:text-4xl lg:text-5xl">
+              Premium grilled &amp; smoked meats
             </h1>
+            <p className="mb-8 max-w-md text-base leading-relaxed text-stone-200/95 drop-shadow lg:mx-0">
+              Order trays, plates, sides, and fresh juices for your next event—crafted with care, packed for delivery.
+            </p>
 
             {/* CTA Buttons */}
             <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
@@ -58,81 +64,77 @@ export default function Home() {
       </section>
 
       {/* Categories Section */}
-      <section id="categories" className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-5xl font-bold bg-gradient-to-r from-red-600 via-orange-500 to-red-600 bg-clip-text text-transparent mb-4">
-              Our Menu
+      <section
+        id="categories"
+        className="border-t border-red-950/40 bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950 py-16 px-4 sm:px-6 lg:px-8"
+      >
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              <span className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent">
+                Our menu
+              </span>
             </h2>
-            <p className="text-gray-700 text-xl max-w-2xl mx-auto font-medium">
-              Choose from our selection of catering trays, individual plates, or 
-              refreshing beverages
+            <p className="mx-auto max-w-2xl text-lg text-stone-400">
+              Catering trays, individual plates, sides, and fresh juices—pick a category to browse.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             <CategorySection
               title="Chicken"
               description="Chicken legs & thighs, wings. Choose Big Tray, Half Tray, or Plate."
               href="/category/chicken"
-              icon={<ChefHat className="h-12 w-12" />}
               image="/images/Chicken legs and thighs.png"
             />
             <CategorySection
               title="Turkey"
               description="Turkey wings and legs in Big Tray or Half Tray sizes."
               href="/category/turkey"
-              icon={<Bird className="h-12 w-12" />}
               image="/images/Smoked Turkey wing.png"
             />
             <CategorySection
               title="Beef"
               description="Beef ribs, steak tips, and kabobs. Multiple sizes available."
               href="/category/beef"
-              icon={<Beef className="h-12 w-12" />}
               image="/images/beef ribs.jpg"
             />
             <CategorySection
               title="Lamb"
               description="Premium lamb in Big Tray, Half Tray, or Plate."
               href="/category/lamb"
-              icon={<Cookie className="h-12 w-12" />}
               image="/images/grilled lamb.jpg"
             />
             <CategorySection
               title="Seafood"
               description="Fresh grilled shrimp. Big Tray, Half Tray, or 5 Sticks."
               href="/category/seafood"
-              icon={<Fish className="h-12 w-12" />}
               image="/images/shrimp on the stick.jpg"
             />
             <CategorySection
               title="Whole Poultry"
               description="Whole smoked and grilled rooster, guinea fowl, hen, and rabbit."
               href="/category/whole-poultry"
-              icon={<Flame className="h-12 w-12" />}
               image="/images/Grilled Rooster.png"
             />
             <CategorySection
               title="Sausage"
               description="Grilled deer meat sausage - 5 pieces per order."
               href="/category/sausage"
-              icon={<Drumstick className="h-12 w-12" />}
               image="/images/deer meat sausage 1.jpg"
             />
             <CategorySection
               title="Sides"
               description="Potatoes au gratin, corn, seafood noodles, mac & cheese, and fresh salads."
               href="/category/sides"
-              icon={<UtensilsCrossed className="h-12 w-12" />}
               image="/images/sides/potatoes-au-gratin.jpg"
             />
             <CategorySection
               title="Juices"
-              description="Zobo, pineapple ginger, and fresh tropical blends."
+              description="Zobo, Pineapple Ginger, and Watermelon, Ginger & Pineapple."
               href="/category/juices"
-              icon={<Coffee className="h-12 w-12" />}
-              image="/images/sides-menu.png"
+              image="/images/juices/zobo.png"
+              variant="juice"
             />
           </div>
         </div>

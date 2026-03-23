@@ -221,172 +221,106 @@ export const sausageProducts: Product[] = [
   }
 ];
 
-// CATEGORY 8: SIDES (FULL AND HALF PAN) — photos in /public/images/sides (from Assets/)
+// CATEGORY 8: SIDES (FULL AND HALF TRAY) — source: sides_menu.md
 export const sidesProducts: Product[] = [
   {
     id: 'potatoes-au-gratin',
     name: 'Potatoes Au Gratin',
-    description: 'Silken layers of potato folded with seasoned ground beef, cream and premium cheese, slow-baked to a bubbling, golden gratin.',
+    description:
+      'Silken layers of potato folded with seasoned ground beef, cream and premium cheese, slow-baked to a bubbling, golden gratin.',
     category: 'sides',
     image: '/images/sides/potatoes-au-gratin.jpg',
     variants: [
-      { id: 'full', size: 'Full Pan', price: 16000, servings: 'Serves 20-30 people' },
-      { id: 'half', size: 'Half Pan', price: 8000, servings: 'Serves 10-15 people' }
+      { id: 'full', size: 'Full Tray', price: 16000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 8000, servings: 'Serves 10-15 people' }
     ]
   },
   {
     id: 'corn-on-the-cob',
     name: 'Corn On The Cob',
-    description: 'Fresh corn on the cob slow-cooked in seasoned milk with traditional spices for deep, comforting flavor.',
+    description:
+      'Fresh corn on the cob slow-cooked in seasoned milk with traditional spices for deep, comforting flavor.',
     category: 'sides',
     image: '/images/sides/corn-on-the-cob.jpg',
     variants: [
-      { id: 'full', size: 'Full Pan', price: 8500, servings: 'Serves 20-30 people' },
-      { id: 'half', size: 'Half Pan', price: 4250, servings: 'Serves 10-15 people' }
+      { id: 'full', size: 'Full Tray', price: 8500, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 4250, servings: 'Serves 10-15 people' }
     ]
   },
   {
     id: 'stir-fried-seafood-noodles',
     name: 'Stir Fried Seafood Noodles',
-    description: 'Savory stir-fried noodles loaded with shrimp, calamari, and mussels. Sautéed with vegetables and tossed in a perfectly balanced soy-based sauce.',
+    description:
+      'Savory stir-fried noodles loaded with shrimp, calamari, and mussels, sautéed with vegetables and tossed in a perfectly balanced soy-based sauce.',
     category: 'sides',
     image: '/images/sides/stir-fried-seafood-noodles.jpg',
     variants: [
-      { id: 'full', size: 'Full Pan', price: 20000, servings: 'Serves 20-30 people' },
-      { id: 'half', size: 'Half Pan', price: 10000, servings: 'Serves 10-15 people' }
+      { id: 'full', size: 'Full Tray', price: 20000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 10000, servings: 'Serves 10-15 people' }
     ]
   },
   {
     id: 'seafood-mac-and-cheese',
     name: 'Seafood Mac & Cheese',
-    description: 'Decadent mac & cheese infused with a creamy blend of premium cheeses and tender seafood, baked until bubbly with a perfectly crisp finish.',
+    description:
+      'Decadent mac & cheese infused with a creamy blend of premium cheeses and tender seafood, baked until bubbly with a perfectly crisp finish.',
     category: 'sides',
     image: '/images/sides/seafood-mac-and-cheese.jpg',
     variants: [
-      { id: 'full', size: 'Full Pan', price: 16000, servings: 'Serves 20-30 people' },
-      { id: 'half', size: 'Half Pan', price: 8000, servings: 'Serves 10-15 people' }
+      { id: 'full', size: 'Full Tray', price: 16000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 8000, servings: 'Serves 10-15 people' }
     ]
   },
   {
     id: 'chef-dj-salad',
     name: "Chef DJ's Salad",
-    description: 'Delicately diced cucumbers coated in a light, creamy mustard mayo dressing with a subtle tang.',
+    description:
+      'Delicately diced cucumbers coated in a light, creamy mustard-mayo dressing with a subtle tang.',
     category: 'sides',
     image: '/images/sides/chef-dj-salad.jpg',
     variants: [
-      { id: 'full', size: 'Full Pan', price: 11000, servings: 'Serves 20-30 people' },
-      { id: 'half', size: 'Half Pan', price: 5500, servings: 'Serves 10-15 people' }
+      { id: 'full', size: 'Full Tray', price: 11000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 5500, servings: 'Serves 10-15 people' }
     ]
   }
 ];
 
-// CATEGORY 9: JUICES
+// CATEGORY 9: JUICES (see prd.md) — Zobo & Pineapple Ginger: gallon / half / 16oz; blend: gallon only
 export const juiceProducts: Product[] = [
-  // Zobo - All sizes
   {
     id: 'zobo',
     name: 'Zobo',
-    description: 'Traditional hibiscus drink with natural sweetness and health benefits. Choose sweetened or unsweetened.',
+    description:
+      'Traditional hibiscus drink with natural sweetness and health benefits. Choose sweetened or unsweetened.',
     category: 'juices',
-    image: '/images/sides-menu.png',
+    image: '/images/juices/zobo.png',
     variants: [
       { id: '1gal', size: '1 Gallon', price: 3500 },
       { id: 'half', size: 'Half Gallon', price: 1800 },
-      { id: '32oz', size: '32 oz Bottle', price: 1000 },
       { id: '16oz', size: '16 oz', price: 600 }
     ]
   },
-  // Pineapple Ginger - All sizes
   {
     id: 'pineapple-ginger',
     name: 'Pineapple Ginger',
-    description: 'Refreshing pineapple juice with a zesty ginger kick. Choose sweetened or unsweetened.',
+    description:
+      'Refreshing pineapple juice with a zesty ginger kick. Choose sweetened or unsweetened.',
     category: 'juices',
-    image: '/images/sides-menu.png',
+    image: '/images/juices/pineapple-ginger.png',
     variants: [
       { id: '1gal', size: '1 Gallon', price: 3500 },
       { id: 'half', size: 'Half Gallon', price: 1800 },
-      { id: '32oz', size: '32 oz Bottle', price: 1000 },
       { id: '16oz', size: '16 oz', price: 600 }
     ]
   },
-  // Fresh Juice (Gallon only)
   {
     id: 'watermelon-ginger-pineapple',
     name: 'Watermelon, Ginger & Pineapple',
-    description: 'Tropical blend of watermelon, ginger, and pineapple - refreshing and healthy.',
+    description: 'Tropical blend of watermelon, ginger, and pineapple—refreshing and healthy. Gallon size.',
     category: 'juices',
-    image: '/images/sides-menu.png',
+    image: '/images/juices/watermelon-ginger-pineapple.png',
     isSingleSize: true,
-    variants: [
-      { id: '1gal', size: '1 Gallon', price: 4000 }
-    ]
-  },
-  {
-    id: 'mango',
-    name: 'Mango',
-    description: 'Pure, sweet mango juice made from ripe, fresh mangoes.',
-    category: 'juices',
-    image: '/images/sides-menu.png',
-    isSingleSize: true,
-    variants: [
-      { id: '1gal', size: '1 Gallon', price: 4500 }
-    ]
-  },
-  {
-    id: 'orange',
-    name: 'Orange',
-    description: 'Freshly squeezed orange juice, packed with vitamin C.',
-    category: 'juices',
-    image: '/images/sides-menu.png',
-    isSingleSize: true,
-    variants: [
-      { id: '1gal', size: '1 Gallon', price: 4000 }
-    ]
-  },
-  {
-    id: 'watermelon',
-    name: 'Watermelon',
-    description: 'Pure watermelon juice, naturally sweet and hydrating.',
-    category: 'juices',
-    image: '/images/sides-menu.png',
-    isSingleSize: true,
-    variants: [
-      { id: '1gal', size: '1 Gallon', price: 4000 }
-    ]
-  },
-  {
-    id: 'mango-mandarin-pineapple',
-    name: 'Mango Mandarin & Pineapple',
-    description: 'Tropical fusion of mango, mandarin, and pineapple - a taste of paradise.',
-    category: 'juices',
-    image: '/images/sides-menu.png',
-    isSingleSize: true,
-    variants: [
-      { id: '1gal', size: '1 Gallon', price: 4000 }
-    ]
-  },
-  {
-    id: 'ginger-lemon-orange-pineapple',
-    name: 'Ginger, Lemon, Orange & Pineapple',
-    description: 'Zesty citrus blend with a healthy ginger twist - immune booster.',
-    category: 'juices',
-    image: '/images/sides-menu.png',
-    isSingleSize: true,
-    variants: [
-      { id: '1gal', size: '1 Gallon', price: 4000 }
-    ]
-  },
-  {
-    id: 'carrot-apple-orange-ginger',
-    name: 'Carrot, Apple, Orange & Ginger',
-    description: 'Healthy blend of carrot, apple, orange, and ginger - packed with nutrients.',
-    category: 'juices',
-    image: '/images/sides-menu.png',
-    isSingleSize: true,
-    variants: [
-      { id: '1gal', size: '1 Gallon', price: 4000 }
-    ]
+    variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
   }
 ];
 
