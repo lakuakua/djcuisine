@@ -221,14 +221,14 @@ export const sausageProducts: Product[] = [
   }
 ];
 
-// CATEGORY 8: SIDES (FULL AND HALF PAN)
+// CATEGORY 8: SIDES (FULL AND HALF PAN) — photos in /public/images/sides (from Assets/)
 export const sidesProducts: Product[] = [
   {
     id: 'potatoes-au-gratin',
     name: 'Potatoes Au Gratin',
     description: 'Silken layers of potato folded with seasoned ground beef, cream and premium cheese, slow-baked to a bubbling, golden gratin.',
     category: 'sides',
-    image: '/images/sides-menu.png',
+    image: '/images/sides/potatoes-au-gratin.jpg',
     variants: [
       { id: 'full', size: 'Full Pan', price: 16000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Pan', price: 8000, servings: 'Serves 10-15 people' }
@@ -239,7 +239,7 @@ export const sidesProducts: Product[] = [
     name: 'Corn On The Cob',
     description: 'Fresh corn on the cob slow-cooked in seasoned milk with traditional spices for deep, comforting flavor.',
     category: 'sides',
-    image: '/images/sides-menu.png',
+    image: '/images/sides/corn-on-the-cob.jpg',
     variants: [
       { id: 'full', size: 'Full Pan', price: 8500, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Pan', price: 4250, servings: 'Serves 10-15 people' }
@@ -250,7 +250,7 @@ export const sidesProducts: Product[] = [
     name: 'Stir Fried Seafood Noodles',
     description: 'Savory stir-fried noodles loaded with shrimp, calamari, and mussels. Sautéed with vegetables and tossed in a perfectly balanced soy-based sauce.',
     category: 'sides',
-    image: '/images/sides-menu.png',
+    image: '/images/sides/stir-fried-seafood-noodles.jpg',
     variants: [
       { id: 'full', size: 'Full Pan', price: 20000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Pan', price: 10000, servings: 'Serves 10-15 people' }
@@ -261,7 +261,7 @@ export const sidesProducts: Product[] = [
     name: 'Seafood Mac & Cheese',
     description: 'Decadent mac & cheese infused with a creamy blend of premium cheeses and tender seafood, baked until bubbly with a perfectly crisp finish.',
     category: 'sides',
-    image: '/images/sides-menu.png',
+    image: '/images/sides/seafood-mac-and-cheese.jpg',
     variants: [
       { id: 'full', size: 'Full Pan', price: 16000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Pan', price: 8000, servings: 'Serves 10-15 people' }
@@ -272,7 +272,7 @@ export const sidesProducts: Product[] = [
     name: "Chef DJ's Salad",
     description: 'Delicately diced cucumbers coated in a light, creamy mustard mayo dressing with a subtle tang.',
     category: 'sides',
-    image: '/images/sides-menu.png',
+    image: '/images/sides/chef-dj-salad.jpg',
     variants: [
       { id: 'full', size: 'Full Pan', price: 11000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Pan', price: 5500, servings: 'Serves 10-15 people' }

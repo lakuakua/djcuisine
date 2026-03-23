@@ -125,7 +125,7 @@ export default function Home() {
               description="Potatoes au gratin, corn, seafood noodles, mac & cheese, and fresh salads."
               href="/category/sides"
               icon={<UtensilsCrossed className="h-12 w-12" />}
-              image="/images/sides-menu.png"
+              image="/images/sides/potatoes-au-gratin.jpg"
             />
             <CategorySection
               title="Juices"
