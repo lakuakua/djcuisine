@@ -43,8 +43,8 @@ export function formatAddressForEasyship(address: {
   };
   
   // Only add optional fields if they have values
-  if (address.line_2) {
-    result.line_2 = address.line_2;
+  if (address.addressLine2) {
+    result.line_2 = address.addressLine2;
   }
   if (address.email) {
     result.contact_email = address.email;
