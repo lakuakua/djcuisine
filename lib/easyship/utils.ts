@@ -66,12 +66,10 @@ export function createEasyshipItemFromSpec(
   priceUsdPerUnit: number,
   containsLiquids: boolean
 ): EasyshipItem {
-  // Easyship 2024-09 API - reference product by SKU (must be pre-registered in dashboard)
-  // Also include inline dimensions in case product details are incomplete
+  // Easyship 2024-09 API - send ONLY required fields to avoid "invalid_content" error
+  // For rates API: inline dimensions + price are required
+  // SKU is optional for rates (useful for audit, but not required)
   return {
-    product: {
-      sku,
-    },
     actual_weight: poundsToKg(weightLbPerUnit),
     declared_customs_value: Math.max(0.01, priceUsdPerUnit * quantity),
     declared_currency: 'USD',
