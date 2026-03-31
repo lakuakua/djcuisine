@@ -16,6 +16,7 @@ export interface EasyshipAddress {
 }
 
 export interface EasyshipItem {
+  product?: { sku: string };
   actual_weight: number;
   declared_customs_value: number;
   declared_currency: string;
