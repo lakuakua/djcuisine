@@ -30,6 +30,7 @@ export async function POST(request: NextRequest) {
     };
 
     console.log('[shipping/quote] Received request with', items?.length ?? 0, 'items');
+    console.log('[shipping/quote] Destination:', destination?.city, destination?.state);
 
     if (!items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json({ error: 'Cart items are required' }, { status: 400 });
@@ -93,6 +94,7 @@ export async function POST(request: NextRequest) {
       error: ratesResult.error,
       isFallback: ratesResult.isFallback,
       liveAttemptError: ratesResult.liveAttemptError,
+      hasRates: !!ratesResult.rates,
     });
 
     const specsForDisplay = ratesResult.ratedParcelSpecs ?? parcelSpecs;

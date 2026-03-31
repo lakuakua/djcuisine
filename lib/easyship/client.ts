@@ -10,11 +10,19 @@ export class EasyshipClient {
   constructor() {
     const apiKey = process.env.EASYSHIP_API_KEY;
     if (!apiKey) {
+      console.error('[Easyship] EASYSHIP_API_KEY is not set');
       throw new Error('EASYSHIP_API_KEY is not set');
     }
     const cleanedApiKey = apiKey.trim();
     const isSandbox = process.env.EASYSHIP_SANDBOX_MODE === 'true';
     const baseURL = isSandbox ? EASYSHIP_SANDBOX_API_BASE_URL : EASYSHIP_API_BASE_URL;
+
+    console.log('[Easyship] Initializing client:', {
+      isSandbox,
+      baseURL,
+      apiKeyLength: cleanedApiKey.length,
+      apiKeyStart: cleanedApiKey.substring(0, 10) + '...',
+    });
 
     this.client = axios.create({
       baseURL,
