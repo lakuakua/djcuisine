@@ -29,6 +29,8 @@ export async function POST(request: NextRequest) {
       items?: CartItem[];
     };
 
+    console.log('[shipping/quote] Received request with', items?.length ?? 0, 'items');
+
     if (!items || !Array.isArray(items) || items.length === 0) {
       return NextResponse.json({ error: 'Cart items are required' }, { status: 400 });
     }
@@ -38,6 +40,25 @@ export async function POST(request: NextRequest) {
         { error: 'Destination city, state, and postal code are required' },
         { status: 400 }
       );
+    }
+
+    // Validate all items have required properties
+    for (let i = 0; i < items.length; i++) {
+      const item = items[i];
+      if (!item.product || !item.selectedVariant) {
+        console.error(`[shipping/quote] Item ${i} missing product or selectedVariant:`, item);
+        return NextResponse.json(
+          { error: `Item ${i + 1} is missing required product or variant data` },
+          { status: 400 }
+        );
+      }
+      if (typeof item.quantity !== 'number' || item.quantity <= 0) {
+        console.error(`[shipping/quote] Item ${i} has invalid quantity:`, item.quantity);
+        return NextResponse.json(
+          { error: `Item ${i + 1} has invalid quantity` },
+          { status: 400 }
+        );
+      }
     }
 
     for (const item of items) {
@@ -64,7 +85,15 @@ export async function POST(request: NextRequest) {
 
     const cartItems = items as CartItem[];
     const parcelSpecs = buildPirateShipParcelsForRates(cartItems);
+    console.log('[shipping/quote] Built parcel specs:', JSON.stringify(parcelSpecs, null, 2));
+    
     const ratesResult = await getRatesWithFallback(fullDestination, cartItems);
+    console.log('[shipping/quote] Got rates result:', {
+      success: ratesResult.success,
+      error: ratesResult.error,
+      isFallback: ratesResult.isFallback,
+      liveAttemptError: ratesResult.liveAttemptError,
+    });
 
     const specsForDisplay = ratesResult.ratedParcelSpecs ?? parcelSpecs;
     const quoteBoxes = parcelSpecsToQuoteBoxLines(specsForDisplay);
