@@ -1,3 +1,5 @@
+import { Resend } from 'resend';
+
 export interface SendEmailParams {
   to: string;
   subject: string;
@@ -7,45 +9,52 @@ export interface SendEmailParams {
 }
 
 /**
- * Resend HTTP API. Set RESEND_API_KEY and ORDER_EMAIL_FROM.
+ * Initialize Resend client with API key from environment.
+ * Set RESEND_API_KEY environment variable.
+ * See: https://resend.com/docs/send-with-nodejs#1-install
+ */
+function getResendClient(): Resend {
+  const apiKey = process.env.RESEND_API_KEY?.trim();
+  if (!apiKey) {
+    throw new Error('[Email] RESEND_API_KEY environment variable is not set');
+  }
+  return new Resend(apiKey);
+}
+
+/**
+ * Send email using Resend SDK.
+ * Follows Resend best practices: https://resend.com/docs/send-with-nodejs
  */
 export async function sendResendEmail(params: SendEmailParams): Promise<boolean> {
-  const apiKey = process.env.RESEND_API_KEY?.trim();
-  const from = process.env.ORDER_EMAIL_FROM?.trim();
-  if (!apiKey || !from) {
-    console.warn('[Email] RESEND_API_KEY or ORDER_EMAIL_FROM missing');
+  try {
+    const resend = getResendClient();
+    const from = process.env.ORDER_EMAIL_FROM?.trim();
+    
+    if (!from) {
+      console.warn('[Email] ORDER_EMAIL_FROM environment variable is not set');
+      return false;
+    }
+
+    const { data, error } = await resend.emails.send({
+      from,
+      to: params.to,
+      subject: params.subject,
+      html: params.html || params.text,
+      text: params.text,
+      ...(params.idempotencyKey && { idempotencyKey: params.idempotencyKey }),
+    });
+
+    if (error) {
+      console.error('[Email] Resend error:', error);
+      return false;
+    }
+
+    console.log(`[Email] Sent successfully. Message ID: ${data?.id}`);
+    return true;
+  } catch (error) {
+    console.error('[Email] Exception:', error);
     return false;
   }
-
-  const headers: Record<string, string> = {
-    Authorization: `Bearer ${apiKey}`,
-    'Content-Type': 'application/json',
-  };
-  if (params.idempotencyKey) {
-    headers['Idempotency-Key'] = params.idempotencyKey;
-  }
-
-  const body: Record<string, unknown> = {
-    from,
-    to: [params.to],
-    subject: params.subject,
-    text: params.text,
-  };
-  if (params.html) {
-    body.html = params.html;
-  }
-
-  const res = await fetch('https://api.resend.com/emails', {
-    method: 'POST',
-    headers,
-    body: JSON.stringify(body),
-  });
-
-  if (!res.ok) {
-    console.error('[Email] Resend error', res.status, await res.text());
-    return false;
-  }
-  return true;
 }
 
 /**
