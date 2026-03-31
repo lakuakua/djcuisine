@@ -169,7 +169,10 @@ export async function getRates(
       insurance: { is_insured: false },
       incoterms: 'DDU',
     };
-    console.log('[Easyship] Posting rates request:', JSON.stringify(rateRequest, null, 2));
+    
+    // Log full request for debugging
+    console.log('[Easyship] Full rate request:', JSON.stringify(rateRequest, null, 2));
+    
     const response = await http.post<EasyshipRatesResponse>('/rates', rateRequest);
     return response.data;
   };
@@ -281,19 +284,13 @@ export async function getRatesWithFallback(
     return getFallbackRates(destination.state, items);
   }
 
-  // LIVE RATES ONLY - NO FALLBACK
+  // Try live rates first
   const live = await getRates(destination, items);
   if (live.success && live.rates) {
     return live;
   }
 
-  // If live rates fail, ALWAYS fall back to zone-based rates
+  // If live rates fail, return the error (don't auto-fallback)
   console.error('[Easyship] Live rates failed:', live.error);
-  console.warn('[Easyship] Falling back to zone-based rates');
-  const { getFallbackRates } = await import('./fallback');
-  const fallbackResult = await getFallbackRates(destination.state, items);
-  return {
-    ...fallbackResult,
-    liveAttemptError: live.error,
-  };
+  return live;
 }

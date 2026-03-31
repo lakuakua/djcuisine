@@ -57,7 +57,7 @@ export function formatAddressForEasyship(address: {
 }
 
 export function createEasyshipItemFromSpec(
-  _sku: string,
+  sku: string,
   quantity: number,
   weightLbPerUnit: number,
   lengthInches: number,
@@ -66,7 +66,9 @@ export function createEasyshipItemFromSpec(
   priceUsdPerUnit: number,
   containsLiquids: boolean
 ): EasyshipItem {
-  return {
+  // Easyship 2024-09 API requires complete item data inline - do NOT rely on pre-registered SKUs
+  // Some fields like sku/description are metadata but must be included for the API to accept the request
+  const item: EasyshipItem = {
     actual_weight: poundsToKg(weightLbPerUnit),
     declared_customs_value: Math.max(0.01, priceUsdPerUnit * quantity),
     declared_currency: 'USD',
@@ -80,6 +82,11 @@ export function createEasyshipItemFromSpec(
     category: EASYSHIP_ITEM_CATEGORY_SLUG.DRY_FOOD_SUPPLEMENTS,
     contains_liquids: containsLiquids,
   };
+  
+  // Add SKU as metadata (not required but helps with traceability)
+  (item as any).sku = sku;
+  
+  return item;
 }
 
 type EasyshipRateLike = {
