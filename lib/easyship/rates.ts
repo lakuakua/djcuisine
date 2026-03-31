@@ -290,7 +290,13 @@ export async function getRatesWithFallback(
     return live;
   }
 
-  // If live rates fail, return the error (don't auto-fallback)
+  // If live rates fail, automatically fall back to zone-based rates for production stability
   console.error('[Easyship] Live rates failed:', live.error);
-  return live;
+  console.warn('[Easyship] Falling back to zone-based rates');
+  const { getFallbackRates } = await import('./fallback');
+  const fallbackResult = await getFallbackRates(destination.state, items);
+  return {
+    ...fallbackResult,
+    liveAttemptError: live.error,
+  };
 }
