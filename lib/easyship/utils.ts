@@ -32,18 +32,28 @@ export function formatAddressForEasyship(address: {
   phone: string;
   email?: string;
 }): EasyshipAddress {
-  return {
+  const result: EasyshipAddress = {
     line_1: address.addressLine1,
-    line_2: address.addressLine2 || undefined,
     city: address.city,
     state: address.state,
     postal_code: address.postalCode,
     country_alpha2: 'US',
     contact_name: `${address.firstName} ${address.lastName}`,
     contact_phone: toE164US(address.phone),
-    contact_email: address.email,
-    company_name: address.company || undefined,
   };
+  
+  // Only add optional fields if they have values
+  if (address.line_2) {
+    result.line_2 = address.line_2;
+  }
+  if (address.email) {
+    result.contact_email = address.email;
+  }
+  if (address.company) {
+    result.company_name = address.company;
+  }
+  
+  return result;
 }
 
 export function createEasyshipItemFromSpec(

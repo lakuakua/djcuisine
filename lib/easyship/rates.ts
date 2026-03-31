@@ -169,6 +169,7 @@ export async function getRates(
       insurance: { is_insured: false },
       incoterms: 'DDU',
     };
+    console.log('[Easyship] Posting rates request:', JSON.stringify(rateRequest, null, 2));
     const response = await http.post<EasyshipRatesResponse>('/rates', rateRequest);
     return response.data;
   };
