@@ -85,11 +85,12 @@ function parseEasyshipAxiosMessage(error: unknown): string {
 }
 
 /**
- * One parcel with multiple line items (matches Easyship 2024-09 + working geestore flow).
- * Sending multiple top-level `parcels` often returns HTTP 422.
- * `contains_liquids` must be false with `dry_food_supplements` or Easyship rejects the request.
+ * Build Easyship items using product SKUs (not inline data).
+ * Products must be pre-registered in Easyship dashboard with matching SKUs.
  */
 function parcelsFromSpecs(specs: PirateShipParcelSpec[]) {
+  // For Easyship 2024-09 rates API, we send inline item data (not product references)
+  // But now that products are registered, we include the dimensions inline
   const items = specs.map((p) =>
     createEasyshipItemFromSpec(
       p.sku,
