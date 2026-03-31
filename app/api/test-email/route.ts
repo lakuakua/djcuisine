@@ -37,6 +37,34 @@ export async function POST(request: NextRequest) {
       carrier: 'UPS',
       estimatedDeliveryDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       orderDate: new Date().toISOString(),
+      items: [
+        {
+          name: 'Big Tray - Jollof Rice & Chicken',
+          quantity: 1,
+          unitPrice: 7500,
+          totalPrice: 7500,
+        },
+        {
+          name: 'Half Tray - Beef Pepper Soup',
+          quantity: 2,
+          unitPrice: 3500,
+          totalPrice: 7000,
+        },
+        {
+          name: 'Fresh Juice - Pineapple Ginger (1 Gallon)',
+          quantity: 1,
+          unitPrice: 2000,
+          totalPrice: 2000,
+        },
+        {
+          name: 'Plate - Grilled Fish with Plantain',
+          quantity: 3,
+          unitPrice: 1200,
+          totalPrice: 3600,
+        },
+      ],
+      handlingFee: 500,
+      shippingCost: 2750,
       shippingAddress: {
         name: 'Test Customer',
         line1: '3043 Narrow Stream Way',
