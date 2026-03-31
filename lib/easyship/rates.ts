@@ -1,3 +1,4 @@
+// Easyship 2024-09 rates API with sandbox FedEx support
 import { AxiosError } from 'axios';
 import type { CartItem } from '@/types';
 import { SHIPPING_ORIGIN, SHIPPING_SERVICES } from '@/lib/constants/shipping';
