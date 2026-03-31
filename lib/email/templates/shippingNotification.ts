@@ -10,7 +10,7 @@ interface OrderItem {
   totalPrice: number;
 }
 
-interface ShippingNotificationData {
+export interface ShippingNotificationData {
   orderNumber: string;
   customerName?: string;
   orderTotal: number;
@@ -96,31 +96,6 @@ ${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddre
         <p>Great news! Your order <strong>${data.orderNumber}</strong> has been shipped and is on its way to you.</p>
       </div>
 
-      ${
-        data.trackingNumber
-          ? `
-      <div class="tracking-box">
-        <div style="color: #3b82f6; font-weight: 600;">Your Tracking Number</div>
-        <div class="tracking-number">${data.trackingNumber}</div>
-        ${
-          data.carrier
-            ? `<div style="color: #666; font-size: 14px; margin-top: 5px;">Via ${data.carrier}</div>`
-            : ''
-        }
-        <div class="tracking-link">
-          <a href="https://www.${data.carrier?.toLowerCase().includes('ups') ? 'ups' : 'usps'}.com" target="_blank">
-            Track Your Package
-          </a>
-        </div>
-      </div>
-      `
-          : ''
-      }
-
-      <div class="highlight-box">
-        <strong>⏰ Important:</strong> Please plan to be available to receive your package. Our BBQ items need to be stored in the refrigerator/freezer immediately upon arrival.
-      </div>
-
       <div class="section">
         <div class="section-title">📋 Items Ordered</div>
         <table class="order-items-table">
@@ -162,6 +137,31 @@ ${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddre
             <td class="summary-value">${formatMoney(data.orderTotal)}</td>
           </tr>
         </table>
+      </div>
+
+      ${
+        data.trackingNumber
+          ? `
+      <div class="tracking-box">
+        <div style="color: #3b82f6; font-weight: 600;">Your Tracking Number</div>
+        <div class="tracking-number">${data.trackingNumber}</div>
+        ${
+          data.carrier
+            ? `<div style="color: #666; font-size: 14px; margin-top: 5px;">Via ${data.carrier}</div>`
+            : ''
+        }
+        <div class="tracking-link">
+          <a href="https://www.${data.carrier?.toLowerCase().includes('ups') ? 'ups' : 'usps'}.com" target="_blank">
+            Track Your Package
+          </a>
+        </div>
+      </div>
+      `
+          : ''
+      }
+
+      <div class="highlight-box">
+        <strong>⏰ Important:</strong> Please plan to be available to receive your package. Our BBQ items need to be stored in the refrigerator/freezer immediately upon arrival.
       </div>
 
       <div class="section">

@@ -66,6 +66,10 @@ export async function sendShippingNotificationEmail(params: {
   customerName?: string;
   orderTotal: number;
   currency: string;
+  items?: Array<{ name: string; quantity: number; unitPrice: number; totalPrice: number }>;
+  handlingFee?: number;
+  shippingCost?: number;
+  tax?: number;
   shippingAddress?: {
     name?: string;
     line1?: string;
