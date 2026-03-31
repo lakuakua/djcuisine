@@ -1,4 +1,4 @@
-// Easyship 2024-09 rates API with sandbox FedEx support
+// Production Easyship API - rates working with real UPS pricing!
 import { AxiosError } from 'axios';
 import type { CartItem } from '@/types';
 import { SHIPPING_ORIGIN, SHIPPING_SERVICES } from '@/lib/constants/shipping';
