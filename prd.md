@@ -132,14 +132,12 @@ This PRD will be used directly in **Cursor** to guide implementation.
 ### Category 8: Juices (DJCUISINE JUICES)
 
 #### Zobo
-- Gallon – $35
-- Half Gallon – $18
-- 16 Ounce – $6
+- Sizes: Gallon – $35, Half Gallon – $18, 16 oz – $6, 32 oz bottle – $10
+- Flavor (required): sweetened or unsweetened (applies to any size)
 
 #### Pineapple Ginger
-- Gallon – $35
-- Half Gallon – $18
-- 16 Ounce – $6
+- Sizes: Gallon – $35, Half Gallon – $18, 16 oz – $6, 32 oz bottle – $10
+- Flavor (required): sweetened or unsweetened (applies to any size)
 
 ---
 

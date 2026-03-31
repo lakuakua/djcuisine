@@ -16,23 +16,21 @@ export default function Home() {
       <Header onCartOpen={() => setCartOpen(true)} />
       <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
-      {/* Hero Section - Modern Clean Layout */}
-      <section className="relative min-h-[600px] lg:min-h-[700px] flex items-center overflow-hidden">
-        {/* Lamb Background Image */}
-        <div className="absolute inset-0">
+      <section className="relative isolate min-h-[600px] lg:min-h-[700px] flex items-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
           <Image
             src="/images/grilled lamb.jpg"
             alt="Grilled Lamb"
             fill
             className="object-cover"
+            sizes="100vw"
             priority
           />
           <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/25 lg:bg-gradient-to-r lg:from-black/75 lg:via-black/45 lg:to-black/10" />
         </div>
-        
-        <div className="relative w-full px-4 sm:px-6 lg:px-8 py-16">
+
+        <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 py-16">
           <div className="max-w-xl mx-auto lg:mx-0 lg:ml-0 text-center lg:text-left">
-            {/* Main Heading */}
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-gold-400/95 drop-shadow">
               Houston · Catering · Nationwide shipping
             </p>
@@ -43,7 +41,6 @@ export default function Home() {
               Order trays, plates, sides, and fresh juices for your next event—crafted with care, packed for delivery.
             </p>
 
-            {/* CTA Buttons */}
             <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
               <a
                 href="#categories"
@@ -63,10 +60,9 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Categories Section */}
       <section
         id="categories"
-        className="border-t border-red-950/40 bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950 py-16 px-4 sm:px-6 lg:px-8"
+        className="relative z-10 border-t border-red-950/40 bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950 py-16 px-4 sm:px-6 lg:px-8"
       >
         <div className="mx-auto max-w-7xl">
           <div className="mb-12 text-center">
@@ -131,7 +127,7 @@ export default function Home() {
             />
             <CategorySection
               title="Juices"
-              description="Zobo, Pineapple Ginger, and Watermelon, Ginger & Pineapple."
+              description="Zobo and Pineapple Ginger—pick size and sweetened or unsweetened. Tropical blends and fresh gallon juices."
               href="/category/juices"
               image="/images/juices/zobo.png"
               variant="juice"
@@ -140,8 +136,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-stone-800 via-stone-900 to-stone-800">
+      <section className="relative z-10 py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-stone-800 via-stone-900 to-stone-800">
         <div className="max-w-4xl mx-auto text-center">
           <h2 className="text-5xl font-bold bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent mb-6 drop-shadow-lg">
             Why Choose DJCUISINE?
@@ -160,8 +155,8 @@ export default function Home() {
               <p className="text-orange-200 text-lg font-semibold">Order Anytime</p>
             </div>
           </div>
-          
-          <a 
+
+          <a
             href="/about"
             className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white px-8 py-3 rounded-lg font-bold text-lg transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105"
           >
@@ -171,7 +166,6 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   );

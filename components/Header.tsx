@@ -3,7 +3,7 @@
 import Link from 'next/link';
 import { useCartStore } from '@/store/cartStore';
 import { ShoppingCart, Menu, X } from 'lucide-react';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 interface HeaderProps {
@@ -12,7 +12,13 @@ interface HeaderProps {
 
 export default function Header({ onCartOpen }: HeaderProps) {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
+  /** Avoid hydration mismatch: persisted cart count differs server vs client until rehydrated. */
+  const [mounted, setMounted] = useState(false);
   const itemCount = useCartStore((state) => state.getItemCount());
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const navigation = [
     { name: 'Home', href: '/' },
@@ -62,7 +68,7 @@ export default function Header({ onCartOpen }: HeaderProps) {
               aria-label="Shopping cart"
             >
               <ShoppingCart className="h-6 w-6" />
-              {itemCount > 0 && (
+              {mounted && itemCount > 0 && (
                 <span className="absolute -top-1 -right-1 bg-gradient-to-r from-red-500 to-orange-500 text-white text-xs font-bold rounded-full h-5 w-5 flex items-center justify-center shadow-lg">
                   {itemCount}
                 </span>

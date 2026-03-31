@@ -638,16 +638,24 @@ Next.js 14 ecommerce application for **DJ Cuisine**, a Houston-based African & I
 
 8. **Price Storage**: Always store prices in cents (integers) to avoid floating-point arithmetic errors. Convert to dollars only for display using `formatPrice()` utility. ✅
 
+9. **Next.js dev white page / HTTP 500 / `Cannot find module './NNN.js'`**: Corrupted `.next` cache (stale webpack chunks). Same fix: stop all `next dev` processes, `rm -rf .next`, then `npm run dev` once. Also applies to "missing required error components" and similar dev-only failures—confirm with `npm run build` if unsure. ✅
+
+10. **Restart `npm run dev` after major corrections**: After substantive fixes to API routes, Easyship/Stripe, Prisma, or `.env.local`, always restart the dev server (stop the process on the app port, then `npm run dev` again) so handlers and `process.env` reload; reduces stale chunk/runtime issues. ✅
+
+11. **Stripe Checkout webhooks**: Verify with `stripe.webhooks.constructEvent(rawBody, signature, STRIPE_WEBHOOK_SECRET)` — use `await request.text()` for the raw body, not `request.json()`. Idempotent handling: `payment_intent.metadata.webhook_processed` after `checkout.session.completed` processing. Product images in Checkout Session must be **absolute** URLs (`NEXT_PUBLIC_APP_URL` + path). ✅
+
+12. **Prisma 7 vs `datasource url`**: Prisma 7 removes `url` from `schema.prisma` in favor of `prisma.config.ts`. For this stack (Next 14 + standard Prisma workflow), **pin `prisma` and `@prisma/client` to 5.22.x** unless you migrate to the Prisma 7 config + client setup. ✅
+
 ### Phase 9 Lessons (Easyship Integration - To Be Documented):
-9. **Easyship Package Specs**: Define exact package dimensions for each product type before integration. Create package presets in Easyship dashboard first, then map by ID in code.
+11. **Easyship Package Specs**: Define exact package dimensions for each product type before integration. Create package presets in Easyship dashboard first, then map by ID in code.
 
-10. **Rate Fetch Fallbacks**: Always implement fallback shipping rates in case Easyship API is unavailable. Calculate zone-based flat rates as backup.
+12. **Rate Fetch Fallbacks**: Always implement fallback shipping rates in case Easyship API is unavailable. Calculate zone-based flat rates as backup.
 
-11. **Perishable Shipping**: For food items, consider expedited shipping options and temperature control. Add clear delivery timeline expectations.
+13. **Perishable Shipping**: For food items, consider expedited shipping options and temperature control. Add clear delivery timeline expectations.
 
-12. **Shipment Timing**: Create shipment labels immediately after successful payment to ensure fastest delivery. Don't wait for manual processing.
+14. **Shipment Timing**: Create shipment labels immediately after successful payment to ensure fastest delivery. Don't wait for manual processing.
 
-13. **Weight Calculations**: Account for packaging weight (box, insulation, ice packs) in addition to product weight for accurate shipping costs.
+15. **Weight Calculations**: Account for packaging weight (box, insulation, ice packs) in addition to product weight for accurate shipping costs.
 
 ---
 

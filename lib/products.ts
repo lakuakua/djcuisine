@@ -285,40 +285,100 @@ export const sidesProducts: Product[] = [
   }
 ];
 
-// CATEGORY 9: JUICES (see prd.md) — Zobo & Pineapple Ginger: gallon / half / 16oz; blend: gallon only
+// CATEGORY 9: JUICES — prd.md § Category 8 (Zobo, Pineapple Ginger) + § Category 9 (gallon-only blends)
+const JUICE_PLACEHOLDER = '/images/sides-menu.png';
+
 export const juiceProducts: Product[] = [
   {
     id: 'zobo',
     name: 'Zobo',
     description:
-      'Traditional hibiscus drink with natural sweetness and health benefits. Choose sweetened or unsweetened.',
+      'Traditional hibiscus drink with natural sweetness and health benefits. Choose a size, then sweetened or unsweetened.',
     category: 'juices',
     image: '/images/juices/zobo.png',
+    requiresSweetnessChoice: true,
     variants: [
       { id: '1gal', size: '1 Gallon', price: 3500 },
       { id: 'half', size: 'Half Gallon', price: 1800 },
-      { id: '16oz', size: '16 oz', price: 600 }
+      { id: '16oz', size: '16 oz', price: 600 },
+      { id: '32oz', size: '32 oz bottle', price: 1000 }
     ]
   },
   {
     id: 'pineapple-ginger',
     name: 'Pineapple Ginger',
     description:
-      'Refreshing pineapple juice with a zesty ginger kick. Choose sweetened or unsweetened.',
+      'Refreshing pineapple juice with a zesty ginger kick. Choose a size, then sweetened or unsweetened.',
     category: 'juices',
     image: '/images/juices/pineapple-ginger.png',
+    requiresSweetnessChoice: true,
     variants: [
       { id: '1gal', size: '1 Gallon', price: 3500 },
       { id: 'half', size: 'Half Gallon', price: 1800 },
-      { id: '16oz', size: '16 oz', price: 600 }
+      { id: '16oz', size: '16 oz', price: 600 },
+      { id: '32oz', size: '32 oz bottle', price: 1000 }
     ]
   },
   {
     id: 'watermelon-ginger-pineapple',
     name: 'Watermelon, Ginger & Pineapple',
-    description: 'Tropical blend of watermelon, ginger, and pineapple—refreshing and healthy. Gallon size.',
+    description: 'Tropical blend of watermelon, ginger, and pineapple—refreshing and healthy.',
     category: 'juices',
     image: '/images/juices/watermelon-ginger-pineapple.png',
+    isSingleSize: true,
+    variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
+  },
+  {
+    id: 'mango',
+    name: 'Mango',
+    description: 'Pure, sweet mango juice made from ripe, fresh mangoes.',
+    category: 'juices',
+    image: JUICE_PLACEHOLDER,
+    isSingleSize: true,
+    variants: [{ id: '1gal', size: '1 Gallon', price: 4500 }]
+  },
+  {
+    id: 'orange',
+    name: 'Orange',
+    description: 'Freshly squeezed orange juice, packed with vitamin C.',
+    category: 'juices',
+    image: JUICE_PLACEHOLDER,
+    isSingleSize: true,
+    variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
+  },
+  {
+    id: 'watermelon',
+    name: 'Watermelon',
+    description: 'Pure watermelon juice, naturally sweet and hydrating.',
+    category: 'juices',
+    image: JUICE_PLACEHOLDER,
+    isSingleSize: true,
+    variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
+  },
+  {
+    id: 'mango-mandarin-pineapple',
+    name: 'Mango Mandarin & Pineapple',
+    description: 'Tropical fusion of mango, mandarin, and pineapple—a taste of paradise.',
+    category: 'juices',
+    image: JUICE_PLACEHOLDER,
+    isSingleSize: true,
+    variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
+  },
+  {
+    id: 'ginger-lemon-orange-pineapple',
+    name: 'Ginger, Lemon, Orange & Pineapple',
+    description: 'Zesty citrus blend with a healthy ginger twist—immune booster.',
+    category: 'juices',
+    image: JUICE_PLACEHOLDER,
+    isSingleSize: true,
+    variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
+  },
+  {
+    id: 'carrot-apple-orange-ginger',
+    name: 'Carrot, Apple, Orange & Ginger',
+    description: 'Healthy blend of carrot, apple, orange, and ginger—packed with nutrients.',
+    category: 'juices',
+    image: JUICE_PLACEHOLDER,
     isSingleSize: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
   }

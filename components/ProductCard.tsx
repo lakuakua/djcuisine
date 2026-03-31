@@ -1,6 +1,6 @@
 'use client';
 
-import { Product } from '@/types';
+import { JuiceSweetness, Product } from '@/types';
 import { formatPrice } from '@/lib/utils';
 import { useCartStore } from '@/store/cartStore';
 import { ShoppingCart } from 'lucide-react';
@@ -14,6 +14,7 @@ interface ProductCardProps {
 export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem);
   const [selectedVariantId, setSelectedVariantId] = useState(product.variants?.[0]?.id || '');
+  const [juiceSweetness, setJuiceSweetness] = useState<JuiceSweetness | ''>('');
   const [isAdding, setIsAdding] = useState(false);
 
   // Ensure product has variants
@@ -30,18 +31,26 @@ export default function ProductCard({ product }: ProductCardProps) {
   const isJuice = product.category === 'juices';
 
   const handleAddToCart = () => {
-    console.log('Add to cart clicked', { product: product.name, selectedVariant });
-    if (selectedVariant) {
-      setIsAdding(true);
-      addItem(product, selectedVariant);
-      console.log('Item added successfully');
-      
-      // Visual feedback
-      setTimeout(() => setIsAdding(false), 500);
-    } else {
+    if (!selectedVariant) {
       console.error('No variant selected!');
+      return;
     }
+    if (product.requiresSweetnessChoice && !juiceSweetness) {
+      return;
+    }
+    setIsAdding(true);
+    if (product.requiresSweetnessChoice && juiceSweetness) {
+      addItem(product, selectedVariant, 1, juiceSweetness);
+    } else {
+      addItem(product, selectedVariant);
+    }
+    setTimeout(() => setIsAdding(false), 500);
   };
+
+  const needsFlavor = Boolean(product.requiresSweetnessChoice);
+  const canAdd =
+    selectedVariant &&
+    (!needsFlavor || (juiceSweetness === 'sweetened' || juiceSweetness === 'unsweetened'));
 
   return (
     <div className="overflow-hidden rounded-xl border border-red-900/35 bg-gradient-to-br from-stone-950 to-black shadow-lg shadow-black/30 ring-1 ring-white/5 transition-all duration-300 hover:border-gold-600/40 hover:shadow-xl hover:shadow-gold-900/10 hover:ring-gold-500/15">
@@ -114,6 +123,27 @@ export default function ProductCard({ product }: ProductCardProps) {
           </div>
         )}
 
+        {needsFlavor && (
+          <div className="mb-4">
+            <label className="mb-1.5 block text-xs font-semibold text-stone-400">
+              Flavor <span className="text-red-400">*</span>
+            </label>
+            <select
+              value={juiceSweetness}
+              onChange={(e) =>
+                setJuiceSweetness((e.target.value as JuiceSweetness | '') || '')
+              }
+              required
+              aria-required="true"
+              className="w-full rounded-lg border border-red-900/40 bg-stone-950 px-3 py-2.5 text-sm text-stone-200 transition-all focus:border-gold-600/60 focus:outline-none focus:ring-2 focus:ring-gold-500/25"
+            >
+              <option value="">Choose sweetened or unsweetened</option>
+              <option value="unsweetened">Unsweetened</option>
+              <option value="sweetened">Sweetened</option>
+            </select>
+          </div>
+        )}
+
         {/* Single size indicator */}
         {product.isSingleSize && (
           <div className="mb-3">
@@ -130,12 +160,12 @@ export default function ProductCard({ product }: ProductCardProps) {
           </span>
           <button
             onClick={handleAddToCart}
-            disabled={isAdding}
+            disabled={isAdding || !canAdd}
             className={`flex items-center space-x-2 rounded-lg px-5 py-2.5 text-sm font-bold transition-all duration-200 ${
               isAdding
                 ? 'bg-gradient-to-r from-orange-500 to-red-600 text-white shadow-md'
                 : 'bg-gradient-to-r from-red-600 to-orange-500 text-white shadow-md hover:brightness-110 active:scale-[0.98]'
-            }`}
+            } disabled:cursor-not-allowed disabled:opacity-50 disabled:hover:brightness-100`}
           >
             <ShoppingCart className="h-4 w-4" />
             <span>{isAdding ? 'Added!' : 'Add'}</span>

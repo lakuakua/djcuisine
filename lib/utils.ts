@@ -9,6 +9,11 @@ export function formatPrice(priceInCents: number): string {
   }).format(priceInCents / 100);
 }
 
+/** True for 1-gallon juice line items (includes sweetened/unsweetened labels). Used for gallon minimum rule. */
+export function isJuiceOneGallonSize(size: string): boolean {
+  return size.startsWith('1 Gallon');
+}
+
 export function formatJuiceSize(size?: string): string {
   if (!size) return '';
   

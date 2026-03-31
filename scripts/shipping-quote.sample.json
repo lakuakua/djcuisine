@@ -1,0 +1,37 @@
+{
+  "destination": {
+    "firstName": "Test",
+    "lastName": "Customer",
+    "addressLine1": "7403 Audubon Russet Dr",
+    "city": "Richmond",
+    "state": "TX",
+    "postalCode": "77403",
+    "phone": "3462800862",
+    "email": "test-quote@example.com"
+  },
+  "items": [
+    {
+      "product": {
+        "id": "chicken-leg-thighs",
+        "name": "Chicken Leg & Thighs",
+        "description": "Sample line for shipping quote test.",
+        "category": "chicken",
+        "variants": [
+          {
+            "id": "big",
+            "size": "Big Tray",
+            "price": 16000,
+            "servings": "Serves 20-30 people"
+          }
+        ]
+      },
+      "selectedVariant": {
+        "id": "big",
+        "size": "Big Tray",
+        "price": 16000,
+        "servings": "Serves 20-30 people"
+      },
+      "quantity": 1
+    }
+  ]
+}

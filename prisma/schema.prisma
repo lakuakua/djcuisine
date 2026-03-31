@@ -1,0 +1,31 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "sqlite"
+  url      = env("DATABASE_URL")
+}
+
+/// Paid Stripe Checkout orders (created from webhook).
+model Order {
+  id                      String   @id @default(cuid())
+  orderNumber             String   @unique
+  stripeCheckoutSessionId String   @unique
+  stripePaymentIntentId   String?
+  status                  String   @default("PAID") // PAID | FULFILLED | CANCELLED
+  customerEmail           String?
+  customerPhone           String?
+  amountTotalCents        Int
+  currency                String   @default("usd")
+  /// JSON: Stripe Address object or null
+  shippingJson            String?
+  /// JSON: [{ description, quantity, amountTotalCents }]
+  lineItemsJson           String
+  notificationsSentAt     DateTime?
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  @@index([createdAt])
+  @@index([stripePaymentIntentId])
+}

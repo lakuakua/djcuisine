@@ -35,7 +35,7 @@ const categoryDescriptions: Record<string, string> = {
   sides:
     "Sides per tray in full or half sizes. Potatoes au gratin, corn on the cob, stir-fried seafood noodles, seafood mac & cheese, and Chef DJ's salad.",
   juices:
-    'Zobo, Pineapple Ginger (gallon, half gallon, or 16 oz), and Watermelon, Ginger & Pineapple (gallon). Gallon orders require a minimum of 2 gallons.',
+    'Zobo and Pineapple Ginger: pick a size, then choose sweetened or unsweetened in the Flavor menu. Fresh blends (gallon): Watermelon Ginger & Pineapple, Mango, Orange, Watermelon, Mango Mandarin & Pineapple, Ginger Lemon Orange & Pineapple, and Carrot Apple Orange & Ginger. Gallon orders require a minimum of 2 gallons.',
 };
 
 interface CategoryPageClientProps {
