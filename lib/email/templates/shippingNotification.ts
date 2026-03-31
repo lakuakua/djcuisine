@@ -1,24 +1,14 @@
 /**
  * Shipping notification email template
- * Sent when order ships via Easyship
+ * Sent when order ships via Easyship (with tracking info)
  */
-
-interface OrderItem {
-  name: string;
-  quantity: number;
-  unitPrice: number;
-  totalPrice: number;
-}
 
 export interface ShippingNotificationData {
   orderNumber: string;
   customerName?: string;
-  orderTotal: number;
-  currency: string;
-  items?: OrderItem[];
-  shippingCost?: number;
-  handlingFee?: number;
-  tax?: number;
+  trackingNumber: string;
+  carrier: string;
+  estimatedDeliveryDate: string;
   shippingAddress?: {
     name?: string;
     line1?: string;
@@ -26,20 +16,9 @@ export interface ShippingNotificationData {
     state?: string;
     postal_code?: string;
   };
-  trackingNumber?: string;
-  carrier?: string;
-  estimatedDeliveryDate?: string;
-  orderDate: string;
 }
 
 export function buildShippingNotificationEmail(data: ShippingNotificationData) {
-  const formatMoney = (cents: number) => {
-    return new Intl.NumberFormat('en-US', {
-      style: 'currency',
-      currency: data.currency.toUpperCase(),
-    }).format(cents / 100);
-  };
-
   const shippingAddress = data.shippingAddress
     ? `${data.shippingAddress.name || ''}<br/>
 ${data.shippingAddress.line1 || ''}<br/>
@@ -69,20 +48,6 @@ ${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddre
     .tracking-link { display: inline-block; margin-top: 10px; }
     .tracking-link a { background-color: #3b82f6; color: white; padding: 10px 20px; text-decoration: none; border-radius: 4px; }
     .footer { text-align: center; color: #6b7280; font-size: 12px; margin-top: 30px; padding-top: 20px; border-top: 1px solid #e5e7eb; }
-    .order-items-table { width: 100%; border-collapse: collapse; margin: 15px 0; }
-    .order-items-table th { background-color: #f3f4f6; padding: 12px; text-align: left; font-weight: 600; border-bottom: 2px solid #e5e7eb; }
-    .order-items-table td { padding: 12px; border-bottom: 1px solid #e5e7eb; }
-    .order-items-table tr:last-child td { border-bottom: none; }
-    .item-name { color: #1f2937; font-weight: 500; }
-    .item-qty { text-align: center; color: #6b7280; }
-    .item-price { text-align: right; color: #1f2937; font-weight: 600; }
-    .order-summary-table { width: 100%; border-collapse: collapse; margin-top: 15px; }
-    .order-summary-table tr { border-bottom: 1px solid #e5e7eb; }
-    .order-summary-table tr:last-child { border-bottom: none; }
-    .order-summary-table td { padding: 10px 0; }
-    .summary-label { text-align: right; padding-right: 20px; color: #6b7280; }
-    .summary-value { text-align: right; font-weight: 600; color: #1f2937; }
-    .summary-total { background-color: #f3f4f6; font-weight: bold; font-size: 16px; }
   </style>
 </head>
 <body>
@@ -93,102 +58,34 @@ ${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddre
     <div class="content">
       <div class="section">
         <p style="font-size: 16px;">Hi${data.customerName ? ' ' + data.customerName : ''},</p>
-        <p>Great news! Your order has been confirmed and is being prepared for shipment.</p>
+        <p>Great news! Your order #${data.orderNumber} has been shipped and is on its way to you!</p>
       </div>
 
-      <!-- ORDER DETAILS SECTION -->
-      <div style="background-color: #f0f9ff; border: 2px solid #0284c7; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
-        <div class="section-title" style="color: #0284c7; font-size: 18px; margin-bottom: 15px;">📋 Your Order Details</div>
-        
-        <div class="section">
-          <div class="info-row">
-            <span class="label">Order Number</span>
-            <span class="value">${data.orderNumber}</span>
-          </div>
-          <div class="info-row">
-            <span class="label">Order Date</span>
-            <span class="value">${new Date(data.orderDate).toLocaleDateString()}</span>
-          </div>
-        </div>
-
-        <div class="section">
-          <div class="section-title" style="margin-top: 15px;">Items</div>
-          <table class="order-items-table">
-            <thead>
-              <tr>
-                <th>Product</th>
-                <th class="item-qty">Qty</th>
-                <th class="item-price">Price</th>
-              </tr>
-            </thead>
-            <tbody>
-              ${
-                data.items && data.items.length > 0
-                  ? data.items
-                      .map(
-                        (item) =>
-                          `<tr>
-                        <td class="item-name">${item.name}</td>
-                        <td class="item-qty">${item.quantity}</td>
-                        <td class="item-price">${formatMoney(item.totalPrice)}</td>
-                      </tr>`
-                      )
-                      .join('')
-                  : '<tr><td colspan="3" style="color: #999; text-align: center;">No items details available</td></tr>'
-              }
-            </tbody>
-          </table>
-        </div>
-
-        <div class="section">
-          <div class="section-title" style="margin-top: 15px;">Order Summary</div>
-          <table class="order-summary-table">
-            <tr>
-              <td class="summary-label">Subtotal:</td>
-              <td class="summary-value">${formatMoney(data.items ? data.items.reduce((sum, item) => sum + item.totalPrice, 0) : data.orderTotal)}</td>
-            </tr>
-            ${data.handlingFee ? `<tr><td class="summary-label">Handling Fee:</td><td class="summary-value">${formatMoney(data.handlingFee)}</td></tr>` : ''}
-            ${data.shippingCost ? `<tr><td class="summary-label">Shipping:</td><td class="summary-value">${formatMoney(data.shippingCost)}</td></tr>` : ''}
-            ${data.tax ? `<tr><td class="summary-label">Tax:</td><td class="summary-value">${formatMoney(data.tax)}</td></tr>` : ''}
-            <tr class="summary-total">
-              <td class="summary-label">Total:</td>
-              <td class="summary-value">${formatMoney(data.orderTotal)}</td>
-            </tr>
-          </table>
-        </div>
-      </div>
-
-      <!-- SHIPPING DETAILS SECTION -->
+      <!-- TRACKING INFO SECTION -->
       <div style="background-color: #eff6ff; border: 2px solid #3b82f6; padding: 20px; border-radius: 8px; margin-bottom: 25px;">
-        <div class="section-title" style="color: #3b82f6; font-size: 18px; margin-bottom: 15px;">🚚 Your Shipment</div>
+        <div class="section-title" style="color: #3b82f6; font-size: 18px; margin-bottom: 15px;">🚚 Tracking Information</div>
         
-        <p style="font-size: 16px; margin-bottom: 15px;">Great news! Your order has been shipped and is on its way to you.</p>
-
-        ${
-          data.trackingNumber
-            ? `
         <div class="tracking-box">
           <div style="color: #3b82f6; font-weight: 600; margin-bottom: 10px;">Your Tracking Number</div>
           <div class="tracking-number">${data.trackingNumber}</div>
-          ${
-            data.carrier
-              ? `<div style="color: #666; font-size: 14px; margin-top: 5px;">Via ${data.carrier}</div>`
-              : ''
-          }
+          <div style="color: #666; font-size: 14px; margin-top: 5px;">Via ${data.carrier}</div>
           <div class="tracking-link">
-            <a href="https://www.${data.carrier?.toLowerCase().includes('ups') ? 'ups' : 'usps'}.com" target="_blank">
+            <a href="https://www.${data.carrier?.toLowerCase().includes('ups') ? 'ups' : data.carrier?.toLowerCase().includes('fedex') ? 'fedex' : 'usps'}.com" target="_blank">
               Track Your Package
             </a>
           </div>
         </div>
-        `
-            : ''
-        }
 
         <div class="section" style="margin-top: 15px;">
-          <div class="section-title">Shipping Details</div>
-          ${data.carrier ? `<div class="info-row"><span class="label">Carrier</span><span class="value">${data.carrier}</span></div>` : ''}
-          ${data.estimatedDeliveryDate ? `<div class="info-row"><span class="label">Estimated Delivery</span><span class="value">${data.estimatedDeliveryDate}</span></div>` : ''}
+          <div class="section-title">Delivery Details</div>
+          <div class="info-row">
+            <span class="label">Carrier</span>
+            <span class="value">${data.carrier}</span>
+          </div>
+          <div class="info-row">
+            <span class="label">Estimated Delivery</span>
+            <span class="value">${new Date(data.estimatedDeliveryDate).toLocaleDateString()}</span>
+          </div>
         </div>
 
         <div class="section" style="margin-top: 15px;">
@@ -205,7 +102,7 @@ ${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddre
 
       <div style="margin-top: 30px; padding: 20px; background-color: #f3f4f6; border-radius: 6px;">
         <p style="margin: 0; color: #555;">
-          If you have any questions about your order, reply to this email or contact us at <strong>support@djcuisine.com</strong>
+          If you have any questions about your order or shipment, reply to this email or contact us at <strong>support@djcuisine.com</strong>
         </p>
       </div>
 
@@ -220,58 +117,21 @@ ${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddre
   `;
 
   const text = `
-Your Order Details
+📦 Your Order Has Shipped!
 ──────────────────────────────────────
 
 Hi${data.customerName ? ' ' + data.customerName : ''},
 
-Your order has been confirmed and is being prepared for shipment.
+Great news! Your order #${data.orderNumber} has been shipped and is on its way to you!
 
-ORDER INFORMATION
-Order Number: ${data.orderNumber}
-Order Date: ${new Date(data.orderDate).toLocaleDateString()}
-
-ITEMS ORDERED
-${
-  data.items && data.items.length > 0
-    ? data.items
-        .map((item) => `- ${item.name} (Qty: ${item.quantity}) ............. ${formatMoney(item.totalPrice)}`)
-        .join('\n')
-    : 'No item details available'
-}
-
-ORDER SUMMARY
-${
-  data.items
-    ? `Subtotal: ${formatMoney(data.items.reduce((sum, item) => sum + item.totalPrice, 0))}`
-    : `Subtotal: ${formatMoney(data.orderTotal)}`
-}
-${data.handlingFee ? `Handling Fee: ${formatMoney(data.handlingFee)}` : ''}
-${data.shippingCost ? `Shipping: ${formatMoney(data.shippingCost)}` : ''}
-${data.tax ? `Tax: ${formatMoney(data.tax)}` : ''}
-─────────────────────────────
-TOTAL: ${formatMoney(data.orderTotal)}
-
-════════════════════════════════════════
-
-YOUR SHIPMENT
-─────────────────────────────────────
-
-Great news! Your order has been shipped and is on its way to you.
-
-${
-  data.trackingNumber
-    ? `TRACKING INFORMATION
+TRACKING INFORMATION
+──────────────────────────────────────
 Tracking Number: ${data.trackingNumber}
-Carrier: ${data.carrier || 'Not specified'}
-`
-    : 'Tracking information will be available shortly.\n'
-}
-SHIPPING DETAILS
-${data.carrier ? `Carrier: ${data.carrier}` : ''}
-${data.estimatedDeliveryDate ? `Estimated Delivery: ${data.estimatedDeliveryDate}` : ''}
+Carrier: ${data.carrier}
+Estimated Delivery: ${new Date(data.estimatedDeliveryDate).toLocaleDateString()}
 
 SHIPPING TO
+──────────────────────────────────────
 ${data.shippingAddress ? `${data.shippingAddress.name || ''}\n${data.shippingAddress.line1 || ''}\n${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddress.postal_code || ''}` : 'Address not available'}
 
 IMPORTANT: Please plan to be available to receive your package. Our BBQ items need to be stored in the refrigerator/freezer immediately upon arrival.

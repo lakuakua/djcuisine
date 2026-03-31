@@ -64,12 +64,9 @@ export async function sendShippingNotificationEmail(params: {
   orderNumber: string;
   customerEmail: string;
   customerName?: string;
-  orderTotal: number;
-  currency: string;
-  items?: Array<{ name: string; quantity: number; unitPrice: number; totalPrice: number }>;
-  handlingFee?: number;
-  shippingCost?: number;
-  tax?: number;
+  trackingNumber: string;
+  carrier: string;
+  estimatedDeliveryDate: string;
   shippingAddress?: {
     name?: string;
     line1?: string;
@@ -77,10 +74,6 @@ export async function sendShippingNotificationEmail(params: {
     state?: string;
     postal_code?: string;
   };
-  trackingNumber?: string;
-  carrier?: string;
-  estimatedDeliveryDate?: string;
-  orderDate: string;
 }): Promise<boolean> {
   const { buildShippingNotificationEmail } = await import('./templates/shippingNotification');
   const { html, text } = buildShippingNotificationEmail(params);
@@ -91,6 +84,33 @@ export async function sendShippingNotificationEmail(params: {
     text,
     html,
     idempotencyKey: `shipping-${params.orderNumber}`,
+  });
+}
+
+/**
+ * Send order confirmation email (called immediately after payment)
+ */
+export async function sendOrderConfirmationEmail(params: {
+  orderNumber: string;
+  customerEmail: string;
+  customerName?: string;
+  orderTotal: number;
+  currency: string;
+  items?: Array<{ name: string; quantity: number; unitPrice: number; totalPrice: number }>;
+  handlingFee?: number;
+  shippingCost?: number;
+  tax?: number;
+  orderDate: string;
+}): Promise<boolean> {
+  const { buildOrderConfirmationEmail } = await import('./templates/orderConfirmation');
+  const { html, text } = buildOrderConfirmationEmail(params);
+
+  return sendResendEmail({
+    to: params.customerEmail,
+    subject: `Order Confirmed - DJ Cuisine #${params.orderNumber}`,
+    text,
+    html,
+    idempotencyKey: `order-${params.orderNumber}`,
   });
 }
 

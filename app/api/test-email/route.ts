@@ -1,5 +1,5 @@
 import { NextRequest, NextResponse } from 'next/server';
-import { sendShippingNotificationEmail, sendAdminShippingNotificationEmail } from '@/lib/email/resend';
+import { sendOrderConfirmationEmail, sendAdminShippingNotificationEmail } from '@/lib/email/resend';
 
 /**
  * Test Email Sending Endpoint
@@ -26,16 +26,13 @@ export async function POST(request: NextRequest) {
 
     console.log('[Email Test] Sending test emails for order:', orderNumber);
 
-    // Send customer email
-    const customerEmailSent = await sendShippingNotificationEmail({
+    // Send customer order confirmation email
+    const customerEmailSent = await sendOrderConfirmationEmail({
       orderNumber,
       customerEmail,
       customerName: 'Test Customer',
       orderTotal,
       currency: 'usd',
-      trackingNumber: '1Z999AA10123456784',
-      carrier: 'UPS',
-      estimatedDeliveryDate: new Date(Date.now() + 5 * 24 * 60 * 60 * 1000).toISOString().split('T')[0],
       orderDate: new Date().toISOString(),
       items: [
         {
@@ -65,13 +62,6 @@ export async function POST(request: NextRequest) {
       ],
       handlingFee: 500,
       shippingCost: 2750,
-      shippingAddress: {
-        name: 'Test Customer',
-        line1: '3043 Narrow Stream Way',
-        city: 'Katy',
-        state: 'TX',
-        postal_code: '77493',
-      },
     });
 
     // Send admin email
@@ -80,8 +70,6 @@ export async function POST(request: NextRequest) {
       customerEmail,
       orderTotal,
       currency: 'usd',
-      carrier: 'UPS',
-      trackingNumber: '1Z999AA10123456784',
     });
 
     console.log('[Email Test] Customer email:', customerEmailSent ? '✅ SENT' : '❌ FAILED');
@@ -93,7 +81,7 @@ export async function POST(request: NextRequest) {
         customerEmail: {
           sent: customerEmailSent,
           to: customerEmail,
-          type: 'Shipping Notification',
+          type: 'Order Confirmation',
         },
         adminEmail: {
           sent: adminEmailSent,
@@ -102,7 +90,7 @@ export async function POST(request: NextRequest) {
         order: {
           orderNumber,
           total: `$${(orderTotal / 100).toFixed(2)}`,
-          tracking: '1Z999AA10123456784',
+          message: 'Order confirmation sent (no tracking - shipping notification comes later)',
         },
       },
     });
