@@ -9,6 +9,7 @@ import { toAbsoluteUrl } from '@/lib/utils/absoluteUrl';
 import { getRatesWithFallback } from '@/lib/easyship/rates';
 import { selectRateByServiceName } from '@/lib/easyship/selectRate';
 import { SHIPPING_SERVICES, LOCAL_PICKUP, STATE_TO_ZONE, getShippingRate } from '@/lib/constants/shipping';
+import { SHIPPING_CONFIG } from '@/lib/shipping';
 
 const ALLOWED_SERVICES = new Set<string>([
   SHIPPING_SERVICES.UPS_GROUND,
@@ -201,6 +202,24 @@ export async function POST(request: NextRequest) {
     });
 
     const lineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = [...productLineItems];
+    const subtotalCents = validatedItems.reduce(
+      (sum, item) => sum + item.selectedVariant.price * item.quantity,
+      0
+    );
+    const taxCents = Math.round(subtotalCents * SHIPPING_CONFIG.TAX_RATE);
+    if (taxCents > 0) {
+      lineItems.push({
+        price_data: {
+          currency: 'usd',
+          product_data: {
+            name: 'Tax',
+            description: `Sales tax (${(SHIPPING_CONFIG.TAX_RATE * 100).toFixed(2)}%)`,
+          },
+          unit_amount: taxCents,
+        },
+        quantity: 1,
+      });
+    }
 
     // Add shipping line item only if not pickup
     if (shippingService !== 'Local Pickup') {
