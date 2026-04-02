@@ -8,6 +8,7 @@ import {
   estimatePirateShipPacking,
   getShippingMessage,
 } from '@/lib/shipping';
+import { getProductById } from '@/lib/products';
 import { X, Minus, Plus, ShoppingBag, Truck } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
@@ -37,9 +38,15 @@ export default function Cart({ isOpen, onClose }: CartProps) {
     items.some((item) => isJuiceOneGallonSize(item.selectedVariant.size)) &&
     gallonCount < 2;
 
+  // Check if cart contains ANY shippable products
+  const hasShippableProducts = items.some((item) => {
+    const product = getProductById(item.product.id);
+    return !product?.pickupOnly;
+  });
+
   // Calculate order totals with shipping and tax
   const subtotal = getTotal();
-  const orderCalculation = calculateOrderTotal(subtotal, false); // false = not local delivery
+  const orderCalculation = calculateOrderTotal(subtotal, !hasShippableProducts); // true = local pickup only
   const shippingMessage = getShippingMessage(subtotal);
   const piratePacking =
     items.length > 0 ? estimatePirateShipPacking(items) : null;
@@ -191,33 +198,50 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                   <span className="text-orange-200">Subtotal</span>
                   <span className="text-orange-100 font-bold">{formatPrice(subtotal)}</span>
                 </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-orange-200">Tax (8.25%)</span>
-                  <span className="text-orange-100 font-bold">{formatPrice(orderCalculation.tax)}</span>
-                </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-orange-200 flex items-center gap-1">
-                    <Truck className="h-4 w-4" />
-                    Shipping
-                  </span>
-                  <span className={orderCalculation.isFreeShipping ? 'text-orange-400 font-bold' : 'text-orange-100 font-bold'}>
-                    {orderCalculation.isFreeShipping ? 'FREE' : formatPrice(orderCalculation.shippingFee)}
-                  </span>
-                </div>
                 
-                {/* Shipping Message */}
-                {!orderCalculation.isFreeShipping && (
-                  <div className="text-xs text-center py-2 px-3 bg-red-900/30 border border-red-700/50 rounded shadow-md">
-                    <p className="text-orange-300 font-semibold">{shippingMessage}</p>
+                {/* Tax - only show if there are shippable products or pickup-only notice */}
+                {hasShippableProducts && (
+                  <div className="flex justify-between items-center text-sm">
+                    <span className="text-orange-200">Tax (8.25%)</span>
+                    <span className="text-orange-100 font-bold">{formatPrice(orderCalculation.tax)}</span>
                   </div>
                 )}
+                
+                {/* Shipping - only show if there are shippable products */}
+                {hasShippableProducts && (
+                  <>
+                    <div className="flex justify-between items-center text-sm">
+                      <span className="text-orange-200 flex items-center gap-1">
+                        <Truck className="h-4 w-4" />
+                        Shipping
+                      </span>
+                      <span className={orderCalculation.isFreeShipping ? 'text-orange-400 font-bold' : 'text-orange-100 font-bold'}>
+                        {orderCalculation.isFreeShipping ? 'FREE' : formatPrice(orderCalculation.shippingFee)}
+                      </span>
+                    </div>
+                    
+                    {/* Shipping Message */}
+                    {!orderCalculation.isFreeShipping && (
+                      <div className="text-xs text-center py-2 px-3 bg-red-900/30 border border-red-700/50 rounded shadow-md">
+                        <p className="text-orange-300 font-semibold">{shippingMessage}</p>
+                      </div>
+                    )}
 
-                {piratePacking && piratePacking.totalBoxes > 0 && (
-                  <div className="text-xs py-2 px-3 bg-stone-900/80 border border-stone-700/60 rounded text-stone-300 leading-snug">
-                    <p className="font-semibold text-orange-200/90 mb-1">
-                      Pirate Ship packing (estimate)
-                    </p>
-                    <p>{piratePacking.summaryLine}</p>
+                    {piratePacking && piratePacking.totalBoxes > 0 && (
+                      <div className="text-xs py-2 px-3 bg-stone-900/80 border border-stone-700/60 rounded text-stone-300 leading-snug">
+                        <p className="font-semibold text-orange-200/90 mb-1">
+                          Pirate Ship packing (estimate)
+                        </p>
+                        <p>{piratePacking.summaryLine}</p>
+                      </div>
+                    )}
+                  </>
+                )}
+
+                {/* Pickup-only notice */}
+                {!hasShippableProducts && (
+                  <div className="text-xs text-center py-2 px-3 bg-green-900/30 border border-green-700/50 rounded shadow-md">
+                    <p className="text-green-300 font-semibold">✓ Local Pickup Only - No shipping available for these items</p>
                   </div>
                 )}
                 
