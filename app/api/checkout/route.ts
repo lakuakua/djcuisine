@@ -238,26 +238,25 @@ export async function POST(request: NextRequest) {
       ship_line1: destination.addressLine1.slice(0, 500),
     });
 
-    const appUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://djcuisine.vercel.app').replace(/\/$/, '');
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL 
+      ? `https://${process.env.VERCEL_URL}`
+      : 'https://djcuisine.vercel.app';
+    
+    const finalAppUrl = appUrl.replace(/\/$/, '');
     
     // Validate URLs before sending to Stripe
-    if (!appUrl || !appUrl.startsWith('http')) {
+    if (!finalAppUrl || !finalAppUrl.startsWith('http')) {
+      console.error('Invalid app URL:', { NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL, VERCEL_URL: process.env.VERCEL_URL, finalAppUrl });
       return NextResponse.json(
-        { error: 'Invalid app configuration: APP_URL not properly set' },
+        { error: 'Invalid app configuration: APP_URL not properly set', debug: finalAppUrl },
         { status: 500 }
       );
     }
 
-    const successUrl = `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`;
-    const cancelUrl = `${appUrl}/checkout`;
+    const successUrl = `${finalAppUrl}/success?session_id={CHECKOUT_SESSION_ID}`;
+    const cancelUrl = `${finalAppUrl}/checkout`;
 
-    // Additional validation
-    if (!successUrl.startsWith('http') || !cancelUrl.startsWith('http')) {
-      return NextResponse.json(
-        { error: 'Invalid redirect URLs generated' },
-        { status: 500 }
-      );
-    }
+    console.log('Stripe URLs:', { successUrl, cancelUrl });
     
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
