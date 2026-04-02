@@ -237,13 +237,15 @@ export async function POST(request: NextRequest) {
       ship_line1: destination.addressLine1.slice(0, 500),
     });
 
+    const appUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://djcuisine.vercel.app').replace(/\/$/, '');
+    
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
       customer_email: email.trim(),
-      success_url: `${process.env.NEXT_PUBLIC_APP_URL}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${process.env.NEXT_PUBLIC_APP_URL}/checkout`,
+      success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url: `${appUrl}/checkout`,
       phone_number_collection: { enabled: true },
       metadata,
       payment_intent_data: {
