@@ -177,14 +177,25 @@ export async function POST(request: NextRequest) {
     };
 
     const productLineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => {
-      const abs = toAbsoluteUrl(item.product.image);
+      // Build absolute URL safely - if NEXT_PUBLIC_APP_URL is missing, skip images
+      let images: string[] = [];
+      try {
+        const abs = toAbsoluteUrl(item.product.image);
+        if (abs) {
+          images = [abs];
+        }
+      } catch (e) {
+        console.warn('Failed to build absolute URL for image:', e);
+        // Continue without image
+      }
+
       return {
         price_data: {
           currency: 'usd',
           product_data: {
             name: stripeLineName(item),
             description: `${item.product.description}${item.selectedVariant.servings ? ` - ${item.selectedVariant.servings}` : ''}`,
-            images: abs ? [abs] : [],
+            images,
           },
           unit_amount: item.selectedVariant.price,
         },
@@ -234,6 +245,8 @@ export async function POST(request: NextRequest) {
           app: 'djcuisine',
           ship_service: shippingService,
           is_pickup: shippingService === 'Local Pickup' ? 'true' : 'false',
+          ship_phone: destination.phone,
+          ship_email: destination.email,
         },
       },
     });
