@@ -3,6 +3,9 @@ export type ProductCategory = 'chicken' | 'turkey' | 'beef' | 'lamb' | 'seafood'
 /** Sweetened vs unsweetened (Zobo & Pineapple Ginger). */
 export type JuiceSweetness = 'sweetened' | 'unsweetened';
 
+/** Spice level for meat products. */
+export type SpiceLevel = 'mild' | 'spicy';
+
 export interface ProductVariant {
   id: string;
   size: string; // "Big Tray", "Half Tray", "Plate", "1 Gallon", "Half Gallon", "16oz", "Whole", "5 Sticks"
@@ -21,6 +24,10 @@ export interface Product {
   isSingleSize?: boolean;
   /** Second dropdown: sweetened vs unsweetened (mandatory when set). */
   requiresSweetnessChoice?: boolean;
+  /** Allow spice level selection (mild/spicy) for meat products. */
+  requiresSpiceLevel?: boolean;
+  /** Mark as pickup only - not eligible for shipping. */
+  pickupOnly?: boolean;
 }
 
 export interface CartItem {
@@ -29,6 +36,8 @@ export interface CartItem {
   quantity: number;
   /** Set when product.requiresSweetnessChoice (e.g. Zobo, Pineapple Ginger). */
   juiceSweetness?: JuiceSweetness;
+  /** Set when product.requiresSpiceLevel. */
+  spiceLevel?: SpiceLevel;
 }
 
 export interface Cart {

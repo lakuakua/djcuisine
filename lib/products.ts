@@ -8,6 +8,7 @@ export const chickenProducts: Product[] = [
     description: 'Succulent chicken legs and thighs, perfectly seasoned and cooked to perfection.',
     category: 'chicken',
     image: '/images/Chicken legs and thighs.png',
+    requiresSpiceLevel: true,
     variants: [
       { id: 'big', size: 'Big Tray', price: 16000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 8000, servings: 'Serves 10-15 people' },
@@ -20,6 +21,7 @@ export const chickenProducts: Product[] = [
     description: 'Crispy and flavorful chicken wings with signature seasonings.',
     category: 'chicken',
     image: '/images/grilled chicken wings.jpg',
+    requiresSpiceLevel: true,
     variants: [
       { id: 'big', size: 'Big Tray', price: 18500, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 9300, servings: 'Serves 10-15 people' },
@@ -32,6 +34,7 @@ export const chickenProducts: Product[] = [
     description: 'Premium grilled chicken breast, tender and juicy with authentic seasonings.',
     category: 'chicken',
     image: '/images/Grilled Chicken breast 2.jpg',
+    requiresSpiceLevel: true,
     variants: [
       { id: 'big', size: 'Big Tray', price: 17000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 8500, servings: 'Serves 10-15 people' }
@@ -47,6 +50,7 @@ export const turkeyProducts: Product[] = [
     description: 'Juicy smoked turkey wings with authentic flavors that fall off the bone.',
     category: 'turkey',
     image: '/images/Smoked Turkey wing.png',
+    requiresSpiceLevel: true,
     variants: [
       { id: 'big', size: 'Big Tray', price: 25000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 12500, servings: 'Serves 10-15 people' }
@@ -58,6 +62,7 @@ export const turkeyProducts: Product[] = [
     description: 'Tender, smoky turkey legs expertly prepared with traditional seasonings.',
     category: 'turkey',
     image: '/images/smoked turkey legs.jpg',
+    requiresSpiceLevel: true,
     variants: [
       { id: 'big', size: 'Big Tray', price: 22000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 11000, servings: 'Serves 10-15 people' }
@@ -73,6 +78,7 @@ export const beefProducts: Product[] = [
     description: 'Premium beef ribs, slow-cooked to perfection with rich, smoky flavor.',
     category: 'beef',
     image: '/images/beef ribs.jpg',
+    requiresSpiceLevel: true,
     variants: [
       { id: 'big', size: 'Big Tray', price: 25000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 12500, servings: 'Serves 10-15 people' },
@@ -85,6 +91,7 @@ export const beefProducts: Product[] = [
     description: 'Tender beef steak tips marinated with premium spices and grilled to perfection.',
     category: 'beef',
     image: '/images/beef steak tips.jpg',
+    requiresSpiceLevel: true,
     variants: [
       { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 15000, servings: 'Serves 10-15 people' },
@@ -97,6 +104,7 @@ export const beefProducts: Product[] = [
     description: 'Authentic beef kabobs with traditional African spices, flame-grilled to perfection.',
     category: 'beef',
     image: '/images/Beef kabob.jpg',
+    requiresSpiceLevel: true,
     variants: [
       { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 15000, servings: 'Serves 10-15 people' }
@@ -112,6 +120,7 @@ export const lambProducts: Product[] = [
     description: 'Premium lamb cuts, expertly marinated and grilled with authentic spices.',
     category: 'lamb',
     image: '/images/grilled lamb.jpg',
+    requiresSpiceLevel: true,
     variants: [
       { id: 'big', size: 'Big Tray', price: 35000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 17500, servings: 'Serves 10-15 people' },
@@ -128,6 +137,7 @@ export const seafoodProducts: Product[] = [
     description: 'Fresh grilled shrimp with signature seasoning, perfectly cooked.',
     category: 'seafood',
     image: '/images/shrimp on the stick.jpg',
+    pickupOnly: true,
     variants: [
       { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 15000, servings: 'Serves 10-15 people' },
@@ -214,6 +224,7 @@ export const sausageProducts: Product[] = [
     description: 'Five pieces of premium grilled deer meat sausage with authentic seasonings.',
     category: 'sausage',
     image: '/images/deer meat sausage 1.jpg',
+    requiresSpiceLevel: true,
     isSingleSize: true,
     variants: [
       { id: '5-pieces', size: '5 Pieces', price: 2000, servings: 'Grilled, individual serving' }
@@ -230,6 +241,7 @@ export const sidesProducts: Product[] = [
       'Silken layers of potato folded with seasoned ground beef, cream and premium cheese, slow-baked to a bubbling, golden gratin.',
     category: 'sides',
     image: '/images/sides/potatoes-au-gratin.jpg',
+    pickupOnly: true,
     variants: [
       { id: 'full', size: 'Full Tray', price: 16000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 8000, servings: 'Serves 10-15 people' }
@@ -242,6 +254,7 @@ export const sidesProducts: Product[] = [
       'Fresh corn on the cob slow-cooked in seasoned milk with traditional spices for deep, comforting flavor.',
     category: 'sides',
     image: '/images/sides/corn-on-the-cob.jpg',
+    pickupOnly: true,
     variants: [
       { id: 'full', size: 'Full Tray', price: 8500, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 4250, servings: 'Serves 10-15 people' }
@@ -254,6 +267,7 @@ export const sidesProducts: Product[] = [
       'Savory stir-fried noodles loaded with shrimp, calamari, and mussels, sautéed with vegetables and tossed in a perfectly balanced soy-based sauce.',
     category: 'sides',
     image: '/images/sides/stir-fried-seafood-noodles.jpg',
+    pickupOnly: true,
     variants: [
       { id: 'full', size: 'Full Tray', price: 20000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 10000, servings: 'Serves 10-15 people' }
@@ -266,6 +280,7 @@ export const sidesProducts: Product[] = [
       'Decadent mac & cheese infused with a creamy blend of premium cheeses and tender seafood, baked until bubbly with a perfectly crisp finish.',
     category: 'sides',
     image: '/images/sides/seafood-mac-and-cheese.jpg',
+    pickupOnly: true,
     variants: [
       { id: 'full', size: 'Full Tray', price: 16000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 8000, servings: 'Serves 10-15 people' }
@@ -278,6 +293,7 @@ export const sidesProducts: Product[] = [
       'Delicately diced cucumbers coated in a light, creamy mustard-mayo dressing with a subtle tang.',
     category: 'sides',
     image: '/images/sides/chef-dj-salad.jpg',
+    pickupOnly: true,
     variants: [
       { id: 'full', size: 'Full Tray', price: 11000, servings: 'Serves 20-30 people' },
       { id: 'half', size: 'Half Tray', price: 5500, servings: 'Serves 10-15 people' }
@@ -335,6 +351,7 @@ export const juiceProducts: Product[] = [
     category: 'juices',
     image: '/images/juices/mango.png',
     isSingleSize: true,
+    pickupOnly: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4500 }]
   },
   {
@@ -344,6 +361,7 @@ export const juiceProducts: Product[] = [
     category: 'juices',
     image: '/images/juices/orange.png',
     isSingleSize: true,
+    pickupOnly: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
   },
   {
@@ -353,6 +371,7 @@ export const juiceProducts: Product[] = [
     category: 'juices',
     image: '/images/juices/watermelon.png',
     isSingleSize: true,
+    pickupOnly: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
   },
   {
@@ -362,6 +381,7 @@ export const juiceProducts: Product[] = [
     category: 'juices',
     image: '/images/juices/mango-mandarin-pineapple.png',
     isSingleSize: true,
+    pickupOnly: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
   },
   {
@@ -371,6 +391,7 @@ export const juiceProducts: Product[] = [
     category: 'juices',
     image: '/images/juices/ginger-lemon-orange-pineapple.png',
     isSingleSize: true,
+    pickupOnly: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
   },
   {
@@ -380,6 +401,7 @@ export const juiceProducts: Product[] = [
     category: 'juices',
     image: '/images/juices/carrot-apple-orange-ginger.png',
     isSingleSize: true,
+    pickupOnly: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
   }
 ];
