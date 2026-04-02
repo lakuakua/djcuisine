@@ -92,7 +92,9 @@ export async function sendOrderEmails(params: {
 }): Promise<void> {
   const { orderNumber, session, lines, sessionId } = params;
   const { text, html } = buildOrderEmailBodies({ orderNumber, session, lines });
-  const adminTo = process.env.ADMIN_ORDER_EMAIL?.trim();
+  const adminTo =
+    process.env.ADMIN_ORDER_EMAIL?.trim() ||
+    process.env.ADMIN_EMAIL?.trim();
   const customerEmail =
     session.customer_details?.email || session.customer_email || undefined;
   const sendCustomerCopy =
