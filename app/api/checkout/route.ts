@@ -72,6 +72,12 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: 'No items in cart' }, { status: 400 });
     }
 
+    // Ensure all items have quantity (migration/fallback for cart data)
+    const validatedItems = items.map((item) => ({
+      ...item,
+      quantity: item.quantity || 1,
+    }));
+
     if (!email?.trim()) {
       return NextResponse.json({ error: 'Email is required' }, { status: 400 });
     }
@@ -90,7 +96,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    for (const item of items) {
+    for (const item of validatedItems) {
       const catalog = getProductById(item.product.id);
       if (catalog?.requiresSweetnessChoice && !item.juiceSweetness) {
         return NextResponse.json(
@@ -106,7 +112,7 @@ export async function POST(request: NextRequest) {
       }
     }
 
-    const gallonItems = items.filter((item) => isJuiceOneGallonSize(item.selectedVariant.size));
+    const gallonItems = validatedItems.filter((item) => isJuiceOneGallonSize(item.selectedVariant.size));
     const totalGallons = gallonItems.reduce((sum, item) => sum + item.quantity, 0);
 
     if (gallonItems.length > 0 && totalGallons < 2) {
@@ -154,7 +160,7 @@ export async function POST(request: NextRequest) {
       let shippingUsd = 0;
       let itemCount = 0;
 
-      for (const item of items) {
+      for (const item of validatedItems) {
         // Use the first variant's SKU as a representative
         const sku = `${item.product.id.toUpperCase()}-${item.selectedVariant.id.toUpperCase()}`;
         const service = shippingService === SHIPPING_SERVICES.UPS_GROUND ? 'ground' : 'secondDay';
@@ -176,7 +182,7 @@ export async function POST(request: NextRequest) {
       return base;
     };
 
-    const productLineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = items.map((item) => {
+    const productLineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = validatedItems.map((item) => {
       // Build absolute URL safely - if NEXT_PUBLIC_APP_URL is missing, skip images
       let images: string[] = [];
       try {
