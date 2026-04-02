@@ -31,6 +31,11 @@ export async function POST(request: NextRequest) {
   try {
     if (event.type === 'checkout.session.completed') {
       const session = event.data.object as Stripe.Checkout.Session;
+      console.log('[Stripe Webhook] checkout.session.completed', {
+        sessionId: session.id,
+        paymentIntent: typeof session.payment_intent === 'string' ? session.payment_intent : session.payment_intent?.id,
+        hasCustomerEmail: Boolean(session.customer_details?.email || session.customer_email),
+      });
       await handleCheckoutSessionCompleted(session);
     }
     return NextResponse.json({ received: true });

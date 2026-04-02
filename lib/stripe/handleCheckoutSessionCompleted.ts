@@ -53,7 +53,7 @@ export async function handleCheckoutSessionCompleted(
 
       if (isPickup && customerEmail) {
         // Send pickup confirmation email
-        await sendPickupOrderConfirmationEmail({
+        const sent = await sendPickupOrderConfirmationEmail({
           orderNumber,
           customerEmail,
           orderTotal: fullSession.amount_total ?? 0,
@@ -65,7 +65,10 @@ export async function handleCheckoutSessionCompleted(
             day: 'numeric',
           }),
         });
-        console.log('[Checkout Webhook] Sent pickup confirmation email to', customerEmail);
+        console.log('[Checkout Webhook] Pickup confirmation send result', {
+          orderNumber,
+          sent,
+        });
       } else {
         // Send regular order confirmation email
         await sendOrderEmails({
@@ -73,6 +76,9 @@ export async function handleCheckoutSessionCompleted(
           session: fullSession,
           lines,
           sessionId: fullSession.id,
+        });
+        console.log('[Checkout Webhook] Order confirmation attempted', {
+          orderNumber,
         });
       }
     } catch (e) {
