@@ -240,13 +240,32 @@ export async function POST(request: NextRequest) {
 
     const appUrl = (process.env.NEXT_PUBLIC_APP_URL || 'https://djcuisine.vercel.app').replace(/\/$/, '');
     
+    // Validate URLs before sending to Stripe
+    if (!appUrl || !appUrl.startsWith('http')) {
+      return NextResponse.json(
+        { error: 'Invalid app configuration: APP_URL not properly set' },
+        { status: 500 }
+      );
+    }
+
+    const successUrl = `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`;
+    const cancelUrl = `${appUrl}/checkout`;
+
+    // Additional validation
+    if (!successUrl.startsWith('http') || !cancelUrl.startsWith('http')) {
+      return NextResponse.json(
+        { error: 'Invalid redirect URLs generated' },
+        { status: 500 }
+      );
+    }
+    
     const session = await stripe.checkout.sessions.create({
       payment_method_types: ['card'],
       line_items: lineItems,
       mode: 'payment',
       customer_email: email.trim(),
-      success_url: `${appUrl}/success?session_id={CHECKOUT_SESSION_ID}`,
-      cancel_url: `${appUrl}/checkout`,
+      success_url: successUrl,
+      cancel_url: cancelUrl,
       phone_number_collection: { enabled: true },
       metadata,
       payment_intent_data: {
