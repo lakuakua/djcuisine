@@ -1,4 +1,5 @@
 import { Resend } from 'resend';
+import { LOCAL_PICKUP } from '@/lib/constants/shipping';
 
 export interface SendEmailParams {
   to: string;
@@ -108,11 +109,11 @@ export async function sendPickupOrderConfirmationEmail(params: {
 }): Promise<boolean> {
   const { buildPickupOrderConfirmationEmail } = await import('./templates/pickupOrderConfirmation');
   const address = params.pickupAddress || {
-    line1: '7554 Coral Terrace Drive',
-    city: 'Cypress',
-    state: 'TX',
-    postalCode: '77433',
-    phone: '(713) 555-0100',
+    line1: LOCAL_PICKUP.addressLine1,
+    city: LOCAL_PICKUP.city,
+    state: LOCAL_PICKUP.state,
+    postalCode: LOCAL_PICKUP.postalCode,
+    phone: LOCAL_PICKUP.phone,
   };
   const { html } = buildPickupOrderConfirmationEmail({
     orderNumber: params.orderNumber,
@@ -130,6 +131,66 @@ export async function sendPickupOrderConfirmationEmail(params: {
     text: `Order Confirmation\n\nOrder #${params.orderNumber}\nTotal: $${(params.orderTotal / 100).toFixed(2)}\n\nPickup Location:\n${address.line1}\n${address.city}, ${address.state} ${address.postalCode}\nPhone: ${address.phone}\n\nYou will receive another email when your order is ready for pickup.`,
     html,
     idempotencyKey: `pickup-order-${params.orderNumber}`,
+  });
+}
+
+/**
+ * Send admin notification for new pickup orders.
+ */
+export async function sendAdminOrderNotificationEmail(params: {
+  orderNumber: string;
+  customerEmail: string;
+  orderTotal: number;
+  currency: string;
+}): Promise<boolean> {
+  const adminEmail = process.env.ADMIN_EMAIL?.trim();
+  if (!adminEmail) {
+    console.warn('[Email] ADMIN_EMAIL not set, skipping admin notification');
+    return false;
+  }
+
+  const formatMoney = (cents: number) => {
+    return new Intl.NumberFormat('en-US', {
+      style: 'currency',
+      currency: params.currency.toUpperCase(),
+    }).format(cents / 100);
+  };
+
+  const text = `
+New Pickup Order
+
+Order Number: ${params.orderNumber}
+Customer Email: ${params.customerEmail}
+Order Total: ${formatMoney(params.orderTotal)}
+
+Pickup Location:
+${LOCAL_PICKUP.addressLine1}
+${LOCAL_PICKUP.city}, ${LOCAL_PICKUP.state} ${LOCAL_PICKUP.postalCode}
+Phone: ${LOCAL_PICKUP.phone}
+  `;
+
+  const html = `
+<!DOCTYPE html>
+<html>
+<body style="font-family: Arial, sans-serif; color: #333;">
+  <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
+    <h2 style="margin: 0 0 12px;">New Pickup Order</h2>
+    <p><strong>Order:</strong> ${params.orderNumber}</p>
+    <p><strong>Customer:</strong> ${params.customerEmail}</p>
+    <p><strong>Total:</strong> ${formatMoney(params.orderTotal)}</p>
+    <p><strong>Pickup:</strong> ${LOCAL_PICKUP.addressLine1}, ${LOCAL_PICKUP.city}, ${LOCAL_PICKUP.state} ${LOCAL_PICKUP.postalCode}</p>
+    <p><strong>Phone:</strong> ${LOCAL_PICKUP.phone}</p>
+  </div>
+</body>
+</html>
+  `;
+
+  return sendResendEmail({
+    to: adminEmail,
+    subject: `[Admin] New Pickup Order #${params.orderNumber}`,
+    text,
+    html,
+    idempotencyKey: `admin-pickup-${params.orderNumber}`,
   });
 }
 

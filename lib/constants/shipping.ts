@@ -17,11 +17,23 @@ export const SHIPPING_ORIGIN = {
 // Local pickup location
 export const LOCAL_PICKUP = {
   companyName: 'DJ Cuisine',
-  addressLine1: '7554 Coral Terrace Drive',
-  city: 'Cypress',
+  addressLine1:
+    process.env.DJCUISINE_PICKUP_ADDRESS_LINE1 ??
+    process.env.EASYSHIP_ORIGIN_ADDRESS_LINE1 ??
+    '7554 Coral Terrace Drive',
+  city:
+    process.env.DJCUISINE_PICKUP_CITY ??
+    process.env.EASYSHIP_ORIGIN_CITY ??
+    'Cypress',
   state: 'TX',
-  postalCode: '77433',
-  phone: '7135550100',
+  postalCode:
+    process.env.DJCUISINE_PICKUP_POSTAL_CODE ??
+    process.env.EASYSHIP_ORIGIN_POSTAL_CODE ??
+    '77433',
+  phone:
+    process.env.DJCUISINE_PICKUP_PHONE ??
+    process.env.EASYSHIP_ORIGIN_PHONE ??
+    '7135550100',
 };
 
 export const HANDLING_FEE_USD = 5; // insulation / ice packs (matches typical perishable ops)

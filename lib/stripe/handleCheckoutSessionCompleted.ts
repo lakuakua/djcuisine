@@ -2,7 +2,7 @@ import type Stripe from 'stripe';
 import { getStripe } from '@/lib/stripe/server';
 import { persistStripeOrder, type LineItemRow } from '@/lib/orders/persistStripeOrder';
 import { sendOrderEmails } from '@/lib/email/orderEmails';
-import { sendPickupOrderConfirmationEmail } from '@/lib/email/resend';
+import { sendPickupOrderConfirmationEmail, sendAdminOrderNotificationEmail } from '@/lib/email/resend';
 
 /**
  * Idempotent: sets payment_intent.metadata.webhook_processed on success path.
@@ -80,6 +80,12 @@ export async function handleCheckoutSessionCompleted(
         console.log('[Checkout Webhook] Pickup confirmation send result', {
           orderNumber,
           sent,
+        });
+        await sendAdminOrderNotificationEmail({
+          orderNumber,
+          customerEmail,
+          orderTotal: fullSession.amount_total ?? 0,
+          currency: fullSession.currency || 'usd',
         });
       } else {
         // Send regular order confirmation email

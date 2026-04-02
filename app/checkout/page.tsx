@@ -8,6 +8,7 @@ import Cart from '@/components/Cart';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice, isJuiceOneGallonSize } from '@/lib/utils';
 import { SHIPPING_CONFIG } from '@/lib/shipping';
+import { LOCAL_PICKUP } from '@/lib/constants/shipping';
 import { US_STATE_CODES } from '@/lib/usStates';
 import { getProductById } from '@/lib/products';
 import { Loader2, Truck, MapPin } from 'lucide-react';
@@ -491,7 +492,7 @@ export default function CheckoutPage() {
                 <div>
                   <p className="font-semibold text-green-300 text-sm mb-1">Local Pickup Order</p>
                   <p className="text-xs text-green-200/90">
-                    Your order is pickup only. After payment, we'll notify you when it's ready for pickup at our Cypress location.
+                    Your order is pickup only. After payment, we'll notify you when it's ready for pickup at our {LOCAL_PICKUP.city} location.
                   </p>
                 </div>
               </div>
