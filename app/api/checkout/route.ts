@@ -27,14 +27,6 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  if (!process.env.NEXT_PUBLIC_APP_URL) {
-    console.error('NEXT_PUBLIC_APP_URL is not configured');
-    return NextResponse.json(
-      { error: 'App configuration error. Please contact support.' },
-      { status: 500 }
-    );
-  }
-
   const stripe = getStripe();
   if (!stripe) {
     return NextResponse.json(
