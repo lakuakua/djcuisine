@@ -238,11 +238,11 @@ export async function POST(request: NextRequest) {
       ship_line1: destination.addressLine1.slice(0, 500),
     });
 
-    const appUrl = process.env.NEXT_PUBLIC_APP_URL || process.env.VERCEL_URL 
-      ? `https://${process.env.VERCEL_URL}`
-      : 'https://djcuisine.vercel.app';
+    const appUrl = process.env.NEXT_PUBLIC_APP_URL 
+      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null)
+      || 'https://djcuisine.vercel.app';
     
-    const finalAppUrl = appUrl.replace(/\/$/, '');
+    const finalAppUrl = String(appUrl).replace(/\/$/, '');
     
     // Validate URLs before sending to Stripe
     if (!finalAppUrl || !finalAppUrl.startsWith('http')) {
