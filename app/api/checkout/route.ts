@@ -261,11 +261,18 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ url: session.url, sessionId: session.id });
   } catch (error: unknown) {
     const err = error as { message?: string; type?: string; code?: string; statusCode?: number };
-    console.error('Checkout API: Error occurred:', error);
+    const errorMessage = err.message || String(error) || 'Internal server error';
+    console.error('Checkout API: Error occurred:', {
+      message: errorMessage,
+      type: err.type,
+      code: err.code,
+      stack: error instanceof Error ? error.stack : undefined,
+      appUrl: process.env.NEXT_PUBLIC_APP_URL,
+    });
 
     return NextResponse.json(
       {
-        error: err.message || 'Internal server error',
+        error: errorMessage,
         details: process.env.NODE_ENV === 'development' ? String(error) : undefined,
       },
       { status: 500 }
