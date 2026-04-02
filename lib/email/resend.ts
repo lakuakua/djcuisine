@@ -88,29 +88,48 @@ export async function sendShippingNotificationEmail(params: {
 }
 
 /**
- * Send order confirmation email (called immediately after payment)
+ * Send pickup order confirmation email (called immediately after payment)
  */
-export async function sendOrderConfirmationEmail(params: {
+export async function sendPickupOrderConfirmationEmail(params: {
   orderNumber: string;
   customerEmail: string;
   customerName?: string;
   orderTotal: number;
   currency: string;
   items?: Array<{ name: string; quantity: number; unitPrice: number; totalPrice: number }>;
-  handlingFee?: number;
-  shippingCost?: number;
-  tax?: number;
   orderDate: string;
+  pickupAddress?: {
+    line1: string;
+    city: string;
+    state: string;
+    postalCode: string;
+    phone: string;
+  };
 }): Promise<boolean> {
-  const { buildOrderConfirmationEmail } = await import('./templates/orderConfirmation');
-  const { html, text } = buildOrderConfirmationEmail(params);
+  const { buildPickupOrderConfirmationEmail } = await import('./templates/pickupOrderConfirmation');
+  const address = params.pickupAddress || {
+    line1: '7554 Coral Terrace Drive',
+    city: 'Cypress',
+    state: 'TX',
+    postalCode: '77433',
+    phone: '(713) 555-0100',
+  };
+  const { html } = buildPickupOrderConfirmationEmail({
+    orderNumber: params.orderNumber,
+    customerName: params.customerName,
+    orderTotal: params.orderTotal,
+    currency: params.currency,
+    items: params.items,
+    orderDate: params.orderDate,
+    pickupAddress: address,
+  });
 
   return sendResendEmail({
     to: params.customerEmail,
-    subject: `Order Confirmed - DJ Cuisine #${params.orderNumber}`,
-    text,
+    subject: `Order Confirmed - DJ Cuisine #${params.orderNumber} (Local Pickup)`,
+    text: `Order Confirmation\n\nOrder #${params.orderNumber}\nTotal: $${(params.orderTotal / 100).toFixed(2)}\n\nPickup Location:\n${address.line1}\n${address.city}, ${address.state} ${address.postalCode}\nPhone: ${address.phone}\n\nYou will receive another email when your order is ready for pickup.`,
     html,
-    idempotencyKey: `order-${params.orderNumber}`,
+    idempotencyKey: `pickup-order-${params.orderNumber}`,
   });
 }
 
