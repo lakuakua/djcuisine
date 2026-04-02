@@ -43,13 +43,13 @@ export default function ProductCard({ product }: ProductCardProps) {
       return;
     }
     setIsAdding(true);
-    addItem(
-      product,
-      selectedVariant,
-      1,
-      product.requiresSweetnessChoice ? juiceSweetness : undefined,
-      product.requiresSpiceLevel ? spiceLevel : undefined
-    );
+    const sweetness =
+      product.requiresSweetnessChoice && juiceSweetness
+        ? juiceSweetness
+        : undefined;
+    const spice =
+      product.requiresSpiceLevel && spiceLevel ? spiceLevel : undefined;
+    addItem(product, selectedVariant, 1, sweetness, spice);
     setTimeout(() => setIsAdding(false), 500);
   };
 
