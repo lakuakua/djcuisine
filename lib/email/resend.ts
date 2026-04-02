@@ -134,6 +134,33 @@ export async function sendPickupOrderConfirmationEmail(params: {
 }
 
 /**
+ * Send order confirmation email (called immediately after payment)
+ */
+export async function sendOrderConfirmationEmail(params: {
+  orderNumber: string;
+  customerEmail: string;
+  customerName?: string;
+  orderTotal: number;
+  currency: string;
+  items?: Array<{ name: string; quantity: number; unitPrice: number; totalPrice: number }>;
+  handlingFee?: number;
+  shippingCost?: number;
+  tax?: number;
+  orderDate: string;
+}): Promise<boolean> {
+  const { buildOrderConfirmationEmail } = await import('./templates/orderConfirmation');
+  const { html, text } = buildOrderConfirmationEmail(params);
+
+  return sendResendEmail({
+    to: params.customerEmail,
+    subject: `Order Confirmed - DJ Cuisine #${params.orderNumber}`,
+    text,
+    html,
+    idempotencyKey: `order-${params.orderNumber}`,
+  });
+}
+
+/**
  * Send shipping notification to admin (for monitoring)
  */
 export async function sendAdminShippingNotificationEmail(params: {
