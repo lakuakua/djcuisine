@@ -333,7 +333,7 @@ export const juiceProducts: Product[] = [
     name: 'Mango',
     description: 'Pure, sweet mango juice made from ripe, fresh mangoes.',
     category: 'juices',
-    image: JUICE_PLACEHOLDER,
+    image: '/images/juices/mango.png',
     isSingleSize: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4500 }]
   },
@@ -342,7 +342,7 @@ export const juiceProducts: Product[] = [
     name: 'Orange',
     description: 'Freshly squeezed orange juice, packed with vitamin C.',
     category: 'juices',
-    image: JUICE_PLACEHOLDER,
+    image: '/images/juices/orange.png',
     isSingleSize: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
   },
@@ -351,7 +351,7 @@ export const juiceProducts: Product[] = [
     name: 'Watermelon',
     description: 'Pure watermelon juice, naturally sweet and hydrating.',
     category: 'juices',
-    image: JUICE_PLACEHOLDER,
+    image: '/images/juices/watermelon.png',
     isSingleSize: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
   },
@@ -360,7 +360,7 @@ export const juiceProducts: Product[] = [
     name: 'Mango Mandarin & Pineapple',
     description: 'Tropical fusion of mango, mandarin, and pineapple—a taste of paradise.',
     category: 'juices',
-    image: JUICE_PLACEHOLDER,
+    image: '/images/juices/mango-mandarin-pineapple.png',
     isSingleSize: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
   },
@@ -369,7 +369,7 @@ export const juiceProducts: Product[] = [
     name: 'Ginger, Lemon, Orange & Pineapple',
     description: 'Zesty citrus blend with a healthy ginger twist—immune booster.',
     category: 'juices',
-    image: JUICE_PLACEHOLDER,
+    image: '/images/juices/ginger-lemon-orange-pineapple.png',
     isSingleSize: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
   },
@@ -378,7 +378,7 @@ export const juiceProducts: Product[] = [
     name: 'Carrot, Apple, Orange & Ginger',
     description: 'Healthy blend of carrot, apple, orange, and ginger—packed with nutrients.',
     category: 'juices',
-    image: JUICE_PLACEHOLDER,
+    image: '/images/juices/carrot-apple-orange-ginger.png',
     isSingleSize: true,
     variants: [{ id: '1gal', size: '1 Gallon', price: 4000 }]
   }
