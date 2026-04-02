@@ -13,7 +13,8 @@ export function toAbsoluteUrl(pathOrUrl: string | undefined): string | undefined
     return undefined;
   }
   
-  const base = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') ?? '';
+  const baseRaw = process.env.NEXT_PUBLIC_APP_URL ?? '';
+  const base = String(baseRaw).trim().replace(/\/$/, '');
   if (!base) return undefined;
   
   const path = pathOrUrl.startsWith('/') ? pathOrUrl : `/${pathOrUrl}`;

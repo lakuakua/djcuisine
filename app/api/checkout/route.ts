@@ -230,12 +230,13 @@ export async function POST(request: NextRequest) {
       ship_line1: destination.addressLine1.slice(0, 500),
     });
 
-    const appUrl = 
+    const appUrlRaw =
       process.env.NEXT_PUBLIC_APP_URL ||
       (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined) ||
       'https://djcuisine.vercel.app';
-    
-    const finalAppUrl = String(appUrl || 'https://djcuisine.vercel.app').replace(/\/$/, '');
+
+    const appUrl = String(appUrlRaw || 'https://djcuisine.vercel.app').trim();
+    const finalAppUrl = appUrl.replace(/\/$/, '');
     
     // Validate URLs before sending to Stripe
     if (!finalAppUrl || typeof finalAppUrl !== 'string' || !finalAppUrl.startsWith('http')) {
