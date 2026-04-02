@@ -239,14 +239,14 @@ export async function POST(request: NextRequest) {
     });
 
     const appUrl = process.env.NEXT_PUBLIC_APP_URL 
-      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : null)
+      || (process.env.VERCEL_URL ? `https://${process.env.VERCEL_URL}` : undefined)
       || 'https://djcuisine.vercel.app';
     
-    const finalAppUrl = String(appUrl).replace(/\/$/, '');
+    const finalAppUrl = (appUrl || '').replace(/\/$/, '');
     
     // Validate URLs before sending to Stripe
-    if (!finalAppUrl || !finalAppUrl.startsWith('http')) {
-      console.error('Invalid app URL:', { NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL, VERCEL_URL: process.env.VERCEL_URL, finalAppUrl });
+    if (!finalAppUrl || typeof finalAppUrl !== 'string' || !finalAppUrl.startsWith('http')) {
+      console.error('Invalid app URL:', { NEXT_PUBLIC_APP_URL: process.env.NEXT_PUBLIC_APP_URL, VERCEL_URL: process.env.VERCEL_URL, finalAppUrl, appUrl });
       return NextResponse.json(
         { error: 'Invalid app configuration: APP_URL not properly set', debug: finalAppUrl },
         { status: 500 }
