@@ -154,6 +154,7 @@ export const wholePoultryProducts: Product[] = [
     description: 'Whole rooster, perfectly smoked with authentic African spices.',
     category: 'whole-poultry',
     image: '/images/Smoked Whole Rooster.png',
+    requiresSpiceLevel: true,
     isSingleSize: true,
     variants: [
       { id: 'whole', size: 'Whole', price: 3500, servings: 'Serves 2-3 people' }
@@ -165,6 +166,7 @@ export const wholePoultryProducts: Product[] = [
     description: 'Whole guinea fowl, expertly smoked for maximum flavor.',
     category: 'whole-poultry',
     image: '/images/whole Smoked guinea fowl.png',
+    requiresSpiceLevel: true,
     isSingleSize: true,
     variants: [
       { id: 'whole', size: 'Whole', price: 4500, servings: 'Serves 2-3 people' }
@@ -176,6 +178,7 @@ export const wholePoultryProducts: Product[] = [
     description: 'Whole hen, slow-smoked to perfection with traditional seasonings.',
     category: 'whole-poultry',
     image: '/images/whole smoked hen.jpg',
+    requiresSpiceLevel: true,
     isSingleSize: true,
     variants: [
       { id: 'whole', size: 'Whole', price: 3500, servings: 'Serves 2-3 people' }
@@ -187,6 +190,7 @@ export const wholePoultryProducts: Product[] = [
     description: 'Whole rabbit, delicately smoked with traditional African seasonings.',
     category: 'whole-poultry',
     image: '/images/whole smoked rabbit.jpg',
+    requiresSpiceLevel: true,
     isSingleSize: true,
     variants: [
       { id: 'whole', size: 'Whole', price: 7000, servings: 'Serves 2-3 people' }
@@ -198,6 +202,7 @@ export const wholePoultryProducts: Product[] = [
     description: 'Whole rooster, char-grilled to perfection over open flame.',
     category: 'whole-poultry',
     image: '/images/Grilled Rooster.png',
+    requiresSpiceLevel: true,
     isSingleSize: true,
     variants: [
       { id: 'whole', size: 'Whole', price: 3500, servings: 'Serves 2-3 people' }
@@ -209,6 +214,7 @@ export const wholePoultryProducts: Product[] = [
     description: 'Whole guinea fowl, flame-grilled with signature spices.',
     category: 'whole-poultry',
     image: '/images/Grilled Guinea Fowl.png',
+    requiresSpiceLevel: true,
     isSingleSize: true,
     variants: [
       { id: 'whole', size: 'Whole', price: 4500, servings: 'Serves 2-3 people' }
