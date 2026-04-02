@@ -108,7 +108,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
               <div className="space-y-4">
                 {items.map((item) => (
                   <div
-                    key={`${item.product.id}-${item.selectedVariant.id}-${item.juiceSweetness ?? ''}`}
+                    key={`${item.product.id}-${item.selectedVariant.id}-${item.juiceSweetness ?? ''}-${item.spiceLevel ?? ''}`}
                     className="bg-gradient-to-br from-stone-900 to-black border border-red-900/40 rounded-lg p-4 shadow-md hover:shadow-red-700/30 transition-all"
                   >
                     <div className="flex justify-between items-start mb-3">
@@ -125,10 +125,20 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                             Flavor: {item.juiceSweetness}
                           </p>
                         )}
+                        {item.spiceLevel && (
+                          <p className="text-xs text-stone-400 mt-0.5 capitalize">
+                            Spice: {item.spiceLevel}
+                          </p>
+                        )}
                       </div>
                       <button
                         onClick={() =>
-                          removeItem(item.product.id, item.selectedVariant.id, item.juiceSweetness)
+                          removeItem(
+                            item.product.id,
+                            item.selectedVariant.id,
+                            item.juiceSweetness,
+                            item.spiceLevel
+                          )
                         }
                         className="text-red-400 hover:text-red-300 text-sm font-semibold"
                       >
@@ -144,7 +154,8 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                               item.product.id,
                               item.selectedVariant.id,
                               item.quantity - 1,
-                              item.juiceSweetness
+                              item.juiceSweetness,
+                              item.spiceLevel
                             )
                           }
                           className="p-1 hover:bg-red-900/30 rounded transition-colors"
@@ -161,7 +172,8 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                               item.product.id,
                               item.selectedVariant.id,
                               item.quantity + 1,
-                              item.juiceSweetness
+                              item.juiceSweetness,
+                              item.spiceLevel
                             )
                           }
                           className="p-1 hover:bg-red-900/30 rounded transition-colors"

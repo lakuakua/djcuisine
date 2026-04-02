@@ -1,20 +1,23 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
-import { Product, ProductVariant, CartItem, JuiceSweetness } from '@/types';
+import { Product, ProductVariant, CartItem, JuiceSweetness, SpiceLevel } from '@/types';
 import { isJuiceOneGallonSize } from '@/lib/utils';
 
 function lineMatches(
   item: CartItem,
   productId: string,
   variantId: string,
-  juiceSweetness?: JuiceSweetness
+  juiceSweetness?: JuiceSweetness,
+  spiceLevel?: SpiceLevel
 ): boolean {
   if (item.product.id !== productId || item.selectedVariant.id !== variantId) {
     return false;
   }
   const a = item.juiceSweetness ?? undefined;
   const b = juiceSweetness ?? undefined;
-  return a === b;
+  const s1 = item.spiceLevel ?? undefined;
+  const s2 = spiceLevel ?? undefined;
+  return a === b && s1 === s2;
 }
 
 interface CartStore {
@@ -23,14 +26,21 @@ interface CartStore {
     product: Product,
     selectedVariant: ProductVariant,
     quantity?: number,
-    juiceSweetness?: JuiceSweetness
+    juiceSweetness?: JuiceSweetness,
+    spiceLevel?: SpiceLevel
   ) => void;
-  removeItem: (productId: string, variantId: string, juiceSweetness?: JuiceSweetness) => void;
+  removeItem: (
+    productId: string,
+    variantId: string,
+    juiceSweetness?: JuiceSweetness,
+    spiceLevel?: SpiceLevel
+  ) => void;
   updateQuantity: (
     productId: string,
     variantId: string,
     quantity: number,
-    juiceSweetness?: JuiceSweetness
+    juiceSweetness?: JuiceSweetness,
+    spiceLevel?: SpiceLevel
   ) => void;
   clearCart: () => void;
   getTotal: () => number;
@@ -43,20 +53,23 @@ export const useCartStore = create<CartStore>()(
     (set, get) => ({
       items: [],
 
-      addItem: (product, selectedVariant, quantity = 1, juiceSweetness) => {
+      addItem: (product, selectedVariant, quantity = 1, juiceSweetness, spiceLevel) => {
         if (product.requiresSweetnessChoice && !juiceSweetness) {
+          return;
+        }
+        if (product.requiresSpiceLevel && !spiceLevel) {
           return;
         }
 
         set((state) => {
           const existingItem = state.items.find((item) =>
-            lineMatches(item, product.id, selectedVariant.id, juiceSweetness)
+            lineMatches(item, product.id, selectedVariant.id, juiceSweetness, spiceLevel)
           );
 
           if (existingItem) {
             return {
               items: state.items.map((item) =>
-                lineMatches(item, product.id, selectedVariant.id, juiceSweetness)
+                lineMatches(item, product.id, selectedVariant.id, juiceSweetness, spiceLevel)
                   ? { ...item, quantity: item.quantity + quantity }
                   : item
               ),
@@ -68,6 +81,7 @@ export const useCartStore = create<CartStore>()(
             selectedVariant,
             quantity,
             ...(juiceSweetness ? { juiceSweetness } : {}),
+            ...(spiceLevel ? { spiceLevel } : {}),
           };
 
           return {
@@ -76,23 +90,23 @@ export const useCartStore = create<CartStore>()(
         });
       },
 
-      removeItem: (productId, variantId, juiceSweetness) => {
+      removeItem: (productId, variantId, juiceSweetness, spiceLevel) => {
         set((state) => ({
           items: state.items.filter(
-            (item) => !lineMatches(item, productId, variantId, juiceSweetness)
+            (item) => !lineMatches(item, productId, variantId, juiceSweetness, spiceLevel)
           ),
         }));
       },
 
-      updateQuantity: (productId, variantId, quantity, juiceSweetness) => {
+      updateQuantity: (productId, variantId, quantity, juiceSweetness, spiceLevel) => {
         if (quantity <= 0) {
-          get().removeItem(productId, variantId, juiceSweetness);
+          get().removeItem(productId, variantId, juiceSweetness, spiceLevel);
           return;
         }
 
         set((state) => ({
           items: state.items.map((item) =>
-            lineMatches(item, productId, variantId, juiceSweetness)
+            lineMatches(item, productId, variantId, juiceSweetness, spiceLevel)
               ? { ...item, quantity }
               : item
           ),

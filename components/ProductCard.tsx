@@ -1,6 +1,6 @@
 'use client';
 
-import { JuiceSweetness, Product } from '@/types';
+import { JuiceSweetness, Product, SpiceLevel } from '@/types';
 import { formatPrice } from '@/lib/utils';
 import { useCartStore } from '@/store/cartStore';
 import { ShoppingCart } from 'lucide-react';
@@ -15,6 +15,7 @@ export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem);
   const [selectedVariantId, setSelectedVariantId] = useState(product.variants?.[0]?.id || '');
   const [juiceSweetness, setJuiceSweetness] = useState<JuiceSweetness | ''>('');
+  const [spiceLevel, setSpiceLevel] = useState<SpiceLevel | ''>('');
   const [isAdding, setIsAdding] = useState(false);
 
   // Ensure product has variants
@@ -38,19 +39,26 @@ export default function ProductCard({ product }: ProductCardProps) {
     if (product.requiresSweetnessChoice && !juiceSweetness) {
       return;
     }
-    setIsAdding(true);
-    if (product.requiresSweetnessChoice && juiceSweetness) {
-      addItem(product, selectedVariant, 1, juiceSweetness);
-    } else {
-      addItem(product, selectedVariant);
+    if (product.requiresSpiceLevel && !spiceLevel) {
+      return;
     }
+    setIsAdding(true);
+    addItem(
+      product,
+      selectedVariant,
+      1,
+      product.requiresSweetnessChoice ? juiceSweetness : undefined,
+      product.requiresSpiceLevel ? spiceLevel : undefined
+    );
     setTimeout(() => setIsAdding(false), 500);
   };
 
   const needsFlavor = Boolean(product.requiresSweetnessChoice);
+  const needsSpice = Boolean(product.requiresSpiceLevel);
   const canAdd =
     selectedVariant &&
-    (!needsFlavor || (juiceSweetness === 'sweetened' || juiceSweetness === 'unsweetened'));
+    (!needsFlavor || (juiceSweetness === 'sweetened' || juiceSweetness === 'unsweetened')) &&
+    (!needsSpice || (spiceLevel === 'mild' || spiceLevel === 'spicy'));
 
   return (
     <div className="overflow-hidden rounded-xl border border-red-900/35 bg-gradient-to-br from-stone-950 to-black shadow-lg shadow-black/30 ring-1 ring-white/5 transition-all duration-300 hover:border-gold-600/40 hover:shadow-xl hover:shadow-gold-900/10 hover:ring-gold-500/15">
@@ -140,6 +148,25 @@ export default function ProductCard({ product }: ProductCardProps) {
               <option value="">Choose sweetened or unsweetened</option>
               <option value="unsweetened">Unsweetened</option>
               <option value="sweetened">Sweetened</option>
+            </select>
+          </div>
+        )}
+
+        {needsSpice && (
+          <div className="mb-4">
+            <label className="mb-1.5 block text-xs font-semibold text-stone-400">
+              Spice level <span className="text-red-400">*</span>
+            </label>
+            <select
+              value={spiceLevel}
+              onChange={(e) => setSpiceLevel((e.target.value as SpiceLevel | '') || '')}
+              required
+              aria-required="true"
+              className="w-full rounded-lg border border-red-900/40 bg-stone-950 px-3 py-2.5 text-sm text-stone-200 transition-all focus:border-gold-600/60 focus:outline-none focus:ring-2 focus:ring-gold-500/25"
+            >
+              <option value="">Choose mild or spicy</option>
+              <option value="mild">Mild</option>
+              <option value="spicy">Spicy</option>
             </select>
           </div>
         )}
