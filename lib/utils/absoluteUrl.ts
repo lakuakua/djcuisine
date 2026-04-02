@@ -3,11 +3,19 @@
  */
 export function toAbsoluteUrl(pathOrUrl: string | undefined): string | undefined {
   if (!pathOrUrl) return undefined;
-  if (pathOrUrl.startsWith('http://') || pathOrUrl.startsWith('https://')) {
-    return pathOrUrl;
+  if (typeof pathOrUrl !== 'string') return undefined;
+  
+  try {
+    if (pathOrUrl.startsWith('http://') || pathOrUrl.startsWith('https://')) {
+      return pathOrUrl;
+    }
+  } catch (e) {
+    return undefined;
   }
+  
   const base = process.env.NEXT_PUBLIC_APP_URL?.replace(/\/$/, '') ?? '';
   if (!base) return undefined;
+  
   const path = pathOrUrl.startsWith('/') ? pathOrUrl : `/${pathOrUrl}`;
   const encodedPath =
     '/' +
