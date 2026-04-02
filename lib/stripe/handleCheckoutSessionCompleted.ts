@@ -20,23 +20,33 @@ export async function handleCheckoutSessionCompleted(
     typeof session.payment_intent === 'string'
       ? session.payment_intent
       : session.payment_intent?.id;
+  let pi: Stripe.PaymentIntent | null = null;
 
   if (!piId) {
     console.warn('[Checkout Webhook] No payment_intent on session', session.id);
-    return;
-  }
-
-  const pi = await stripe.paymentIntents.retrieve(piId);
-  if (pi.metadata?.webhook_processed === 'true') {
-    console.log('[Checkout Webhook] Already processed PI', piId);
-    return;
+  } else {
+    pi = await stripe.paymentIntents.retrieve(piId);
+    if (pi.metadata?.webhook_processed === 'true') {
+      console.log('[Checkout Webhook] Already processed PI', piId);
+      return;
+    }
   }
 
   const fullSession = await stripe.checkout.sessions.retrieve(session.id, {
     expand: ['line_items', 'line_items.data.price'],
   });
 
-  const { orderNumber, created } = await persistStripeOrder(fullSession, piId);
+  let orderNumber = '';
+  let created = true;
+  try {
+    const persisted = await persistStripeOrder(fullSession, piId ?? null);
+    orderNumber = persisted.orderNumber;
+    created = persisted.created;
+  } catch (e) {
+    console.error('[Checkout Webhook] Persist order failed, continuing with email only', e);
+    orderNumber = `DJ-${fullSession.id.slice(-8).toUpperCase()}`;
+    created = true;
+  }
 
   const lines: LineItemRow[] = (fullSession.line_items?.data ?? []).map((line) => ({
     description: line.description || 'Item',
@@ -47,7 +57,9 @@ export async function handleCheckoutSessionCompleted(
   if (created) {
     try {
       // Check if this is a pickup order
-      const isPickup = pi.metadata?.is_pickup === 'true';
+      const isPickup =
+        pi?.metadata?.is_pickup === 'true' ||
+        fullSession.metadata?.ship_service === 'Local Pickup';
       const customerEmail = fullSession.customer_details?.email || fullSession.customer_email;
       const customerPhone = fullSession.customer_details?.phone;
 
@@ -86,15 +98,22 @@ export async function handleCheckoutSessionCompleted(
     }
   }
 
-  await stripe.paymentIntents.update(piId, {
-    metadata: {
-      ...pi.metadata,
-      webhook_processed: 'true',
-      webhook_processed_at: new Date().toISOString(),
-      checkout_session_id: fullSession.id,
-      order_number: orderNumber,
-    },
-  });
+  if (piId && pi) {
+    await stripe.paymentIntents.update(piId, {
+      metadata: {
+        ...pi.metadata,
+        webhook_processed: 'true',
+        webhook_processed_at: new Date().toISOString(),
+        checkout_session_id: fullSession.id,
+        order_number: orderNumber,
+      },
+    });
+  } else {
+    console.warn('[Checkout Webhook] Skipped PI metadata update (missing payment_intent)', {
+      sessionId: fullSession.id,
+      orderNumber,
+    });
+  }
 
   console.log('[Checkout Webhook] Processed session', fullSession.id, orderNumber);
 }
