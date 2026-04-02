@@ -2,10 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import type { CartItem } from '@/types';
 import { getProductById } from '@/lib/products';
 import { getRatesWithFallback } from '@/lib/easyship/rates';
-import {
-  HANDLING_FEE_USD,
-  PERISHABLE_SHIPPING_NOTICE,
-} from '@/lib/constants/shipping';
+import { PERISHABLE_SHIPPING_NOTICE } from '@/lib/constants/shipping';
 import {
   buildPirateShipParcelsForRates,
   parcelSpecsToQuoteBoxLines,
@@ -141,7 +138,7 @@ export async function POST(request: NextRequest) {
 
     return NextResponse.json({
       rates,
-      handlingFee: HANDLING_FEE_USD,
+      handlingFee: 0,
       isFallback: ratesResult.isFallback === true,
       /** True when USE_FALLBACK_RATES=true — Easyship API is never called. */
       fallbackForcedByEnv: process.env.USE_FALLBACK_RATES === 'true',

@@ -8,7 +8,7 @@ import { buildCheckoutMetadata } from '@/lib/stripe/checkoutMetadata';
 import { toAbsoluteUrl } from '@/lib/utils/absoluteUrl';
 import { getRatesWithFallback } from '@/lib/easyship/rates';
 import { selectRateByServiceName } from '@/lib/easyship/selectRate';
-import { HANDLING_FEE_USD, SHIPPING_SERVICES, LOCAL_PICKUP, STATE_TO_ZONE, getShippingRate } from '@/lib/constants/shipping';
+import { SHIPPING_SERVICES, LOCAL_PICKUP, STATE_TO_ZONE, getShippingRate } from '@/lib/constants/shipping';
 
 const ALLOWED_SERVICES = new Set<string>([
   SHIPPING_SERVICES.UPS_GROUND,
@@ -161,8 +161,6 @@ export async function POST(request: NextRequest) {
         itemCount += item.quantity;
       }
 
-      // Add handling fee
-      shippingUsd += HANDLING_FEE_USD;
       shippingCents = Math.round(shippingUsd * 100);
     }
 
@@ -211,7 +209,7 @@ export async function POST(request: NextRequest) {
           currency: 'usd',
           product_data: {
             name: `Shipping — ${shippingService}`,
-            description: `Includes ${HANDLING_FEE_USD.toFixed(2)} handling (insulation & cold pack).`,
+            description: `Shipping service: ${shippingService}.`,
           },
           unit_amount: shippingCents,
         },

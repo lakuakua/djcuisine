@@ -7,6 +7,7 @@ import Header from '@/components/Header';
 import Cart from '@/components/Cart';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice, isJuiceOneGallonSize } from '@/lib/utils';
+import { SHIPPING_CONFIG } from '@/lib/shipping';
 import { US_STATE_CODES } from '@/lib/usStates';
 import { getProductById } from '@/lib/products';
 import { Loader2, Truck, MapPin } from 'lucide-react';
@@ -44,7 +45,6 @@ export default function CheckoutPage() {
   const [error, setError] = useState<string | null>(null);
 
   const [rates, setRates] = useState<QuoteRate[]>([]);
-  const [handlingFee, setHandlingFee] = useState(5);
   const [isFallback, setIsFallback] = useState(false);
   const [fallbackForcedByEnv, setFallbackForcedByEnv] = useState(false);
   const [usedConsolidatedParcel, setUsedConsolidatedParcel] = useState(false);
@@ -107,7 +107,6 @@ export default function CheckoutPage() {
         throw new Error(data.error || 'Could not get shipping rates');
       }
       setRates(data.rates || []);
-      setHandlingFee(typeof data.handlingFee === 'number' ? data.handlingFee : 5);
       setIsFallback(!!data.isFallback);
       setFallbackForcedByEnv(!!data.fallbackForcedByEnv);
       setParcelCount(typeof data.parcelCount === 'number' ? data.parcelCount : null);
@@ -188,10 +187,9 @@ export default function CheckoutPage() {
   };
 
   const selectedRate = rates.find((r) => r.service === selectedService);
-  const shippingTotalCents = selectedRate
-    ? Math.round((selectedRate.cost + handlingFee) * 100)
-    : 0;
-  const orderTotalCents = hasShippableProducts ? subtotal + shippingTotalCents : subtotal;
+  const taxCents = Math.round(subtotal * SHIPPING_CONFIG.TAX_RATE);
+  const shippingTotalCents = selectedRate ? Math.round(selectedRate.cost * 100) : 0;
+  const orderTotalCents = subtotal + taxCents + (hasShippableProducts ? shippingTotalCents : 0);
 
   if (items.length === 0) {
     return null;
@@ -475,11 +473,7 @@ export default function CheckoutPage() {
                           {r.transitDays} day(s) transit
                         </p>
                         <p className="mt-1 text-orange-200">
-                          Carrier: {formatPrice(Math.round(r.cost * 100))} +{' '}
-                          {formatPrice(Math.round(handlingFee * 100))} handling ={' '}
-                          <span className="font-bold text-white">
-                            {formatPrice(Math.round((r.cost + handlingFee) * 100))}
-                          </span>
+                          Carrier: {formatPrice(Math.round(r.cost * 100))}
                         </p>
                       </div>
                     </label>
@@ -517,7 +511,7 @@ export default function CheckoutPage() {
             </div>
             {hasShippableProducts && (
               <div className="mb-2 flex justify-between text-sm text-stone-400">
-                <span>Shipping + handling</span>
+                <span>Shipping</span>
                 <span>
                   {selectedRate
                     ? formatPrice(shippingTotalCents)
@@ -525,10 +519,16 @@ export default function CheckoutPage() {
                 </span>
               </div>
             )}
+            <div className="mb-2 flex justify-between text-sm text-stone-400">
+              <span>Tax</span>
+              <span>{formatPrice(taxCents)}</span>
+            </div>
             <div className="flex justify-between text-lg font-bold text-white">
               <span>Total</span>
               <span className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
-                {hasShippableProducts ? (selectedRate ? formatPrice(orderTotalCents) : formatPrice(subtotal)) : formatPrice(orderTotalCents)}
+                {hasShippableProducts
+                  ? (selectedRate ? formatPrice(orderTotalCents) : formatPrice(subtotal + taxCents))
+                  : formatPrice(orderTotalCents)}
               </span>
             </div>
           </div>

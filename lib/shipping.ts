@@ -18,8 +18,8 @@ export const SHIPPING_CONFIG = {
   // Shipping calculated via Easyship API based on weight/destination
   FREE_SHIPPING_THRESHOLD: Infinity, // Disable free shipping completely
   
-  // Local delivery fee (Richmond, TX area)
-  LOCAL_DELIVERY_FEE: 500, // $5.00 in cents
+  // Local pickup fee
+  LOCAL_DELIVERY_FEE: 0, // $0.00 in cents
   
   // Tax rate for Texas
   TAX_RATE: 0.0825, // 8.25% Texas sales tax
@@ -55,7 +55,7 @@ export function calculateOrderTotal(
     isFreeShipping = true;
     shippingFee = 0;
   } else if (isLocalDelivery) {
-    // Local delivery fee
+    // Local pickup - no shipping fee
     shippingFee = SHIPPING_CONFIG.LOCAL_DELIVERY_FEE;
   } else {
     // Standard flat rate shipping
