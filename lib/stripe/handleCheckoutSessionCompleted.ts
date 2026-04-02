@@ -86,6 +86,7 @@ export async function handleCheckoutSessionCompleted(
           customerEmail,
           orderTotal: fullSession.amount_total ?? 0,
           currency: fullSession.currency || 'usd',
+          items: lines,
         });
       } else {
         // Send regular order confirmation email

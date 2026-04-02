@@ -142,6 +142,7 @@ export async function sendAdminOrderNotificationEmail(params: {
   customerEmail: string;
   orderTotal: number;
   currency: string;
+  items?: Array<{ description: string; quantity: number; amountTotalCents: number }>;
 }): Promise<boolean> {
   const adminEmail = process.env.ADMIN_EMAIL?.trim();
   if (!adminEmail) {
@@ -156,6 +157,13 @@ export async function sendAdminOrderNotificationEmail(params: {
     }).format(cents / 100);
   };
 
+  const lineItemsText = (params.items ?? [])
+    .map((line) => {
+      const itemTotal = formatMoney(line.amountTotalCents);
+      return `- ${line.description} × ${line.quantity}  ${itemTotal}`;
+    })
+    .join('\n');
+
   const text = `
 New Pickup Order
 
@@ -167,7 +175,17 @@ Pickup Location:
 ${LOCAL_PICKUP.addressLine1}
 ${LOCAL_PICKUP.city}, ${LOCAL_PICKUP.state} ${LOCAL_PICKUP.postalCode}
 Phone: ${LOCAL_PICKUP.phone}
+
+Items:
+${lineItemsText || '—'}
   `;
+
+  const lineItemsHtml = (params.items ?? [])
+    .map((line) => {
+      const itemTotal = formatMoney(line.amountTotalCents);
+      return `<tr><td style="padding:6px 0;">${line.description}</td><td style="padding:6px 0; text-align:center;">${line.quantity}</td><td style="padding:6px 0; text-align:right;">${itemTotal}</td></tr>`;
+    })
+    .join('');
 
   const html = `
 <!DOCTYPE html>
@@ -180,6 +198,19 @@ Phone: ${LOCAL_PICKUP.phone}
     <p><strong>Total:</strong> ${formatMoney(params.orderTotal)}</p>
     <p><strong>Pickup:</strong> ${LOCAL_PICKUP.addressLine1}, ${LOCAL_PICKUP.city}, ${LOCAL_PICKUP.state} ${LOCAL_PICKUP.postalCode}</p>
     <p><strong>Phone:</strong> ${LOCAL_PICKUP.phone}</p>
+    <h3 style="margin: 16px 0 8px;">Items</h3>
+    <table style="width:100%; border-collapse:collapse; font-size:14px;">
+      <thead>
+        <tr>
+          <th align="left" style="border-bottom:1px solid #e5e7eb; padding-bottom:6px;">Item</th>
+          <th align="center" style="border-bottom:1px solid #e5e7eb; padding-bottom:6px;">Qty</th>
+          <th align="right" style="border-bottom:1px solid #e5e7eb; padding-bottom:6px;">Total</th>
+        </tr>
+      </thead>
+      <tbody>
+        ${lineItemsHtml || '<tr><td colspan="3" style="padding:6px 0;">—</td></tr>'}
+      </tbody>
+    </table>
   </div>
 </body>
 </html>
