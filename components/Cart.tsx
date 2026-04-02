@@ -199,13 +199,10 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                   <span className="text-orange-100 font-bold">{formatPrice(subtotal)}</span>
                 </div>
                 
-                {/* Tax - only show if there are shippable products or pickup-only notice */}
-                {hasShippableProducts && (
-                  <div className="flex justify-between items-center text-sm">
-                    <span className="text-orange-200">Tax (8.25%)</span>
-                    <span className="text-orange-100 font-bold">{formatPrice(orderCalculation.tax)}</span>
-                  </div>
-                )}
+                <div className="flex justify-between items-center text-sm">
+                  <span className="text-orange-200">Tax (8.25%)</span>
+                  <span className="text-orange-100 font-bold">{formatPrice(orderCalculation.tax)}</span>
+                </div>
                 
                 {/* Shipping - only show if there are shippable products */}
                 {hasShippableProducts && (
