@@ -183,16 +183,17 @@ export async function POST(request: NextRequest) {
     };
 
     const productLineItems: Stripe.Checkout.SessionCreateParams.LineItem[] = validatedItems.map((item) => {
-      // Build absolute URL safely - if NEXT_PUBLIC_APP_URL is missing, skip images
+      // Build absolute URL safely - images are optional for Stripe
       let images: string[] = [];
-      try {
-        const abs = toAbsoluteUrl(item.product.image);
-        if (abs) {
-          images = [abs];
+      if (item.product.image) {
+        try {
+          const abs = toAbsoluteUrl(item.product.image);
+          if (abs && abs.startsWith('http')) {
+            images = [abs];
+          }
+        } catch (e) {
+          console.warn('Failed to build image URL, skipping:', e);
         }
-      } catch (e) {
-        console.warn('Failed to build absolute URL for image:', e);
-        // Continue without image
       }
 
       return {
@@ -201,7 +202,7 @@ export async function POST(request: NextRequest) {
           product_data: {
             name: stripeLineName(item),
             description: `${item.product.description}${item.selectedVariant.servings ? ` - ${item.selectedVariant.servings}` : ''}`,
-            images,
+            ...(images.length > 0 ? { images } : {}),
           },
           unit_amount: item.selectedVariant.price,
         },
