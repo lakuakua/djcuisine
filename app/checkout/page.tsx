@@ -45,7 +45,12 @@ function PaymentPanel({
 
   return (
     <div className="space-y-4 rounded-lg border border-red-900/40 bg-stone-950/70 p-4">
-      <PaymentElement />
+      <PaymentElement
+        options={{
+          layout: 'tabs',
+          paymentMethodOrder: ['card', 'cashapp'],
+        }}
+      />
       {error && <p className="text-sm text-red-200">{error}</p>}
       <button
         type="button"
@@ -613,13 +618,7 @@ export default function CheckoutPage() {
               {payLoading ? 'Preparing payment…' : 'Continue to payment'}
             </button>
           ) : (
-            <Elements
-              stripe={stripePromise}
-              options={{
-                clientSecret,
-                paymentMethodOrder: ['card', 'cashapp'],
-              }}
-            >
+            <Elements stripe={stripePromise} options={{ clientSecret }}>
               <PaymentPanel
                 onConfirm={confirmPayment}
                 isProcessing={payLoading}
