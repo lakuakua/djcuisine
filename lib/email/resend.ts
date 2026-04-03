@@ -143,6 +143,8 @@ export async function sendAdminOrderNotificationEmail(params: {
   orderTotal: number;
   currency: string;
   items?: Array<{ description: string; quantity: number; amountTotalCents: number }>;
+  shippingAddress?: { line1?: string; city?: string; state?: string; postalCode?: string };
+  isPickup?: boolean;
 }): Promise<boolean> {
   const adminEmail = process.env.ADMIN_EMAIL?.trim();
   if (!adminEmail) {
@@ -164,6 +166,11 @@ export async function sendAdminOrderNotificationEmail(params: {
     })
     .join('\n');
 
+  const locationLabel = params.isPickup ? 'Pickup Location' : 'Ship To';
+  const addressText = params.isPickup
+    ? `${LOCAL_PICKUP.addressLine1}\n${LOCAL_PICKUP.city}, ${LOCAL_PICKUP.state} ${LOCAL_PICKUP.postalCode}\nPhone: ${LOCAL_PICKUP.phone}`
+    : `${params.shippingAddress?.line1 ?? '—'}\n${params.shippingAddress?.city ?? ''} ${params.shippingAddress?.state ?? ''} ${params.shippingAddress?.postalCode ?? ''}`.trim();
+
   const text = `
 New Pickup Order
 
@@ -171,10 +178,8 @@ Order Number: ${params.orderNumber}
 Customer Email: ${params.customerEmail}
 Order Total: ${formatMoney(params.orderTotal)}
 
-Pickup Location:
-${LOCAL_PICKUP.addressLine1}
-${LOCAL_PICKUP.city}, ${LOCAL_PICKUP.state} ${LOCAL_PICKUP.postalCode}
-Phone: ${LOCAL_PICKUP.phone}
+${locationLabel}:
+${addressText}
 
 Items:
 ${lineItemsText || '—'}
@@ -192,12 +197,11 @@ ${lineItemsText || '—'}
 <html>
 <body style="font-family: Arial, sans-serif; color: #333;">
   <div style="max-width: 600px; margin: 0 auto; padding: 20px;">
-    <h2 style="margin: 0 0 12px;">New Pickup Order</h2>
+    <h2 style="margin: 0 0 12px;">New ${params.isPickup ? 'Pickup' : 'Shipping'} Order</h2>
     <p><strong>Order:</strong> ${params.orderNumber}</p>
     <p><strong>Customer:</strong> ${params.customerEmail}</p>
     <p><strong>Total:</strong> ${formatMoney(params.orderTotal)}</p>
-    <p><strong>Pickup:</strong> ${LOCAL_PICKUP.addressLine1}, ${LOCAL_PICKUP.city}, ${LOCAL_PICKUP.state} ${LOCAL_PICKUP.postalCode}</p>
-    <p><strong>Phone:</strong> ${LOCAL_PICKUP.phone}</p>
+    <p><strong>${locationLabel}:</strong> ${addressText.replace(/\n/g, ', ')}</p>
     <h3 style="margin: 16px 0 8px;">Items</h3>
     <table style="width:100%; border-collapse:collapse; font-size:14px;">
       <thead>

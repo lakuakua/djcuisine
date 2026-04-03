@@ -227,7 +227,10 @@ export default function CheckoutPage() {
     }
   };
 
-  const confirmPayment = async (stripe: ReturnType<typeof useStripe>, elements: ReturnType<typeof useElements>) => {
+  const confirmPayment = async (
+    stripe: ReturnType<typeof useStripe>,
+    elements: ReturnType<typeof useElements>
+  ) => {
     if (!stripe || !elements) return;
     setPayLoading(true);
     setPaymentError(null);

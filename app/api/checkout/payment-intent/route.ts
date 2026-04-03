@@ -123,7 +123,7 @@ export async function POST(request: NextRequest) {
       amount,
       currency: 'usd',
       receipt_email: email.trim(),
-      payment_method_types: ['card'],
+      payment_method_types: ['card', 'cashapp'],
       metadata: {
         ...metadata,
         is_pickup: shippingService === 'Local Pickup' ? 'true' : 'false',

@@ -17,7 +17,14 @@ export function buildCheckoutMetadata(
         : item.juiceSweetness === 'unsweetened'
           ? 'U'
           : '';
-    return `${item.product.id}:${item.selectedVariant.id}:${item.quantity}${sweet ? ':' + sweet : ''}`;
+    const spice =
+      item.spiceLevel === 'mild'
+        ? 'M'
+        : item.spiceLevel === 'spicy'
+          ? 'P'
+          : '';
+    const extras = [sweet, spice].filter(Boolean).join('');
+    return `${item.product.id}:${item.selectedVariant.id}:${item.quantity}${extras ? ':' + extras : ''}`;
   });
   const fingerprint = createHash('sha256').update(lines.sort().join('|')).digest('hex').slice(0, 32);
 

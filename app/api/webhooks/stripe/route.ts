@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { getStripe } from '@/lib/stripe/server';
 import { handleCheckoutSessionCompleted } from '@/lib/stripe/handleCheckoutSessionCompleted';
+import { handlePaymentIntentSucceeded } from '@/lib/stripe/handlePaymentIntentSucceeded';
 
 export const runtime = 'nodejs';
 
@@ -37,6 +38,13 @@ export async function POST(request: NextRequest) {
         hasCustomerEmail: Boolean(session.customer_details?.email || session.customer_email),
       });
       await handleCheckoutSessionCompleted(session);
+    } else if (event.type === 'payment_intent.succeeded') {
+      const paymentIntent = event.data.object as Stripe.PaymentIntent;
+      console.log('[Stripe Webhook] payment_intent.succeeded', {
+        paymentIntentId: paymentIntent.id,
+        hasCustomerEmail: Boolean(paymentIntent.receipt_email || paymentIntent.metadata?.customer_email),
+      });
+      await handlePaymentIntentSucceeded(paymentIntent);
     }
     return NextResponse.json({ received: true });
   } catch (error) {
