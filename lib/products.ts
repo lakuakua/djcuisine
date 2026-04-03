@@ -137,6 +137,7 @@ export const seafoodProducts: Product[] = [
     description: 'Fresh grilled shrimp with signature seasoning, perfectly cooked.',
     category: 'seafood',
     image: '/images/shrimp on the stick.jpg',
+    requiresSpiceLevel: true,
     pickupOnly: true,
     variants: [
       { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 20-30 people' },
@@ -247,6 +248,7 @@ export const sidesProducts: Product[] = [
       'Silken layers of potato folded with seasoned ground beef, cream and premium cheese, slow-baked to a bubbling, golden gratin.',
     category: 'sides',
     image: '/images/sides/potatoes-au-gratin.jpg',
+    requiresSpiceLevel: true,
     pickupOnly: true,
     variants: [
       { id: 'full', size: 'Full Tray', price: 16000, servings: 'Serves 20-30 people' },
@@ -260,6 +262,7 @@ export const sidesProducts: Product[] = [
       'Fresh corn on the cob slow-cooked in seasoned milk with traditional spices for deep, comforting flavor.',
     category: 'sides',
     image: '/images/sides/corn-on-the-cob.jpg',
+    requiresSpiceLevel: true,
     pickupOnly: true,
     variants: [
       { id: 'full', size: 'Full Tray', price: 8500, servings: 'Serves 20-30 people' },
@@ -273,6 +276,7 @@ export const sidesProducts: Product[] = [
       'Savory stir-fried noodles loaded with shrimp, calamari, and mussels, sautéed with vegetables and tossed in a perfectly balanced soy-based sauce.',
     category: 'sides',
     image: '/images/sides/stir-fried-seafood-noodles.jpg',
+    requiresSpiceLevel: true,
     pickupOnly: true,
     variants: [
       { id: 'full', size: 'Full Tray', price: 20000, servings: 'Serves 20-30 people' },
@@ -286,6 +290,7 @@ export const sidesProducts: Product[] = [
       'Decadent mac & cheese infused with a creamy blend of premium cheeses and tender seafood, baked until bubbly with a perfectly crisp finish.',
     category: 'sides',
     image: '/images/sides/seafood-mac-and-cheese.jpg',
+    requiresSpiceLevel: true,
     pickupOnly: true,
     variants: [
       { id: 'full', size: 'Full Tray', price: 16000, servings: 'Serves 20-30 people' },
@@ -299,6 +304,7 @@ export const sidesProducts: Product[] = [
       'Delicately diced cucumbers coated in a light, creamy mustard-mayo dressing with a subtle tang.',
     category: 'sides',
     image: '/images/sides/chef-dj-salad.jpg',
+    requiresSpiceLevel: true,
     pickupOnly: true,
     variants: [
       { id: 'full', size: 'Full Tray', price: 11000, servings: 'Serves 20-30 people' },

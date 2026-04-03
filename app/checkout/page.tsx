@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useState } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import Header from '@/components/Header';
 import Cart from '@/components/Cart';
@@ -13,6 +13,8 @@ import { US_STATE_CODES } from '@/lib/usStates';
 import { getProductById } from '@/lib/products';
 import { Loader2, Truck, MapPin } from 'lucide-react';
 import type { QuoteBoxLine } from '@/lib/shipping/pirateShipParcelsForEasyship';
+import { loadStripe } from '@stripe/stripe-js';
+import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
 
 type QuoteRate = {
   service: string;
@@ -22,8 +24,44 @@ type QuoteRate = {
   transitDays: number;
 };
 
+const stripePromise = loadStripe(process.env.NEXT_PUBLIC_STRIPE_PUBLISHABLE_KEY || '');
+
+function PaymentPanel({
+  onConfirm,
+  isProcessing,
+  error,
+}: {
+  onConfirm: (stripe: ReturnType<typeof useStripe>, elements: ReturnType<typeof useElements>) => Promise<void>;
+  isProcessing: boolean;
+  error: string | null;
+}) {
+  const stripe = useStripe();
+  const elements = useElements();
+
+  const handleConfirm = async () => {
+    if (!stripe || !elements) return;
+    await onConfirm(stripe, elements);
+  };
+
+  return (
+    <div className="space-y-4 rounded-lg border border-red-900/40 bg-stone-950/70 p-4">
+      <PaymentElement />
+      {error && <p className="text-sm text-red-200">{error}</p>}
+      <button
+        type="button"
+        onClick={handleConfirm}
+        disabled={!stripe || !elements || isProcessing}
+        className="w-full rounded-lg bg-gradient-to-r from-red-600 to-orange-500 py-3 text-sm font-bold text-white shadow-lg transition hover:from-red-500 hover:to-orange-400 disabled:cursor-not-allowed disabled:opacity-50"
+      >
+        {isProcessing ? 'Processing…' : 'Pay with Card'}
+      </button>
+    </div>
+  );
+}
+
 export default function CheckoutPage() {
   const router = useRouter();
+  const searchParams = useSearchParams();
   const [cartOpen, setCartOpen] = useState(false);
   const items = useCartStore((s) => s.items);
   const getTotal = useCartStore((s) => s.getTotal);
@@ -44,6 +82,8 @@ export default function CheckoutPage() {
   const [quoteLoading, setQuoteLoading] = useState(false);
   const [payLoading, setPayLoading] = useState(false);
   const [error, setError] = useState<string | null>(null);
+  const [clientSecret, setClientSecret] = useState<string | null>(null);
+  const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const [rates, setRates] = useState<QuoteRate[]>([]);
   const [isFallback, setIsFallback] = useState(false);
@@ -61,8 +101,9 @@ export default function CheckoutPage() {
   const hasGallonMinimumIssue =
     items.some((item) => isJuiceOneGallonSize(item.selectedVariant.size)) && gallonCount < 2;
 
+  const forcePickup = searchParams.get('pickup') === '1';
   // Check if cart contains ANY shippable products
-  const hasShippableProducts = items.some((item) => {
+  const hasShippableProducts = !forcePickup && items.some((item) => {
     const product = getProductById(item.product.id);
     return !product?.pickupOnly;
   });
@@ -128,8 +169,9 @@ export default function CheckoutPage() {
     }
   };
 
-  const pay = async () => {
+  const createPaymentIntent = async () => {
     setError(null);
+    setPaymentError(null);
     if (hasGallonMinimumIssue) {
       setError('Gallon orders require at least 2 gallons.');
       return;
@@ -139,7 +181,6 @@ export default function CheckoutPage() {
       return;
     }
 
-    // Validation based on pickup vs shipping
     if (hasShippableProducts && !selectedService) {
       setError('Select a shipping option. Click "Get shipping rates" first.');
       return;
@@ -152,7 +193,7 @@ export default function CheckoutPage() {
 
     setPayLoading(true);
     try {
-      const res = await fetch('/api/checkout', {
+      const res = await fetch('/api/checkout/payment-intent', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({
@@ -173,15 +214,40 @@ export default function CheckoutPage() {
       });
       const data = await res.json();
       if (!res.ok) {
-        throw new Error(data.error || 'Checkout failed');
+        throw new Error(data.error || 'Payment setup failed');
       }
-      if (data.url) {
-        window.location.href = data.url;
+      if (!data.clientSecret) {
+        throw new Error('Missing payment intent');
+      }
+      setClientSecret(data.clientSecret);
+    } catch (e: unknown) {
+      setError(e instanceof Error ? e.message : 'Payment setup failed');
+    } finally {
+      setPayLoading(false);
+    }
+  };
+
+  const confirmPayment = async (stripe: ReturnType<typeof useStripe>, elements: ReturnType<typeof useElements>) => {
+    if (!stripe || !elements) return;
+    setPayLoading(true);
+    setPaymentError(null);
+    try {
+      const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
+        elements,
+        redirect: 'if_required',
+        confirmParams: {
+          return_url: `${window.location.origin}/success`,
+        },
+      });
+      if (stripeError) {
+        setPaymentError(stripeError.message || 'Payment failed');
         return;
       }
-      throw new Error('No checkout URL');
+      if (paymentIntent?.status === 'succeeded') {
+        router.push(`/success?payment_intent=${paymentIntent.id}`);
+      }
     } catch (e: unknown) {
-      setError(e instanceof Error ? e.message : 'Checkout failed');
+      setPaymentError(e instanceof Error ? e.message : 'Payment failed');
     } finally {
       setPayLoading(false);
     }
@@ -534,14 +600,24 @@ export default function CheckoutPage() {
             </div>
           </div>
 
-          <button
-            type="button"
-            onClick={pay}
-            disabled={payLoading || hasGallonMinimumIssue || (hasShippableProducts && !selectedService)}
-            className="w-full rounded-lg bg-gradient-to-r from-red-600 to-orange-500 py-4 text-lg font-bold text-white shadow-lg transition hover:from-red-500 hover:to-orange-400 disabled:cursor-not-allowed disabled:opacity-50"
-          >
-            {payLoading ? 'Redirecting to Stripe…' : 'Pay with Stripe'}
-          </button>
+          {!clientSecret ? (
+            <button
+              type="button"
+              onClick={createPaymentIntent}
+              disabled={payLoading || hasGallonMinimumIssue || (hasShippableProducts && !selectedService)}
+              className="w-full rounded-lg bg-gradient-to-r from-red-600 to-orange-500 py-4 text-lg font-bold text-white shadow-lg transition hover:from-red-500 hover:to-orange-400 disabled:cursor-not-allowed disabled:opacity-50"
+            >
+              {payLoading ? 'Preparing payment…' : 'Continue to payment'}
+            </button>
+          ) : (
+            <Elements stripe={stripePromise} options={{ clientSecret }}>
+              <PaymentPanel
+                onConfirm={confirmPayment}
+                isProcessing={payLoading}
+                error={paymentError}
+              />
+            </Elements>
+          )}
 
           {hasShippableProducts && (
             <p className="text-center text-xs text-stone-500">
