@@ -115,7 +115,7 @@ export async function sendPickupOrderConfirmationEmail(params: {
     postalCode: LOCAL_PICKUP.postalCode,
     phone: LOCAL_PICKUP.phone,
   };
-  const { html } = buildPickupOrderConfirmationEmail({
+  const { html, subject } = buildPickupOrderConfirmationEmail({
     orderNumber: params.orderNumber,
     customerName: params.customerName,
     orderTotal: params.orderTotal,
@@ -127,8 +127,14 @@ export async function sendPickupOrderConfirmationEmail(params: {
 
   return sendResendEmail({
     to: params.customerEmail,
-    subject: `Order Confirmed - DJ Cuisine #${params.orderNumber} (Local Pickup)`,
-    text: `Order Confirmation\n\nOrder #${params.orderNumber}\nTotal: $${(params.orderTotal / 100).toFixed(2)}\n\nPickup Location:\n${address.line1}\n${address.city}, ${address.state} ${address.postalCode}\nPhone: ${address.phone}\n\nYou will receive another email when your order is ready for pickup.`,
+    subject,
+    text:
+      `Order Confirmation & Receipt\n\n` +
+      `Order #${params.orderNumber}\n` +
+      `Amount Paid: $${(params.orderTotal / 100).toFixed(2)}\n` +
+      `Payment Method: Card\n\n` +
+      `Pickup Location:\n${address.line1}\n${address.city}, ${address.state} ${address.postalCode}\nPhone: ${address.phone}\n\n` +
+      `You will receive another email when your order is ready for pickup.`,
     html,
     idempotencyKey: `pickup-order-${params.orderNumber}`,
   });
@@ -245,11 +251,11 @@ export async function sendOrderConfirmationEmail(params: {
   orderDate: string;
 }): Promise<boolean> {
   const { buildOrderConfirmationEmail } = await import('./templates/orderConfirmation');
-  const { html, text } = buildOrderConfirmationEmail(params);
+  const { html, text, subject } = buildOrderConfirmationEmail(params);
 
   return sendResendEmail({
     to: params.customerEmail,
-    subject: `Order Confirmed - DJ Cuisine #${params.orderNumber}`,
+    subject,
     text,
     html,
     idempotencyKey: `order-${params.orderNumber}`,

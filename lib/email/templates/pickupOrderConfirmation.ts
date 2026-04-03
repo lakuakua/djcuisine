@@ -81,7 +81,23 @@ export function buildPickupOrderConfirmationEmail(data: PickupOrderConfirmationD
     <div class="content">
       <p>Hi${data.customerName ? ' ' + data.customerName : ''},</p>
       
-      <p>Thank you for your order! We've received your order and it's being prepared. You'll receive a notification when it's ready for pickup.</p>
+      <p>Thank you for your order! We've received your order and it's being prepared. This email serves as your order confirmation and receipt.</p>
+
+      <div class="section" style="background-color: #f8fafc; border: 1px solid #e5e7eb; padding: 14px; border-radius: 6px;">
+        <div class="section-title">🧾 Receipt</div>
+        <div class="info-row">
+          <span class="label">Amount Paid</span>
+          <span class="value">${formatMoney(data.orderTotal)}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Payment Method</span>
+          <span class="value">Card</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Paid On</span>
+          <span class="value">${data.orderDate}</span>
+        </div>
+      </div>
       
       <div class="highlight-box">
         <p style="margin-top: 0; margin-bottom: 10px; font-weight: 600; color: #166534;">📍 Local Pickup Selected</p>
@@ -179,5 +195,5 @@ export function buildPickupOrderConfirmationEmail(data: PickupOrderConfirmationD
 </html>
   `;
 
-  return { html, subject: `Order Confirmation #${data.orderNumber} - Local Pickup` };
+  return { html, subject: `Order Confirmation & Receipt #${data.orderNumber} - Local Pickup` };
 }

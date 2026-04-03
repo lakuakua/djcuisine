@@ -73,7 +73,23 @@ export function buildOrderConfirmationEmail(data: OrderConfirmationData) {
     <div class="content">
       <div class="section">
         <p style="font-size: 16px;">Hi${data.customerName ? ' ' + data.customerName : ''},</p>
-        <p>Thank you for your order! We've received your payment and your order is being prepared. You'll receive a shipping notification with tracking information once your order ships.</p>
+        <p>Thank you for your order! We've received your payment and your order is being prepared. This email serves as your order confirmation and receipt.</p>
+      </div>
+
+      <div class="section" style="background-color: #f8fafc; border: 1px solid #e5e7eb; padding: 14px; border-radius: 6px;">
+        <div class="section-title">🧾 Receipt</div>
+        <div class="info-row">
+          <span class="label">Amount Paid</span>
+          <span class="value">${formatMoney(data.orderTotal)}</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Payment Method</span>
+          <span class="value">Card</span>
+        </div>
+        <div class="info-row">
+          <span class="label">Paid On</span>
+          <span class="value">${new Date(data.orderDate).toLocaleDateString()}</span>
+        </div>
       </div>
 
       <!-- ORDER DETAILS SECTION -->
@@ -164,7 +180,12 @@ export function buildOrderConfirmationEmail(data: OrderConfirmationData) {
 
 Hi${data.customerName ? ' ' + data.customerName : ''},
 
-Thank you for your order! We've received your payment and your order is being prepared. You'll receive a shipping notification with tracking information once your order ships.
+Thank you for your order! We've received your payment and your order is being prepared. This email serves as your order confirmation and receipt.
+
+RECEIPT
+Amount Paid: ${formatMoney(data.orderTotal)}
+Payment Method: Card
+Paid On: ${new Date(data.orderDate).toLocaleDateString()}
 
 YOUR ORDER DETAILS
 ──────────────────────────────────────
@@ -206,5 +227,9 @@ DJ Cuisine — The Best BBQ in H-Town
 This is an automated message, please do not reply directly.
   `;
 
-  return { html, text };
+  return {
+    html,
+    text,
+    subject: `Order Confirmation & Receipt #${data.orderNumber}`,
+  };
 }
