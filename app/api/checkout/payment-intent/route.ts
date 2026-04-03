@@ -127,8 +127,6 @@ export async function POST(request: NextRequest) {
       payment_method_options: {
         card: {},
         cashapp: {},
-        // Disable Link/Bank-style options on the payment form
-        link: { enabled: false },
       },
       metadata: {
         ...metadata,
