@@ -124,6 +124,12 @@ export async function POST(request: NextRequest) {
       currency: 'usd',
       receipt_email: email.trim(),
       payment_method_types: ['card', 'cashapp'],
+      payment_method_options: {
+        card: {},
+        cashapp: {},
+        // Disable Link/Bank-style options on the payment form
+        link: { enabled: false },
+      },
       metadata: {
         ...metadata,
         is_pickup: shippingService === 'Local Pickup' ? 'true' : 'false',

@@ -613,7 +613,13 @@ export default function CheckoutPage() {
               {payLoading ? 'Preparing payment…' : 'Continue to payment'}
             </button>
           ) : (
-            <Elements stripe={stripePromise} options={{ clientSecret }}>
+            <Elements
+              stripe={stripePromise}
+              options={{
+                clientSecret,
+                paymentMethodOrder: ['card', 'cashapp'],
+              }}
+            >
               <PaymentPanel
                 onConfirm={confirmPayment}
                 isProcessing={payLoading}
