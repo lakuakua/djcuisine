@@ -5,6 +5,11 @@ import { getStripe, stripeSecretKeyMissing } from '@/lib/stripe/server';
 import { buildCheckoutMetadata } from '@/lib/stripe/checkoutMetadata';
 import { SHIPPING_CONFIG } from '@/lib/shipping';
 import { SHIPPING_SERVICES, STATE_TO_ZONE, getShippingRate } from '@/lib/constants/shipping';
+import {
+  isPickupAtLeastHoursAfter,
+  parsePickupAtIso,
+  PICKUP_MIN_LEAD_MS,
+} from '@/lib/pickup/schedule';
 
 const ALLOWED_SERVICES = new Set<string>([
   SHIPPING_SERVICES.UPS_GROUND,
@@ -35,6 +40,8 @@ export async function POST(request: NextRequest) {
       email,
       shippingAddress,
       shippingService,
+      phone,
+      pickupAt,
     }: {
       items: CartItem[];
       email?: string;
@@ -49,6 +56,9 @@ export async function POST(request: NextRequest) {
         phone: string;
       };
       shippingService?: string;
+      phone?: string;
+      /** ISO 8601 — required for Local Pickup; must be ≥ 24h from now */
+      pickupAt?: string;
     } = body;
 
     if (!items || items.length === 0) {
@@ -69,6 +79,20 @@ export async function POST(request: NextRequest) {
     if (shippingService !== 'Local Pickup') {
       if (!shippingAddress?.line1 || !shippingAddress.city || !shippingAddress.state || !shippingAddress.postalCode) {
         return NextResponse.json({ error: 'Complete shipping address is required' }, { status: 400 });
+      }
+    } else {
+      const pickupMs = parsePickupAtIso(pickupAt);
+      if (pickupMs == null) {
+        return NextResponse.json(
+          { error: 'Choose a pickup date and time at least 24 hours from now.' },
+          { status: 400 }
+        );
+      }
+      if (!isPickupAtLeastHoursAfter(pickupMs, Date.now(), PICKUP_MIN_LEAD_MS)) {
+        return NextResponse.json(
+          { error: 'Pickup must be scheduled at least 24 hours after your order time.' },
+          { status: 400 }
+        );
       }
     }
 
@@ -110,27 +134,35 @@ export async function POST(request: NextRequest) {
 
     const amount = subtotalCents + taxCents + shippingCents;
 
+    const customerPhone = shippingAddress?.phone || phone || '';
     const metadata = buildCheckoutMetadata(items, {
       customer_email: email.trim(),
+      customer_phone: customerPhone,
       ship_service: shippingService,
       ship_city: shippingAddress?.city ?? 'Katy',
       ship_state: shippingAddress?.state ?? 'TX',
       ship_zip: shippingAddress?.postalCode ?? '77493',
       ship_line1: shippingAddress?.line1 ?? '3043 Narrow Stream Way',
+      ship_phone: customerPhone,
     });
+
+    const pickupAtIso =
+      shippingService === 'Local Pickup' && pickupAt?.trim()
+        ? pickupAt.trim().slice(0, 500)
+        : undefined;
 
     const intent = await stripe.paymentIntents.create({
       amount,
       currency: 'usd',
       receipt_email: email.trim(),
-      payment_method_types: ['card', 'cashapp'],
+      payment_method_types: ['card'],
       payment_method_options: {
         card: {},
-        cashapp: {},
       },
       metadata: {
         ...metadata,
         is_pickup: shippingService === 'Local Pickup' ? 'true' : 'false',
+        ...(pickupAtIso ? { pickup_at: pickupAtIso } : {}),
       },
     });
 

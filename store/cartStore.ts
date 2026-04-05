@@ -3,6 +3,18 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import { Product, ProductVariant, CartItem, JuiceSweetness, SpiceLevel } from '@/types';
 import { isJuiceOneGallonSize } from '@/lib/utils';
 
+/** Session-only key: cleared when the tab/window session ends (not localStorage). */
+const CART_STORAGE_KEY = 'djcuisine_cart_session';
+
+if (typeof window !== 'undefined') {
+  try {
+    localStorage.removeItem('djcuisine_cart');
+    sessionStorage.removeItem('djcuisine_cart');
+  } catch {
+    /* ignore */
+  }
+}
+
 function lineMatches(
   item: CartItem,
   productId: string,
@@ -138,8 +150,9 @@ export const useCartStore = create<CartStore>()(
       },
     }),
     {
-      name: 'djcuisine_cart',
-      storage: createJSONStorage(() => localStorage),
+      name: CART_STORAGE_KEY,
+      storage: createJSONStorage(() => sessionStorage),
+      partialize: (state) => ({ items: state.items }),
     }
   )
 );

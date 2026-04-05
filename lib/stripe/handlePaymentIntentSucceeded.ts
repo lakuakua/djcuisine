@@ -3,6 +3,12 @@ import { prisma } from '@/lib/db/prisma';
 import { getProductById } from '@/lib/products';
 import { sendPickupOrderConfirmationEmail, sendOrderConfirmationEmail, sendAdminOrderNotificationEmail } from '@/lib/email/resend';
 import { generateOrderNumber } from '@/lib/utils/orderNumber';
+import {
+  formatPickupDisplay,
+  isPickupAtLeastHoursAfter,
+  parsePickupAtIso,
+  PICKUP_MIN_LEAD_MS,
+} from '@/lib/pickup/schedule';
 
 type ParsedLine = {
   description: string;
@@ -35,7 +41,10 @@ function parseCartLines(cartLines: string | undefined): ParsedLine[] {
   });
 }
 
-export async function handlePaymentIntentSucceeded(pi: Stripe.PaymentIntent): Promise<void> {
+export async function handlePaymentIntentSucceeded(
+  pi: Stripe.PaymentIntent,
+  options?: { eventCreatedSec?: number }
+): Promise<void> {
   const customerEmail =
     (typeof pi.receipt_email === 'string' ? pi.receipt_email : undefined) ||
     (typeof pi.metadata?.customer_email === 'string' ? pi.metadata.customer_email : undefined);
@@ -45,6 +54,23 @@ export async function handlePaymentIntentSucceeded(pi: Stripe.PaymentIntent): Pr
 
   const isPickup =
     pi.metadata?.is_pickup === 'true' || pi.metadata?.ship_service === 'Local Pickup';
+
+  const purchaseMs = (options?.eventCreatedSec ?? pi.created) * 1000;
+  const pickupAtIso = typeof pi.metadata?.pickup_at === 'string' ? pi.metadata.pickup_at : undefined;
+  const pickupMs = parsePickupAtIso(pickupAtIso);
+  let pickupDisplay: string | undefined;
+  if (isPickup && pickupAtIso) {
+    pickupDisplay = formatPickupDisplay(pickupAtIso);
+    if (
+      pickupMs != null &&
+      !isPickupAtLeastHoursAfter(pickupMs, purchaseMs, PICKUP_MIN_LEAD_MS)
+    ) {
+      console.warn('[PaymentIntent] pickup_at within 24h of payment event', {
+        paymentIntentId: pi.id,
+        pickup_at: pickupAtIso,
+      });
+    }
+  }
 
   const orderNumber = generateOrderNumber();
   const lines = parseCartLines(pi.metadata?.cart_lines);
@@ -65,6 +91,7 @@ export async function handlePaymentIntentSucceeded(pi: Stripe.PaymentIntent): Pr
           city: pi.metadata?.ship_city,
           state: pi.metadata?.ship_state,
           postal_code: pi.metadata?.ship_zip,
+          ...(isPickup && pickupAtIso ? { pickup_at: pickupAtIso, pickup_display: pickupDisplay } : {}),
         }),
         lineItemsJson: JSON.stringify(lines),
       },
@@ -79,6 +106,7 @@ export async function handlePaymentIntentSucceeded(pi: Stripe.PaymentIntent): Pr
       customerEmail,
       orderTotal,
       currency: pi.currency || 'usd',
+      scheduledPickupDisplay: pickupDisplay,
       orderDate: new Date().toLocaleDateString('en-US', {
         weekday: 'long',
         year: 'numeric',
@@ -111,6 +139,7 @@ export async function handlePaymentIntentSucceeded(pi: Stripe.PaymentIntent): Pr
     await sendAdminOrderNotificationEmail({
       orderNumber,
       customerEmail,
+      customerPhone: pi.metadata?.customer_phone || pi.metadata?.ship_phone,
       orderTotal,
       currency: pi.currency || 'usd',
       items: lines,
@@ -121,6 +150,7 @@ export async function handlePaymentIntentSucceeded(pi: Stripe.PaymentIntent): Pr
         postalCode: pi.metadata?.ship_zip,
       },
       isPickup,
+      pickupScheduledDisplay: pickupDisplay,
     });
   }
 }

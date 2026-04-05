@@ -99,6 +99,8 @@ export async function sendPickupOrderConfirmationEmail(params: {
   currency: string;
   items?: Array<{ name: string; quantity: number; unitPrice: number; totalPrice: number }>;
   orderDate: string;
+  /** Central Time formatted label for customer-chosen pickup window */
+  scheduledPickupDisplay?: string;
   pickupAddress?: {
     line1: string;
     city: string;
@@ -123,7 +125,12 @@ export async function sendPickupOrderConfirmationEmail(params: {
     items: params.items,
     orderDate: params.orderDate,
     pickupAddress: address,
+    scheduledPickupDisplay: params.scheduledPickupDisplay,
   });
+
+  const pickupLine = params.scheduledPickupDisplay
+    ? `Requested pickup time (Central): ${params.scheduledPickupDisplay}\n`
+    : '';
 
   return sendResendEmail({
     to: params.customerEmail,
@@ -133,6 +140,7 @@ export async function sendPickupOrderConfirmationEmail(params: {
       `Order #${params.orderNumber}\n` +
       `Amount Paid: $${(params.orderTotal / 100).toFixed(2)}\n` +
       `Payment Method: Card\n\n` +
+      pickupLine +
       `Pickup Location:\n${address.line1}\n${address.city}, ${address.state} ${address.postalCode}\nPhone: ${address.phone}\n\n` +
       `You will receive another email when your order is ready for pickup.`,
     html,
@@ -146,11 +154,13 @@ export async function sendPickupOrderConfirmationEmail(params: {
 export async function sendAdminOrderNotificationEmail(params: {
   orderNumber: string;
   customerEmail: string;
+  customerPhone?: string;
   orderTotal: number;
   currency: string;
   items?: Array<{ description: string; quantity: number; amountTotalCents: number }>;
   shippingAddress?: { line1?: string; city?: string; state?: string; postalCode?: string };
   isPickup?: boolean;
+  pickupScheduledDisplay?: string;
 }): Promise<boolean> {
   const adminEmail = process.env.ADMIN_EMAIL?.trim();
   if (!adminEmail) {
@@ -177,13 +187,19 @@ export async function sendAdminOrderNotificationEmail(params: {
     ? `${LOCAL_PICKUP.addressLine1}\n${LOCAL_PICKUP.city}, ${LOCAL_PICKUP.state} ${LOCAL_PICKUP.postalCode}\nPhone: ${LOCAL_PICKUP.phone}`
     : `${params.shippingAddress?.line1 ?? '—'}\n${params.shippingAddress?.city ?? ''} ${params.shippingAddress?.state ?? ''} ${params.shippingAddress?.postalCode ?? ''}`.trim();
 
+  const pickupScheduleLine =
+    params.isPickup && params.pickupScheduledDisplay
+      ? `Customer requested pickup (Central): ${params.pickupScheduledDisplay}\n`
+      : '';
+
   const text = `
-New Pickup Order
+New ${params.isPickup ? 'Pickup' : 'Shipping'} Order
 
 Order Number: ${params.orderNumber}
 Customer Email: ${params.customerEmail}
+Customer Phone: ${params.customerPhone || '—'}
 Order Total: ${formatMoney(params.orderTotal)}
-
+${pickupScheduleLine}
 ${locationLabel}:
 ${addressText}
 
@@ -206,7 +222,13 @@ ${lineItemsText || '—'}
     <h2 style="margin: 0 0 12px;">New ${params.isPickup ? 'Pickup' : 'Shipping'} Order</h2>
     <p><strong>Order:</strong> ${params.orderNumber}</p>
     <p><strong>Customer:</strong> ${params.customerEmail}</p>
+    <p><strong>Phone:</strong> ${params.customerPhone || '—'}</p>
     <p><strong>Total:</strong> ${formatMoney(params.orderTotal)}</p>
+    ${
+      params.isPickup && params.pickupScheduledDisplay
+        ? `<p><strong>Requested pickup:</strong> ${params.pickupScheduledDisplay}</p>`
+        : ''
+    }
     <p><strong>${locationLabel}:</strong> ${addressText.replace(/\n/g, ', ')}</p>
     <h3 style="margin: 16px 0 8px;">Items</h3>
     <table style="width:100%; border-collapse:collapse; font-size:14px;">
@@ -228,7 +250,7 @@ ${lineItemsText || '—'}
 
   return sendResendEmail({
     to: adminEmail,
-    subject: `[Admin] New Pickup Order #${params.orderNumber}`,
+    subject: `[Admin] New ${params.isPickup ? 'Pickup' : 'Shipping'} Order #${params.orderNumber}`,
     text,
     html,
     idempotencyKey: `admin-pickup-${params.orderNumber}`,

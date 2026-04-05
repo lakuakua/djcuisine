@@ -343,7 +343,7 @@ export const juiceProducts: Product[] = [
     variants: [
       { id: '1gal', size: '1 Gallon', price: 3500 },
       { id: 'half', size: 'Half Gallon', price: 1800 },
-      { id: '16oz', size: '16 oz', price: 600 },
+      { id: '16oz', size: '16 oz', price: 500 },
       { id: '32oz', size: '32 oz bottle', price: 1000 }
     ]
   },

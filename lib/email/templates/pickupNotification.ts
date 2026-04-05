@@ -102,7 +102,10 @@ export function buildPickupNotificationEmail(data: PickupNotificationData) {
       </div>
 
       <div class="section">
-        <p style="color: #6b7280; font-size: 14px; margin: 0;">If you have any questions or need to reschedule your pickup, please don't hesitate to contact us.</p>
+        <p style="color: #6b7280; font-size: 14px; margin: 0;">
+          If you have any questions or need to reschedule your pickup, please contact us at
+          <strong> orders@djcuisine.com</strong> or <strong>(979) 221-3114</strong>.
+        </p>
       </div>
 
       <div class="footer">

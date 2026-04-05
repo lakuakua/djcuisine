@@ -31,6 +31,16 @@ Next.js 14 ecommerce application for **DJ Cuisine**, a Houston-based African & I
 - Product Requirements & Menu: See `prd.md` for complete product specifications, menu structure, and all prices
 - Product Data Source of Truth: `/lib/products.ts` (implementation of products from prd.md)
 
+**Scratchpad Updates:**
+- [X] Switch checkout to card-only entry (CardElement) to remove Link/Bank UI
+- [X] Restrict PaymentIntent to `card` only (no bank/Cash App)
+- [X] Guard clientSecret before confirmCardPayment
+- [X] Disable Link in CardElement options
+- [X] Split into CardNumber/Expiry/CVC elements
+- [X] Add phone validation and update pay button label
+- [X] Switch cart persistence to sessionStorage
+- [X] Session-only cart key + remove legacy `localStorage` `djcuisine_cart`
+
 ---
 
 ## Phase 1: Project Setup & Core Foundation ✅ COMPLETED
@@ -646,6 +656,8 @@ Next.js 14 ecommerce application for **DJ Cuisine**, a Houston-based African & I
 
 12. **Prisma 7 vs `datasource url`**: Prisma 7 removes `url` from `schema.prisma` in favor of `prisma.config.ts`. For this stack (Next 14 + standard Prisma workflow), **pin `prisma` and `@prisma/client` to 5.22.x** unless you migrate to the Prisma 7 config + client setup. ✅
 
+13. **Cart session vs browser close**: Persist cart with `sessionStorage` only (not `localStorage`) so it clears when the browser session ends. Remove legacy `localStorage` key `djcuisine_cart` on load if present. Use a dedicated session key (e.g. `djcuisine_cart_session`). ✅
+
 ### Phase 9 Lessons (Easyship Integration - To Be Documented):
 11. **Easyship Package Specs**: Define exact package dimensions for each product type before integration. Create package presets in Easyship dashboard first, then map by ID in code.
 
@@ -664,7 +676,7 @@ Next.js 14 ecommerce application for **DJ Cuisine**, a Houston-based African & I
 - **Tech Stack Summary:**
   - Framework: Next.js 14.2.0 (App Router, TypeScript) ✅
   - Styling: Tailwind CSS 3.4.0 ✅
-  - State Management: Zustand 4.5.0 (cart with localStorage) ✅
+  - State Management: Zustand 4.5.0 (cart with sessionStorage) ✅
   - Payments: Stripe + @stripe/stripe-js ✅
   - Shipping: Easyship API (planned)
   - Icons: Lucide React 0.344.0 ✅

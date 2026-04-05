@@ -102,7 +102,7 @@ ${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddre
 
       <div style="margin-top: 30px; padding: 20px; background-color: #f3f4f6; border-radius: 6px;">
         <p style="margin: 0; color: #555;">
-          If you have any questions about your order or shipment, reply to this email or contact us at <strong>support@djcuisine.com</strong>
+          If you have any questions about your order or shipment, reply to this email or contact us at <strong>orders@djcuisine.com</strong> or <strong>(979) 221-3114</strong>
         </p>
       </div>
 
@@ -138,7 +138,7 @@ IMPORTANT: Please plan to be available to receive your package. Our BBQ items ne
 
 ════════════════════════════════════════
 
-If you have any questions, contact us at support@djcuisine.com
+If you have any questions, contact us at orders@djcuisine.com or (979) 221-3114
 
 ---
 DJ Cuisine — The Best BBQ in H-Town

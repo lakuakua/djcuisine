@@ -44,7 +44,7 @@ export async function POST(request: NextRequest) {
         paymentIntentId: paymentIntent.id,
         hasCustomerEmail: Boolean(paymentIntent.receipt_email || paymentIntent.metadata?.customer_email),
       });
-      await handlePaymentIntentSucceeded(paymentIntent);
+      await handlePaymentIntentSucceeded(paymentIntent, { eventCreatedSec: event.created });
     }
     return NextResponse.json({ received: true });
   } catch (error) {

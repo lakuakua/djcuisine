@@ -9,12 +9,20 @@ import { useCartStore } from '@/store/cartStore';
 import { formatPrice, isJuiceOneGallonSize } from '@/lib/utils';
 import { SHIPPING_CONFIG } from '@/lib/shipping';
 import { LOCAL_PICKUP } from '@/lib/constants/shipping';
+import { PICKUP_MIN_LEAD_MS } from '@/lib/pickup/schedule';
 import { US_STATE_CODES } from '@/lib/usStates';
 import { getProductById } from '@/lib/products';
 import { Loader2, Truck, MapPin } from 'lucide-react';
 import type { QuoteBoxLine } from '@/lib/shipping/pirateShipParcelsForEasyship';
 import { loadStripe } from '@stripe/stripe-js';
-import { Elements, PaymentElement, useElements, useStripe } from '@stripe/react-stripe-js';
+import {
+  CardCvcElement,
+  CardExpiryElement,
+  CardNumberElement,
+  Elements,
+  useElements,
+  useStripe,
+} from '@stripe/react-stripe-js';
 
 type QuoteRate = {
   service: string;
@@ -30,10 +38,14 @@ function PaymentPanel({
   onConfirm,
   isProcessing,
   error,
+  cardholderName,
+  onCardholderNameChange,
 }: {
   onConfirm: (stripe: ReturnType<typeof useStripe>, elements: ReturnType<typeof useElements>) => Promise<void>;
   isProcessing: boolean;
   error: string | null;
+  cardholderName: string;
+  onCardholderNameChange: (value: string) => void;
 }) {
   const stripe = useStripe();
   const elements = useElements();
@@ -45,12 +57,67 @@ function PaymentPanel({
 
   return (
     <div className="space-y-4 rounded-lg border border-red-900/40 bg-stone-950/70 p-4">
-      <PaymentElement
-        options={{
-          layout: 'tabs',
-          paymentMethodOrder: ['card', 'cashapp'],
-        }}
-      />
+      <div>
+        <label className="mb-2 block text-xs font-semibold uppercase tracking-wide text-stone-400">
+          Cardholder name
+        </label>
+        <input
+          type="text"
+          value={cardholderName}
+          onChange={(event) => onCardholderNameChange(event.target.value)}
+          placeholder="Name on card"
+          className="w-full rounded-md border border-stone-800 bg-black/30 px-3 py-3 text-sm text-stone-100 placeholder:text-stone-500 focus:border-orange-500 focus:outline-none focus:ring-1 focus:ring-orange-500"
+        />
+      </div>
+      <div className="rounded-md border border-stone-800 bg-black/30 px-3 py-3">
+        <CardNumberElement
+          options={{
+            disableLink: true,
+            showIcon: true,
+            style: {
+              base: {
+                color: '#f5f5f4',
+                fontFamily: 'inherit',
+                fontSize: '16px',
+                '::placeholder': { color: '#a8a29e' },
+              },
+              invalid: { color: '#fca5a5' },
+            },
+          }}
+        />
+      </div>
+      <div className="grid grid-cols-1 gap-3 sm:grid-cols-2">
+        <div className="rounded-md border border-stone-800 bg-black/30 px-3 py-3">
+          <CardExpiryElement
+            options={{
+              style: {
+                base: {
+                  color: '#f5f5f4',
+                  fontFamily: 'inherit',
+                  fontSize: '16px',
+                  '::placeholder': { color: '#a8a29e' },
+                },
+                invalid: { color: '#fca5a5' },
+              },
+            }}
+          />
+        </div>
+        <div className="rounded-md border border-stone-800 bg-black/30 px-3 py-3">
+          <CardCvcElement
+            options={{
+              style: {
+                base: {
+                  color: '#f5f5f4',
+                  fontFamily: 'inherit',
+                  fontSize: '16px',
+                  '::placeholder': { color: '#a8a29e' },
+                },
+                invalid: { color: '#fca5a5' },
+              },
+            }}
+          />
+        </div>
+      </div>
       {error && <p className="text-sm text-red-200">{error}</p>}
       <button
         type="button"
@@ -58,7 +125,7 @@ function PaymentPanel({
         disabled={!stripe || !elements || isProcessing}
         className="w-full rounded-lg bg-gradient-to-r from-red-600 to-orange-500 py-3 text-sm font-bold text-white shadow-lg transition hover:from-red-500 hover:to-orange-400 disabled:cursor-not-allowed disabled:opacity-50"
       >
-        {isProcessing ? 'Processing…' : 'Pay with Card'}
+        {isProcessing ? 'Processing…' : 'Pay Now'}
       </button>
     </div>
   );
@@ -76,6 +143,8 @@ export default function CheckoutPage() {
   const [firstName, setFirstName] = useState('');
   const [lastName, setLastName] = useState('');
   const [phone, setPhone] = useState('');
+  const [phoneError, setPhoneError] = useState<string | null>(null);
+  const [cardholderName, setCardholderName] = useState('');
   
   // Shipping fields (only for shippable products)
   const [line1, setLine1] = useState('');
@@ -100,6 +169,20 @@ export default function CheckoutPage() {
   const [quoteBoxes, setQuoteBoxes] = useState<QuoteBoxLine[]>([]);
   const [perishableNotice, setPerishableNotice] = useState('');
   const [selectedService, setSelectedService] = useState<string | null>(null);
+  /** `datetime-local` value (browser local) — pickup-only orders */
+  const [pickupScheduledAt, setPickupScheduledAt] = useState('');
+
+  const minPickupDatetimeLocal = () => {
+    const d = new Date(Date.now() + PICKUP_MIN_LEAD_MS);
+    const pad = (n: number) => String(n).padStart(2, '0');
+    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
+  };
+
+  const pickupLeadValid = () => {
+    if (!pickupScheduledAt.trim()) return false;
+    const ms = new Date(pickupScheduledAt).getTime();
+    return Number.isFinite(ms) && ms >= Date.now() + PICKUP_MIN_LEAD_MS;
+  };
 
   const subtotal = getTotal();
   const gallonCount = getGallonCount();
@@ -174,9 +257,16 @@ export default function CheckoutPage() {
     }
   };
 
+  const normalizePhone = (value: string) => value.replace(/\D/g, '');
+  const isValidPhone = (value: string) => {
+    const digits = normalizePhone(value);
+    return digits.length === 10;
+  };
+
   const createPaymentIntent = async () => {
     setError(null);
     setPaymentError(null);
+    setPhoneError(null);
     if (hasGallonMinimumIssue) {
       setError('Gallon orders require at least 2 gallons.');
       return;
@@ -191,8 +281,24 @@ export default function CheckoutPage() {
       return;
     }
 
+    if (!hasShippableProducts) {
+      if (!pickupScheduledAt.trim()) {
+        setError('Choose a pickup date and time at least 24 hours from now.');
+        return;
+      }
+      const pickupMs = new Date(pickupScheduledAt).getTime();
+      if (!Number.isFinite(pickupMs) || pickupMs < Date.now() + PICKUP_MIN_LEAD_MS) {
+        setError('Pickup must be scheduled at least 24 hours from now.');
+        return;
+      }
+    }
+
     if (!firstName.trim() || !lastName.trim() || !phone.trim()) {
       setError('Name, phone, and email are required.');
+      return;
+    }
+    if (!isValidPhone(phone)) {
+      setPhoneError('Enter a valid 10-digit phone number.');
       return;
     }
 
@@ -204,6 +310,7 @@ export default function CheckoutPage() {
         body: JSON.stringify({
           items,
           email: email.trim(),
+          phone,
           shippingAddress: hasShippableProducts ? {
             firstName: firstName.trim() || 'Customer',
             lastName: lastName.trim() || 'Name',
@@ -212,9 +319,13 @@ export default function CheckoutPage() {
             city: city.trim(),
             state: state.trim(),
             postalCode: postalCode.trim(),
-            phone: phone.trim() || '7135550100',
+            phone: normalizePhone(phone) || '7135550100',
           } : undefined,
           shippingService: hasShippableProducts ? selectedService : 'Local Pickup',
+          pickupAt:
+            !hasShippableProducts && pickupScheduledAt
+              ? new Date(pickupScheduledAt).toISOString()
+              : undefined,
         }),
       });
       const data = await res.json();
@@ -240,13 +351,33 @@ export default function CheckoutPage() {
     setPayLoading(true);
     setPaymentError(null);
     try {
-      const { error: stripeError, paymentIntent } = await stripe.confirmPayment({
-        elements,
-        redirect: 'if_required',
-        confirmParams: {
-          return_url: `${window.location.origin}/success`,
-        },
-      });
+      if (!hasShippableProducts) {
+        if (!pickupScheduledAt.trim() || !pickupLeadValid()) {
+          setPaymentError('Pickup must be at least 24 hours from now. Adjust your pickup time and try again.');
+          return;
+        }
+      }
+      if (!clientSecret) {
+        setPaymentError('Payment session expired. Please try again.');
+        return;
+      }
+      const cardElement = elements.getElement(CardNumberElement);
+      if (!cardElement) {
+        setPaymentError('Payment form not ready. Please try again.');
+        return;
+      }
+
+      const { error: stripeError, paymentIntent } = await stripe.confirmCardPayment(
+        clientSecret,
+        {
+          payment_method: {
+            card: cardElement,
+            billing_details: {
+              name: cardholderName.trim() || `${firstName} ${lastName}`.trim(),
+            },
+          },
+        }
+      );
       if (stripeError) {
         setPaymentError(stripeError.message || 'Payment failed');
         return;
@@ -346,11 +477,19 @@ export default function CheckoutPage() {
                   type="tel"
                   required
                   value={phone}
-                  onChange={(e) => setPhone(e.target.value)}
+                  onChange={(e) => {
+                    const digitsOnly = e.target.value.replace(/\D/g, '').slice(0, 10);
+                    setPhone(digitsOnly);
+                    if (phoneError) setPhoneError(null);
+                  }}
                   className="w-full rounded-lg border border-red-900/50 bg-stone-950 px-3 py-2 text-white focus:border-orange-500 focus:outline-none"
+                  inputMode="tel"
                   autoComplete="tel"
-                  placeholder="(713) 555-0100"
+                  placeholder="7135550100"
+                  maxLength={10}
+                  pattern="\\d{10}"
                 />
+                {phoneError && <p className="mt-1 text-xs text-red-300">{phoneError}</p>}
               </div>
             </div>
           </div>
@@ -560,15 +699,39 @@ export default function CheckoutPage() {
 
           {/* Pickup-only notice */}
           {!hasShippableProducts && (
-            <div className="rounded-lg border border-green-700/50 bg-green-950/40 p-4">
-              <div className="flex items-start gap-3">
-                <MapPin className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
-                <div>
-                  <p className="font-semibold text-green-300 text-sm mb-1">Local Pickup Order</p>
-                  <p className="text-xs text-green-200/90">
-                    Your order is pickup only. After payment, we'll notify you when it's ready for pickup at our {LOCAL_PICKUP.city} location.
-                  </p>
+            <div className="space-y-4">
+              <div className="rounded-lg border border-green-700/50 bg-green-950/40 p-4">
+                <div className="flex items-start gap-3">
+                  <MapPin className="h-5 w-5 text-green-400 flex-shrink-0 mt-0.5" />
+                  <div>
+                    <p className="font-semibold text-green-300 text-sm mb-1">Local Pickup Order</p>
+                    <p className="text-xs text-green-200/90">
+                      Your order is pickup only. Choose when you plan to pick up — the earliest option is 24 hours from
+                      now so our kitchen can prepare. Times are shown in your device&apos;s local time; we schedule in
+                      Central Time for the Katy location.
+                    </p>
+                  </div>
                 </div>
+              </div>
+              <div>
+                <label className="mb-1 block text-xs font-medium text-green-200">
+                  Preferred pickup date &amp; time *
+                </label>
+                <input
+                  type="datetime-local"
+                  required
+                  value={pickupScheduledAt}
+                  min={minPickupDatetimeLocal()}
+                  onChange={(e) => {
+                    setPickupScheduledAt(e.target.value);
+                    setClientSecret(null);
+                  }}
+                  className="w-full rounded-lg border border-green-800/60 bg-stone-950 px-3 py-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                />
+                <p className="mt-1 text-xs text-stone-500">
+                  Earliest: 24 hours from the moment you complete payment. You&apos;ll get a confirmation email with this
+                  time.
+                </p>
               </div>
             </div>
           )}
@@ -612,7 +775,12 @@ export default function CheckoutPage() {
             <button
               type="button"
               onClick={createPaymentIntent}
-              disabled={payLoading || hasGallonMinimumIssue || (hasShippableProducts && !selectedService)}
+              disabled={
+                payLoading ||
+                hasGallonMinimumIssue ||
+                (hasShippableProducts && !selectedService) ||
+                (!hasShippableProducts && !pickupLeadValid())
+              }
               className="w-full rounded-lg bg-gradient-to-r from-red-600 to-orange-500 py-4 text-lg font-bold text-white shadow-lg transition hover:from-red-500 hover:to-orange-400 disabled:cursor-not-allowed disabled:opacity-50"
             >
               {payLoading ? 'Preparing payment…' : 'Continue to payment'}
@@ -623,6 +791,8 @@ export default function CheckoutPage() {
                 onConfirm={confirmPayment}
                 isProcessing={payLoading}
                 error={paymentError}
+                cardholderName={cardholderName}
+                onCardholderNameChange={setCardholderName}
               />
             </Elements>
           )}

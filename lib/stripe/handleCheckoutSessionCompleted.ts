@@ -61,7 +61,7 @@ export async function handleCheckoutSessionCompleted(
         pi?.metadata?.is_pickup === 'true' ||
         fullSession.metadata?.ship_service === 'Local Pickup';
       const customerEmail = fullSession.customer_details?.email || fullSession.customer_email;
-      const customerPhone = fullSession.customer_details?.phone;
+      const customerPhone = fullSession.customer_details?.phone || undefined;
 
       if (isPickup && customerEmail) {
         // Send pickup confirmation email
@@ -84,6 +84,7 @@ export async function handleCheckoutSessionCompleted(
         await sendAdminOrderNotificationEmail({
           orderNumber,
           customerEmail,
+          customerPhone,
           orderTotal: fullSession.amount_total ?? 0,
           currency: fullSession.currency || 'usd',
           items: lines,
