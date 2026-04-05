@@ -9,7 +9,7 @@ import { useCartStore } from '@/store/cartStore';
 import { formatPrice, isJuiceOneGallonSize } from '@/lib/utils';
 import { SHIPPING_CONFIG } from '@/lib/shipping';
 import { LOCAL_PICKUP } from '@/lib/constants/shipping';
-import { PICKUP_MIN_LEAD_MS } from '@/lib/pickup/schedule';
+import { isPickupYmdAllowed, minPickupDateYmd } from '@/lib/pickup/schedule';
 import { US_STATE_CODES } from '@/lib/usStates';
 import { getProductById } from '@/lib/products';
 import { Loader2, Truck, MapPin } from 'lucide-react';
@@ -169,20 +169,11 @@ export default function CheckoutPage() {
   const [quoteBoxes, setQuoteBoxes] = useState<QuoteBoxLine[]>([]);
   const [perishableNotice, setPerishableNotice] = useState('');
   const [selectedService, setSelectedService] = useState<string | null>(null);
-  /** `datetime-local` value (browser local) — pickup-only orders */
-  const [pickupScheduledAt, setPickupScheduledAt] = useState('');
+  /** YYYY-MM-DD from `input type="date"` — pickup-only orders */
+  const [pickupDate, setPickupDate] = useState('');
 
-  const minPickupDatetimeLocal = () => {
-    const d = new Date(Date.now() + PICKUP_MIN_LEAD_MS);
-    const pad = (n: number) => String(n).padStart(2, '0');
-    return `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}T${pad(d.getHours())}:${pad(d.getMinutes())}`;
-  };
-
-  const pickupLeadValid = () => {
-    if (!pickupScheduledAt.trim()) return false;
-    const ms = new Date(pickupScheduledAt).getTime();
-    return Number.isFinite(ms) && ms >= Date.now() + PICKUP_MIN_LEAD_MS;
-  };
+  const pickupLeadValid = () =>
+    Boolean(pickupDate.trim()) && isPickupYmdAllowed(pickupDate.trim(), Date.now());
 
   const subtotal = getTotal();
   const gallonCount = getGallonCount();
@@ -282,13 +273,12 @@ export default function CheckoutPage() {
     }
 
     if (!hasShippableProducts) {
-      if (!pickupScheduledAt.trim()) {
-        setError('Choose a pickup date and time at least 24 hours from now.');
+      if (!pickupDate.trim()) {
+        setError('Choose a pickup date at least 24 hours after your order.');
         return;
       }
-      const pickupMs = new Date(pickupScheduledAt).getTime();
-      if (!Number.isFinite(pickupMs) || pickupMs < Date.now() + PICKUP_MIN_LEAD_MS) {
-        setError('Pickup must be scheduled at least 24 hours from now.');
+      if (!isPickupYmdAllowed(pickupDate.trim(), Date.now())) {
+        setError('Pickup date must be at least 24 hours after your order time.');
         return;
       }
     }
@@ -322,10 +312,7 @@ export default function CheckoutPage() {
             phone: normalizePhone(phone) || '7135550100',
           } : undefined,
           shippingService: hasShippableProducts ? selectedService : 'Local Pickup',
-          pickupAt:
-            !hasShippableProducts && pickupScheduledAt
-              ? new Date(pickupScheduledAt).toISOString()
-              : undefined,
+          pickupDate: !hasShippableProducts && pickupDate.trim() ? pickupDate.trim() : undefined,
         }),
       });
       const data = await res.json();
@@ -352,8 +339,10 @@ export default function CheckoutPage() {
     setPaymentError(null);
     try {
       if (!hasShippableProducts) {
-        if (!pickupScheduledAt.trim() || !pickupLeadValid()) {
-          setPaymentError('Pickup must be at least 24 hours from now. Adjust your pickup time and try again.');
+        if (!pickupDate.trim() || !pickupLeadValid()) {
+          setPaymentError(
+            'Pickup date must be at least 24 hours after your order. Choose a new date and use Continue to payment again.'
+          );
           return;
         }
       }
@@ -706,31 +695,30 @@ export default function CheckoutPage() {
                   <div>
                     <p className="font-semibold text-green-300 text-sm mb-1">Local Pickup Order</p>
                     <p className="text-xs text-green-200/90">
-                      Your order is pickup only. Choose when you plan to pick up — the earliest option is 24 hours from
-                      now so our kitchen can prepare. Times are shown in your device&apos;s local time; we schedule in
-                      Central Time for the Katy location.
+                      Your order is pickup only. Tap the field below to open the calendar and choose a date — the
+                      earliest day available is 24 hours after your order so our kitchen can prepare (schedule is based
+                      on Central Time for our Katy location).
                     </p>
                   </div>
                 </div>
               </div>
               <div>
                 <label className="mb-1 block text-xs font-medium text-green-200">
-                  Preferred pickup date &amp; time *
+                  Preferred pickup date *
                 </label>
                 <input
-                  type="datetime-local"
+                  type="date"
                   required
-                  value={pickupScheduledAt}
-                  min={minPickupDatetimeLocal()}
+                  value={pickupDate}
+                  min={minPickupDateYmd(Date.now())}
                   onChange={(e) => {
-                    setPickupScheduledAt(e.target.value);
+                    setPickupDate(e.target.value);
                     setClientSecret(null);
                   }}
-                  className="w-full rounded-lg border border-green-800/60 bg-stone-950 px-3 py-2 text-sm text-white focus:border-orange-500 focus:outline-none"
+                  className="w-full rounded-lg border border-green-800/60 bg-stone-950 px-3 py-2 text-sm text-white focus:border-orange-500 focus:outline-none [color-scheme:dark]"
                 />
                 <p className="mt-1 text-xs text-stone-500">
-                  Earliest: 24 hours from the moment you complete payment. You&apos;ll get a confirmation email with this
-                  time.
+                  Earliest date shown is 24 hours after your order. You&apos;ll get a confirmation email with this date.
                 </p>
               </div>
             </div>

@@ -4,10 +4,9 @@ import { getProductById } from '@/lib/products';
 import { sendPickupOrderConfirmationEmail, sendOrderConfirmationEmail, sendAdminOrderNotificationEmail } from '@/lib/email/resend';
 import { generateOrderNumber } from '@/lib/utils/orderNumber';
 import {
-  formatPickupDisplay,
-  isPickupAtLeastHoursAfter,
-  parsePickupAtIso,
-  PICKUP_MIN_LEAD_MS,
+  formatPickupDateDisplay,
+  isPickupYmdAllowed,
+  ymdFromLegacyPickupMetadata,
 } from '@/lib/pickup/schedule';
 
 type ParsedLine = {
@@ -56,18 +55,20 @@ export async function handlePaymentIntentSucceeded(
     pi.metadata?.is_pickup === 'true' || pi.metadata?.ship_service === 'Local Pickup';
 
   const purchaseMs = (options?.eventCreatedSec ?? pi.created) * 1000;
-  const pickupAtIso = typeof pi.metadata?.pickup_at === 'string' ? pi.metadata.pickup_at : undefined;
-  const pickupMs = parsePickupAtIso(pickupAtIso);
+  const rawPickup =
+    typeof pi.metadata?.pickup_date === 'string'
+      ? pi.metadata.pickup_date
+      : typeof pi.metadata?.pickup_at === 'string'
+        ? pi.metadata.pickup_at
+        : undefined;
+  const pickupYmd = ymdFromLegacyPickupMetadata(rawPickup) ?? undefined;
   let pickupDisplay: string | undefined;
-  if (isPickup && pickupAtIso) {
-    pickupDisplay = formatPickupDisplay(pickupAtIso);
-    if (
-      pickupMs != null &&
-      !isPickupAtLeastHoursAfter(pickupMs, purchaseMs, PICKUP_MIN_LEAD_MS)
-    ) {
-      console.warn('[PaymentIntent] pickup_at within 24h of payment event', {
+  if (isPickup && pickupYmd) {
+    pickupDisplay = formatPickupDateDisplay(pickupYmd);
+    if (!isPickupYmdAllowed(pickupYmd, purchaseMs)) {
+      console.warn('[PaymentIntent] pickup date within 24h lead of payment event', {
         paymentIntentId: pi.id,
-        pickup_at: pickupAtIso,
+        pickup_date: pickupYmd,
       });
     }
   }
@@ -91,7 +92,9 @@ export async function handlePaymentIntentSucceeded(
           city: pi.metadata?.ship_city,
           state: pi.metadata?.ship_state,
           postal_code: pi.metadata?.ship_zip,
-          ...(isPickup && pickupAtIso ? { pickup_at: pickupAtIso, pickup_display: pickupDisplay } : {}),
+          ...(isPickup && pickupYmd
+            ? { pickup_date: pickupYmd, pickup_display: pickupDisplay }
+            : {}),
         }),
         lineItemsJson: JSON.stringify(lines),
       },

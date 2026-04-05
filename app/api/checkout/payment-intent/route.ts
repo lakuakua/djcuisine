@@ -5,11 +5,7 @@ import { getStripe, stripeSecretKeyMissing } from '@/lib/stripe/server';
 import { buildCheckoutMetadata } from '@/lib/stripe/checkoutMetadata';
 import { SHIPPING_CONFIG } from '@/lib/shipping';
 import { SHIPPING_SERVICES, STATE_TO_ZONE, getShippingRate } from '@/lib/constants/shipping';
-import {
-  isPickupAtLeastHoursAfter,
-  parsePickupAtIso,
-  PICKUP_MIN_LEAD_MS,
-} from '@/lib/pickup/schedule';
+import { isPickupYmdAllowed } from '@/lib/pickup/schedule';
 
 const ALLOWED_SERVICES = new Set<string>([
   SHIPPING_SERVICES.UPS_GROUND,
@@ -41,7 +37,7 @@ export async function POST(request: NextRequest) {
       shippingAddress,
       shippingService,
       phone,
-      pickupAt,
+      pickupDate,
     }: {
       items: CartItem[];
       email?: string;
@@ -57,8 +53,8 @@ export async function POST(request: NextRequest) {
       };
       shippingService?: string;
       phone?: string;
-      /** ISO 8601 — required for Local Pickup; must be ≥ 24h from now */
-      pickupAt?: string;
+      /** YYYY-MM-DD — required for Local Pickup; must be ≥ earliest calendar day after 24h lead (Central) */
+      pickupDate?: string;
     } = body;
 
     if (!items || items.length === 0) {
@@ -81,16 +77,15 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ error: 'Complete shipping address is required' }, { status: 400 });
       }
     } else {
-      const pickupMs = parsePickupAtIso(pickupAt);
-      if (pickupMs == null) {
+      if (!pickupDate?.trim()) {
         return NextResponse.json(
-          { error: 'Choose a pickup date and time at least 24 hours from now.' },
+          { error: 'Choose a pickup date at least 24 hours after your order.' },
           { status: 400 }
         );
       }
-      if (!isPickupAtLeastHoursAfter(pickupMs, Date.now(), PICKUP_MIN_LEAD_MS)) {
+      if (!isPickupYmdAllowed(pickupDate.trim(), Date.now())) {
         return NextResponse.json(
-          { error: 'Pickup must be scheduled at least 24 hours after your order time.' },
+          { error: 'Pickup date must be at least 24 hours after your order time.' },
           { status: 400 }
         );
       }
@@ -146,9 +141,9 @@ export async function POST(request: NextRequest) {
       ship_phone: customerPhone,
     });
 
-    const pickupAtIso =
-      shippingService === 'Local Pickup' && pickupAt?.trim()
-        ? pickupAt.trim().slice(0, 500)
+    const pickupDateMeta =
+      shippingService === 'Local Pickup' && pickupDate?.trim()
+        ? pickupDate.trim().slice(0, 32)
         : undefined;
 
     const intent = await stripe.paymentIntents.create({
@@ -162,7 +157,7 @@ export async function POST(request: NextRequest) {
       metadata: {
         ...metadata,
         is_pickup: shippingService === 'Local Pickup' ? 'true' : 'false',
-        ...(pickupAtIso ? { pickup_at: pickupAtIso } : {}),
+        ...(pickupDateMeta ? { pickup_date: pickupDateMeta } : {}),
       },
     });
 

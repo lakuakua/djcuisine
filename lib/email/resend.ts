@@ -99,7 +99,7 @@ export async function sendPickupOrderConfirmationEmail(params: {
   currency: string;
   items?: Array<{ name: string; quantity: number; unitPrice: number; totalPrice: number }>;
   orderDate: string;
-  /** Central Time formatted label for customer-chosen pickup window */
+  /** Formatted pickup calendar date (no time) */
   scheduledPickupDisplay?: string;
   pickupAddress?: {
     line1: string;
@@ -129,7 +129,7 @@ export async function sendPickupOrderConfirmationEmail(params: {
   });
 
   const pickupLine = params.scheduledPickupDisplay
-    ? `Requested pickup time (Central): ${params.scheduledPickupDisplay}\n`
+    ? `Requested pickup date: ${params.scheduledPickupDisplay}\n`
     : '';
 
   return sendResendEmail({
@@ -189,7 +189,7 @@ export async function sendAdminOrderNotificationEmail(params: {
 
   const pickupScheduleLine =
     params.isPickup && params.pickupScheduledDisplay
-      ? `Customer requested pickup (Central): ${params.pickupScheduledDisplay}\n`
+      ? `Customer requested pickup date: ${params.pickupScheduledDisplay}\n`
       : '';
 
   const text = `
@@ -226,7 +226,7 @@ ${lineItemsText || '—'}
     <p><strong>Total:</strong> ${formatMoney(params.orderTotal)}</p>
     ${
       params.isPickup && params.pickupScheduledDisplay
-        ? `<p><strong>Requested pickup:</strong> ${params.pickupScheduledDisplay}</p>`
+        ? `<p><strong>Requested pickup date:</strong> ${params.pickupScheduledDisplay}</p>`
         : ''
     }
     <p><strong>${locationLabel}:</strong> ${addressText.replace(/\n/g, ', ')}</p>

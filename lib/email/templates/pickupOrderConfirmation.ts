@@ -19,7 +19,7 @@ export interface PickupOrderConfirmationData {
   handlingFee?: number;
   tax?: number;
   orderDate: string;
-  /** Formatted in America/Chicago for the Katy pickup location */
+  /** Long calendar date (no time) */
   scheduledPickupDisplay?: string;
   pickupAddress: {
     line1: string;
@@ -110,9 +110,9 @@ export function buildPickupOrderConfirmationEmail(data: PickupOrderConfirmationD
         data.scheduledPickupDisplay
           ? `
       <div class="section" style="background-color: #eff6ff; border: 1px solid #bfdbfe; padding: 14px; border-radius: 6px;">
-        <div class="section-title" style="margin-bottom: 6px;">🕐 Your requested pickup time</div>
+        <div class="section-title" style="margin-bottom: 6px;">📅 Your requested pickup date</div>
         <p style="margin: 0; color: #1e3a8a; font-weight: 600;">${data.scheduledPickupDisplay}</p>
-        <p style="margin: 8px 0 0; color: #64748b; font-size: 13px;">Scheduled at least 24 hours after your order so we can prepare. If you need to change this, reply to this email or call the pickup line.</p>
+        <p style="margin: 8px 0 0; color: #64748b; font-size: 13px;">Chosen date is at least 24 hours after your order so we can prepare. If you need to change it, reply to this email or call the pickup line.</p>
       </div>
       `
           : ''
