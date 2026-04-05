@@ -6,175 +6,159 @@ import Header from '@/components/Header';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import CategorySection from '@/components/CategorySection';
-import { ChefHat, Bird, Beef, Cookie, Fish, Flame, Drumstick, UtensilsCrossed, Coffee, ChevronRight } from 'lucide-react';
+import { ChevronRight } from 'lucide-react';
 
 export default function Home() {
   const [cartOpen, setCartOpen] = useState(false);
 
   return (
-    <div className="min-h-screen">
+    <div className="min-h-screen bg-stone-950">
       <Header onCartOpen={() => setCartOpen(true)} />
       <Cart isOpen={cartOpen} onClose={() => setCartOpen(false)} />
 
-      {/* Hero Section - Vibrant Modern Layout */}
-      <section className="relative min-h-[500px] lg:min-h-[600px] flex items-center overflow-hidden">
-        {/* Lamb Background Image */}
-        <div className="absolute inset-0">
+      <section className="relative isolate min-h-[600px] lg:min-h-[700px] flex items-center overflow-hidden">
+        <div className="absolute inset-0 z-0">
           <Image
             src="/images/grilled lamb.jpg"
             alt="Grilled Lamb"
             fill
-            className="object-cover brightness-110"
+            className="object-cover"
+            sizes="100vw"
             priority
           />
-          <div className="absolute inset-0 bg-gradient-to-r from-black/40 via-black/30 to-transparent"></div>
+          <div className="absolute inset-0 bg-gradient-to-t from-black/80 via-black/45 to-black/25 lg:bg-gradient-to-r lg:from-black/75 lg:via-black/45 lg:to-black/10" />
         </div>
-        
-        <div className="relative w-full px-6 sm:px-8 lg:px-12 py-12 lg:py-16">
-          <div className="max-w-3xl mx-auto text-center">
-            {/* Main Heading */}
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-white mb-4 leading-tight drop-shadow-2xl">
-              A Taste of Home in Every Bite
+
+        <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 py-16">
+          <div className="max-w-xl mx-auto lg:mx-0 lg:ml-0 text-center lg:text-left">
+            <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-gold-400/95 drop-shadow">
+              Houston · Catering · Nationwide shipping
+            </p>
+            <h1 className="mb-4 text-3xl font-bold leading-tight tracking-tight text-white drop-shadow-md sm:text-4xl lg:text-5xl">
+              Premium grilled &amp; smoked meats
             </h1>
-            <p className="text-lg sm:text-xl text-white/90 mb-8 max-w-2xl mx-auto drop-shadow-lg">
-              Experience the rich flavors of authentic African & International cuisine, 
-              grilled and smoked using traditional methods
+            <p className="mb-8 max-w-md text-base leading-relaxed text-stone-200/95 drop-shadow lg:mx-0">
+              Order trays, plates, sides, and fresh juices for your next event—crafted with care, packed for delivery.
             </p>
 
-            {/* CTA Buttons */}
-            <div className="flex flex-wrap gap-4 justify-center">
+            <div className="flex flex-wrap gap-3 justify-center lg:justify-start">
               <a
                 href="#categories"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-green-600 to-green-500 hover:from-green-500 hover:to-green-400 text-white px-8 py-4 rounded-lg font-bold text-base transition-all duration-200 shadow-xl hover:shadow-2xl hover:scale-105"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105"
               >
-                Order Now
-                <ChevronRight className="h-5 w-5" />
-              </a>
-              <a
-                href="/shop"
-                className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-orange-500 hover:from-orange-500 hover:to-orange-400 text-white px-8 py-4 rounded-lg font-bold text-base transition-all duration-200 shadow-xl hover:shadow-2xl hover:scale-105"
-              >
-                Catering Menu
+                Shop Now
+                <ChevronRight className="h-4 w-4" />
               </a>
               <a
                 href="/contact"
-                className="inline-flex items-center gap-2 bg-white hover:bg-gray-50 text-gray-900 px-8 py-4 rounded-lg font-bold text-base transition-all duration-200 shadow-xl hover:shadow-2xl hover:scale-105"
+                className="inline-flex items-center gap-2 bg-transparent border-2 border-white hover:bg-white/10 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200"
               >
-                Event Booking
+                Learn More
               </a>
             </div>
           </div>
         </div>
       </section>
 
-      {/* Categories Section */}
-      <section id="categories" className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
-        <div className="max-w-7xl mx-auto">
-          <div className="text-center mb-12">
-            <h2 className="text-5xl font-bold bg-gradient-to-r from-red-600 via-orange-500 to-red-600 bg-clip-text text-transparent mb-4">
-              Our Menu
+      <section
+        id="categories"
+        className="relative z-10 border-t border-red-950/40 bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950 py-16 px-4 sm:px-6 lg:px-8"
+      >
+        <div className="mx-auto max-w-7xl">
+          <div className="mb-12 text-center">
+            <h2 className="mb-4 text-4xl font-bold tracking-tight text-white sm:text-5xl">
+              <span className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent">
+                Our menu
+              </span>
             </h2>
-            <p className="text-gray-700 text-xl max-w-2xl mx-auto font-medium">
-              Choose from our selection of catering trays, individual plates, or 
-              refreshing beverages
+            <p className="mx-auto max-w-2xl text-lg text-stone-400">
+              Catering trays, individual plates, sides, and fresh juices—pick a category to browse.
             </p>
           </div>
 
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+          <div className="grid grid-cols-1 gap-4 sm:grid-cols-2 lg:grid-cols-3 lg:gap-6">
             <CategorySection
               title="Chicken"
               description="Chicken legs & thighs, wings. Choose Big Tray, Half Tray, or Plate."
               href="/category/chicken"
-              icon={<ChefHat className="h-12 w-12" />}
               image="/images/Chicken legs and thighs.png"
             />
             <CategorySection
               title="Turkey"
               description="Turkey wings and legs in Big Tray or Half Tray sizes."
               href="/category/turkey"
-              icon={<Bird className="h-12 w-12" />}
               image="/images/Smoked Turkey wing.png"
             />
             <CategorySection
               title="Beef"
               description="Beef ribs, steak tips, and kabobs. Multiple sizes available."
               href="/category/beef"
-              icon={<Beef className="h-12 w-12" />}
               image="/images/beef ribs.jpg"
             />
             <CategorySection
               title="Lamb"
               description="Premium lamb in Big Tray, Half Tray, or Plate."
               href="/category/lamb"
-              icon={<Cookie className="h-12 w-12" />}
               image="/images/grilled lamb.jpg"
             />
             <CategorySection
               title="Seafood"
               description="Fresh grilled shrimp. Big Tray, Half Tray, or 5 Sticks."
               href="/category/seafood"
-              icon={<Fish className="h-12 w-12" />}
               image="/images/shrimp on the stick.jpg"
             />
             <CategorySection
               title="Whole Poultry"
               description="Whole smoked and grilled rooster, guinea fowl, hen, and rabbit."
               href="/category/whole-poultry"
-              icon={<Flame className="h-12 w-12" />}
               image="/images/Grilled Rooster.png"
             />
             <CategorySection
               title="Sausage"
               description="Grilled deer meat sausage - 5 pieces per order."
               href="/category/sausage"
-              icon={<Drumstick className="h-12 w-12" />}
               image="/images/deer meat sausage 1.jpg"
             />
             <CategorySection
               title="Sides"
               description="Potatoes au gratin, corn, seafood noodles, mac & cheese, and fresh salads."
               href="/category/sides"
-              icon={<UtensilsCrossed className="h-12 w-12" />}
-              image="/images/sides-menu.png"
+              image="/images/sides/potatoes-au-gratin.jpg"
             />
             <CategorySection
               title="Juices"
-              description="Zobo, pineapple ginger, and fresh tropical blends."
+              description="Zobo and Pineapple Ginger—pick size and sweetened or unsweetened. Tropical blends and fresh gallon juices."
               href="/category/juices"
-              icon={<Coffee className="h-12 w-12" />}
-              image="/images/sides-menu.png"
+              image="/images/juices/zobo.png"
+              variant="juice"
             />
           </div>
         </div>
       </section>
 
-      {/* About Section */}
-      <section className="py-20 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-gray-50 to-white">
-        <div className="max-w-6xl mx-auto text-center">
-          <h2 className="text-4xl sm:text-5xl font-bold text-gray-900 mb-4">
+      <section className="relative z-10 py-16 px-4 sm:px-6 lg:px-8 bg-gradient-to-b from-stone-800 via-stone-900 to-stone-800">
+        <div className="max-w-4xl mx-auto text-center">
+          <h2 className="text-5xl font-bold bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent mb-6 drop-shadow-lg">
             Why Choose DJCUISINE?
           </h2>
-          <p className="text-gray-600 text-lg mb-12 max-w-2xl mx-auto">
-            Authentic flavors, traditional methods, exceptional service
-          </p>
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8 mt-12 mb-12">
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all hover:scale-105 border border-gray-200">
-              <div className="text-red-600 text-6xl font-bold mb-3">15+</div>
-              <p className="text-gray-700 text-lg font-semibold">Years of Experience</p>
+            <div className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-8 border-2 border-red-700/50 shadow-xl hover:shadow-red-600/40 transition-all hover:scale-105">
+              <div className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent text-6xl font-bold mb-3">15+</div>
+              <p className="text-orange-200 text-lg font-semibold">Years of Experience</p>
             </div>
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all hover:scale-105 border border-gray-200">
-              <div className="text-orange-600 text-6xl font-bold mb-3">100%</div>
-              <p className="text-gray-700 text-lg font-semibold">Quality Ingredients</p>
+            <div className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-8 border-2 border-red-700/50 shadow-xl hover:shadow-red-600/40 transition-all hover:scale-105">
+              <div className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent text-6xl font-bold mb-3">100%</div>
+              <p className="text-orange-200 text-lg font-semibold">Quality Ingredients</p>
             </div>
-            <div className="bg-white rounded-xl p-8 shadow-lg hover:shadow-2xl transition-all hover:scale-105 border border-gray-200">
-              <div className="text-green-600 text-6xl font-bold mb-3">24/7</div>
-              <p className="text-gray-700 text-lg font-semibold">Order Anytime</p>
+            <div className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-8 border-2 border-red-700/50 shadow-xl hover:shadow-red-600/40 transition-all hover:scale-105">
+              <div className="bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent text-6xl font-bold mb-3">24/7</div>
+              <p className="text-orange-200 text-lg font-semibold">Order Anytime</p>
             </div>
           </div>
-          
-          <a 
+
+          <a
             href="/about"
-            className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white px-8 py-4 rounded-lg font-bold text-lg transition-all duration-200 shadow-lg hover:shadow-xl hover:scale-105"
+            className="inline-flex items-center gap-2 bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 text-white px-8 py-3 rounded-lg font-bold text-lg transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105"
           >
             Learn More About Us
             <ChevronRight className="h-5 w-5" />
@@ -182,8 +166,8 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Footer */}
       <Footer />
     </div>
   );
 }
+// Fallback enabled for production stability

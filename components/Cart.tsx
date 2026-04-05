@@ -1,9 +1,11 @@
 'use client';
 
+import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
-import { formatPrice } from '@/lib/utils';
-import { calculateOrderTotal, getShippingMessage } from '@/lib/shipping';
-import { X, Minus, Plus, ShoppingBag, Truck } from 'lucide-react';
+import { formatPrice, isJuiceOneGallonSize } from '@/lib/utils';
+import { SHIPPING_CONFIG } from '@/lib/shipping';
+import { getProductById } from '@/lib/products';
+import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
 import { useEffect, useState } from 'react';
 
 interface CartProps {
@@ -12,6 +14,7 @@ interface CartProps {
 }
 
 export default function Cart({ isOpen, onClose }: CartProps) {
+  const router = useRouter();
   const [mounted, setMounted] = useState(false);
   const [isCheckingOut, setIsCheckingOut] = useState(false);
   const items = useCartStore((state) => state.items);
@@ -27,16 +30,22 @@ export default function Cart({ isOpen, onClose }: CartProps) {
   if (!mounted) return null;
 
   const gallonCount = getGallonCount();
-  const hasGallonMinimumIssue = items.some(
-    (item) => item.selectedVariant.size === '1 Gallon'
-  ) && gallonCount < 2;
+  const hasGallonMinimumIssue =
+    items.some((item) => isJuiceOneGallonSize(item.selectedVariant.size)) &&
+    gallonCount < 2;
 
-  // Calculate order totals with shipping and tax
+  // Check if cart contains ANY shippable products
+  const hasShippableProducts = items.some((item) => {
+    const product = getProductById(item.product.id);
+    return !product?.pickupOnly;
+  });
+
+  // Calculate order totals (tax only; shipping calculated at checkout)
   const subtotal = getTotal();
-  const orderCalculation = calculateOrderTotal(subtotal, false); // false = not local delivery
-  const shippingMessage = getShippingMessage(subtotal);
+  const taxCents = Math.round(subtotal * SHIPPING_CONFIG.TAX_RATE);
+  const totalCents = subtotal + taxCents;
 
-  const handleCheckout = async () => {
+  const handleCheckout = (mode: 'ship' | 'pickup') => {
     if (hasGallonMinimumIssue) {
       alert('Gallon orders require a minimum of 2 gallons. Please add more gallons to your cart.');
       return;
@@ -48,39 +57,9 @@ export default function Cart({ isOpen, onClose }: CartProps) {
     }
 
     setIsCheckingOut(true);
-    console.log('Starting checkout...', { itemCount: items.length, total: getTotal() });
-
-    try {
-      const response = await fetch('/api/checkout', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({ items }),
-      });
-
-      console.log('Checkout API response status:', response.status);
-
-      if (!response.ok) {
-        const errorData = await response.json();
-        console.error('Checkout API error:', errorData);
-        throw new Error(errorData.error || 'Checkout failed');
-      }
-
-      const data = await response.json();
-      console.log('Checkout data:', data);
-
-      if (data.url) {
-        console.log('Redirecting to Stripe Checkout:', data.url);
-        window.location.href = data.url;
-      } else {
-        throw new Error('No checkout URL received');
-      }
-    } catch (error: any) {
-      console.error('Checkout error:', error);
-      alert(`Checkout Error: ${error.message || 'There was an error processing your checkout. Please try again.'}`);
-      setIsCheckingOut(false);
-    }
+    onClose();
+    router.push(mode === 'pickup' ? '/pickup' : '/checkout');
+    setIsCheckingOut(false);
   };
 
   return (
@@ -121,9 +100,9 @@ export default function Cart({ isOpen, onClose }: CartProps) {
               </div>
             ) : (
               <div className="space-y-4">
-                {items.map((item, index) => (
+                {items.map((item) => (
                   <div
-                    key={`${item.product.id}-${item.selectedVariant.id}-${index}`}
+                    key={`${item.product.id}-${item.selectedVariant.id}-${item.juiceSweetness ?? ''}-${item.spiceLevel ?? ''}`}
                     className="bg-gradient-to-br from-stone-900 to-black border border-red-900/40 rounded-lg p-4 shadow-md hover:shadow-red-700/30 transition-all"
                   >
                     <div className="flex justify-between items-start mb-3">
@@ -135,9 +114,26 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                           {item.selectedVariant.size}
                           {item.selectedVariant.servings && ` • ${item.selectedVariant.servings}`}
                         </p>
+                        {item.juiceSweetness && (
+                          <p className="text-xs text-stone-400 mt-0.5 capitalize">
+                            Flavor: {item.juiceSweetness}
+                          </p>
+                        )}
+                        {item.spiceLevel && (
+                          <p className="text-xs text-stone-400 mt-0.5 capitalize">
+                            Spice: {item.spiceLevel}
+                          </p>
+                        )}
                       </div>
                       <button
-                        onClick={() => removeItem(item.product.id, item.selectedVariant.id)}
+                        onClick={() =>
+                          removeItem(
+                            item.product.id,
+                            item.selectedVariant.id,
+                            item.juiceSweetness,
+                            item.spiceLevel
+                          )
+                        }
                         className="text-red-400 hover:text-red-300 text-sm font-semibold"
                       >
                         Remove
@@ -148,7 +144,13 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                       <div className="flex items-center space-x-3 bg-stone-950 rounded-lg p-1 border border-red-900/30">
                         <button
                           onClick={() =>
-                            updateQuantity(item.product.id, item.selectedVariant.id, item.quantity - 1)
+                            updateQuantity(
+                              item.product.id,
+                              item.selectedVariant.id,
+                              item.quantity - 1,
+                              item.juiceSweetness,
+                              item.spiceLevel
+                            )
                           }
                           className="p-1 hover:bg-red-900/30 rounded transition-colors"
                           aria-label="Decrease quantity"
@@ -160,7 +162,13 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                         </span>
                         <button
                           onClick={() =>
-                            updateQuantity(item.product.id, item.selectedVariant.id, item.quantity + 1)
+                            updateQuantity(
+                              item.product.id,
+                              item.selectedVariant.id,
+                              item.quantity + 1,
+                              item.juiceSweetness,
+                              item.spiceLevel
+                            )
                           }
                           className="p-1 hover:bg-red-900/30 rounded transition-colors"
                           aria-label="Increase quantity"
@@ -196,24 +204,16 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                   <span className="text-orange-200">Subtotal</span>
                   <span className="text-orange-100 font-bold">{formatPrice(subtotal)}</span>
                 </div>
+                
                 <div className="flex justify-between items-center text-sm">
                   <span className="text-orange-200">Tax (8.25%)</span>
-                  <span className="text-orange-100 font-bold">{formatPrice(orderCalculation.tax)}</span>
+                  <span className="text-orange-100 font-bold">{formatPrice(taxCents)}</span>
                 </div>
-                <div className="flex justify-between items-center text-sm">
-                  <span className="text-orange-200 flex items-center gap-1">
-                    <Truck className="h-4 w-4" />
-                    Shipping
-                  </span>
-                  <span className={orderCalculation.isFreeShipping ? 'text-orange-400 font-bold' : 'text-orange-100 font-bold'}>
-                    {orderCalculation.isFreeShipping ? 'FREE' : formatPrice(orderCalculation.shippingFee)}
-                  </span>
-                </div>
-                
-                {/* Shipping Message */}
-                {!orderCalculation.isFreeShipping && (
-                  <div className="text-xs text-center py-2 px-3 bg-red-900/30 border border-red-700/50 rounded shadow-md">
-                    <p className="text-orange-300 font-semibold">{shippingMessage}</p>
+
+                {/* Pickup-only notice */}
+                {!hasShippableProducts && (
+                  <div className="text-xs text-center py-2 px-3 bg-green-900/30 border border-green-700/50 rounded shadow-md">
+                    <p className="text-green-300 font-semibold">✓ Local Pickup Only - No shipping available for these items</p>
                   </div>
                 )}
                 
@@ -221,19 +221,38 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                   <div className="flex justify-between items-center">
                     <span className="text-lg font-semibold text-orange-200">Total</span>
                     <span className="text-2xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
-                      {formatPrice(orderCalculation.total)}
+                      {formatPrice(totalCents)}
                     </span>
                   </div>
                 </div>
               </div>
               
-              <button
-                onClick={handleCheckout}
-                disabled={hasGallonMinimumIssue || isCheckingOut}
-                className="w-full bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 disabled:from-gray-800 disabled:to-gray-900 disabled:cursor-not-allowed text-white disabled:text-gray-500 py-4 rounded-lg font-bold text-xl transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105 disabled:shadow-none disabled:scale-100"
-              >
-                {isCheckingOut ? 'Processing...' : 'Checkout'}
-              </button>
+              {hasShippableProducts ? (
+                <div className="grid grid-cols-1 gap-3">
+                  <button
+                    onClick={() => handleCheckout('ship')}
+                    disabled={hasGallonMinimumIssue || isCheckingOut}
+                    className="w-full bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 disabled:from-gray-800 disabled:to-gray-900 disabled:cursor-not-allowed text-white disabled:text-gray-500 py-4 rounded-lg font-bold text-xl transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105 disabled:shadow-none disabled:scale-100"
+                  >
+                    {isCheckingOut ? 'Processing...' : 'Checkout (Shipping)'}
+                  </button>
+                  <button
+                    onClick={() => handleCheckout('pickup')}
+                    disabled={hasGallonMinimumIssue || isCheckingOut}
+                    className="w-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 disabled:from-gray-800 disabled:to-gray-900 disabled:cursor-not-allowed text-white disabled:text-gray-500 py-4 rounded-lg font-bold text-xl transition-all duration-200 shadow-xl shadow-emerald-500/40 hover:shadow-2xl hover:scale-105 disabled:shadow-none disabled:scale-100"
+                  >
+                    {isCheckingOut ? 'Processing...' : 'Checkout (Pickup)'}
+                  </button>
+                </div>
+              ) : (
+                <button
+                  onClick={() => handleCheckout('pickup')}
+                  disabled={hasGallonMinimumIssue || isCheckingOut}
+                  className="w-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 disabled:from-gray-800 disabled:to-gray-900 disabled:cursor-not-allowed text-white disabled:text-gray-500 py-4 rounded-lg font-bold text-xl transition-all duration-200 shadow-xl shadow-emerald-500/40 hover:shadow-2xl hover:scale-105 disabled:shadow-none disabled:scale-100"
+                >
+                  {isCheckingOut ? 'Processing...' : 'Checkout (Pickup)'}
+                </button>
+              )}
               
               {/* Order Notice */}
               <p className="text-xs text-center text-orange-300 font-semibold mt-3">

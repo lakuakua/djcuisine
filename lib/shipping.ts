@@ -1,14 +1,25 @@
 // Shipping fee structure for DJ Cuisine
 
+export {
+  PIRATE_SHIP_BOXES,
+  aggregateCartForPirateShip,
+  estimatePirateShipPacking,
+  formatPirateShipGuideBullets,
+  juiceGallonEquivalent,
+  type CartShippingAggregate,
+  type PirateShipPackingEstimate,
+} from './shipping/pirateShipBoxes';
+
 export const SHIPPING_CONFIG = {
-  // Flat shipping rate for orders
-  FLAT_RATE: 1500, // $15.00 in cents
+  // Flat shipping rate for orders (NOT USED - actual rates from Easyship)
+  FLAT_RATE: 1500, // $15.00 in cents (fallback only)
   
-  // Free shipping threshold
-  FREE_SHIPPING_THRESHOLD: 10000, // $100.00 in cents
+  // NO FREE SHIPPING - All orders must pay for shipping
+  // Shipping calculated via Easyship API based on weight/destination
+  FREE_SHIPPING_THRESHOLD: Infinity, // Disable free shipping completely
   
-  // Local delivery fee (Richmond, TX area)
-  LOCAL_DELIVERY_FEE: 500, // $5.00 in cents
+  // Local pickup fee
+  LOCAL_DELIVERY_FEE: 0, // $0.00 in cents
   
   // Tax rate for Texas
   TAX_RATE: 0.0825, // 8.25% Texas sales tax
@@ -44,7 +55,7 @@ export function calculateOrderTotal(
     isFreeShipping = true;
     shippingFee = 0;
   } else if (isLocalDelivery) {
-    // Local delivery fee
+    // Local pickup - no shipping fee
     shippingFee = SHIPPING_CONFIG.LOCAL_DELIVERY_FEE;
   } else {
     // Standard flat rate shipping
@@ -81,10 +92,6 @@ export function formatShippingPrice(cents: number): string {
  * @returns Shipping message for customer
  */
 export function getShippingMessage(subtotal: number): string {
-  if (subtotal >= SHIPPING_CONFIG.FREE_SHIPPING_THRESHOLD) {
-    return '🎉 You qualify for FREE SHIPPING!';
-  }
-  
-  const amountNeeded = SHIPPING_CONFIG.FREE_SHIPPING_THRESHOLD - subtotal;
-  return `Add ${formatShippingPrice(amountNeeded)} more for FREE SHIPPING!`;
+  // All orders require shipping payment - no free shipping threshold
+  return 'Shipping costs calculated at checkout based on weight and destination.';
 }
