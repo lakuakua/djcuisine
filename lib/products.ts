@@ -431,12 +431,22 @@ export const allProducts: Product[] = [
   ...juiceProducts
 ];
 
+/** Lowest variant price in cents — used for catalog ordering. */
+function minVariantPriceCents(product: Product): number {
+  return Math.min(...product.variants.map((v) => v.price));
+}
+
+/** Cheapest-to-most-expensive by minimum variant price (does not mutate input). */
+export function sortProductsByPriceAsc(products: Product[]): Product[] {
+  return [...products].sort((a, b) => minVariantPriceCents(a) - minVariantPriceCents(b));
+}
+
 export function getProductById(id: string): Product | undefined {
   return allProducts.find(p => p.id === id);
 }
 
 export function getProductsByCategory(category: string): Product[] {
-  return allProducts.filter(p => p.category === category);
+  return sortProductsByPriceAsc(allProducts.filter((p) => p.category === category));
 }
 
 // Get all unique categories

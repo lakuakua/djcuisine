@@ -9,13 +9,15 @@ import { useCartStore } from '@/store/cartStore';
 export default function SuccessPageContent() {
   const searchParams = useSearchParams();
   const sessionId = searchParams.get('session_id');
+  const paymentIntentId = searchParams.get('payment_intent');
+  const orderReference = sessionId ?? paymentIntentId;
   const clearCart = useCartStore((state) => state.clearCart);
 
   useEffect(() => {
-    if (sessionId) {
+    if (sessionId || paymentIntentId) {
       clearCart();
     }
-  }, [sessionId, clearCart]);
+  }, [sessionId, paymentIntentId, clearCart]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-black via-stone-950 to-black px-4">
@@ -31,10 +33,10 @@ export default function SuccessPageContent() {
           </p>
         </div>
 
-        {sessionId && (
+        {orderReference && (
           <div className="mb-8 rounded-lg border-2 border-red-900/40 bg-stone-950/80 p-6 shadow-xl">
             <p className="mb-2 text-sm font-semibold text-orange-200">Order Reference</p>
-            <p className="break-all font-mono text-xs text-orange-400">{sessionId}</p>
+            <p className="break-all font-mono text-xs text-orange-400">{orderReference}</p>
           </div>
         )}
 

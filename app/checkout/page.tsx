@@ -718,7 +718,7 @@ export default function CheckoutPage() {
                   className="w-full rounded-lg border border-green-800/60 bg-stone-950 px-3 py-2 text-sm text-white focus:border-orange-500 focus:outline-none [color-scheme:dark]"
                 />
                 <p className="mt-1 text-xs text-stone-500">
-                  Earliest date shown is 24 hours after your order. You&apos;ll get a confirmation email with this date.
+                  Earliest date shown is 24 hours after your order. 
                 </p>
               </div>
             </div>

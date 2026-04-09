@@ -1,11 +1,11 @@
 'use client';
 
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import Header from '@/components/Header';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import ProductCard from '@/components/ProductCard';
-import { allProducts } from '@/lib/products';
+import { allProducts, sortProductsByPriceAsc } from '@/lib/products';
 import { ShoppingBag } from 'lucide-react';
 
 export default function ShopPage() {
@@ -25,9 +25,13 @@ export default function ShopPage() {
     { id: 'juices', name: 'Juices' },
   ];
 
-  const filteredProducts = selectedCategory === 'all' 
-    ? allProducts 
-    : allProducts.filter(p => p.category === selectedCategory);
+  const filteredProducts = useMemo(() => {
+    const list =
+      selectedCategory === 'all'
+        ? [...allProducts]
+        : allProducts.filter((p) => p.category === selectedCategory);
+    return sortProductsByPriceAsc(list);
+  }, [selectedCategory]);
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950">
