@@ -4,7 +4,8 @@ import { getProductById } from '@/lib/products';
 import { getStripe, stripeSecretKeyMissing } from '@/lib/stripe/server';
 import { buildCheckoutMetadata } from '@/lib/stripe/checkoutMetadata';
 import { SHIPPING_CONFIG } from '@/lib/shipping';
-import { SHIPPING_SERVICES, STATE_TO_ZONE, getShippingRate } from '@/lib/constants/shipping';
+import { SHIPPING_SERVICES } from '@/lib/constants/shipping';
+import { shippingUsdForService } from '@/lib/shipping/regionalQuote';
 import { isPickupYmdAllowed } from '@/lib/pickup/schedule';
 
 const ALLOWED_SERVICES = new Set<string>([
@@ -116,15 +117,11 @@ export async function POST(request: NextRequest) {
     let shippingCents = 0;
     if (shippingService !== 'Local Pickup') {
       const state = shippingAddress!.state.trim().toUpperCase().slice(0, 2);
-      const zone = STATE_TO_ZONE[state] || 'south';
-      let shippingUsd = 0;
-      for (const item of items) {
-        const sku = `${item.product.id.toUpperCase()}-${item.selectedVariant.id.toUpperCase()}`;
-        const service = shippingService === SHIPPING_SERVICES.UPS_GROUND ? 'ground' : 'secondDay';
-        const rate = getShippingRate(sku, zone, service);
-        shippingUsd += rate;
+      const shipResult = shippingUsdForService(items, state, shippingService);
+      if (!shipResult.ok) {
+        return NextResponse.json({ error: shipResult.error }, { status: 400 });
       }
-      shippingCents = Math.round(shippingUsd * 100);
+      shippingCents = Math.round(shipResult.totalUsd * 100);
     }
 
     const amount = subtotalCents + taxCents + shippingCents;

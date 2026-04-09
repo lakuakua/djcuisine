@@ -13,7 +13,6 @@ import { isPickupYmdAllowed, minPickupDateYmd } from '@/lib/pickup/schedule';
 import { US_STATE_CODES } from '@/lib/usStates';
 import { getProductById } from '@/lib/products';
 import { Loader2, Truck, MapPin } from 'lucide-react';
-import type { QuoteBoxLine } from '@/lib/shipping/pirateShipParcelsForEasyship';
 import { loadStripe } from '@stripe/stripe-js';
 import {
   CardCvcElement,
@@ -159,14 +158,8 @@ export default function CheckoutPage() {
   const [paymentError, setPaymentError] = useState<string | null>(null);
 
   const [rates, setRates] = useState<QuoteRate[]>([]);
-  const [isFallback, setIsFallback] = useState(false);
-  const [fallbackForcedByEnv, setFallbackForcedByEnv] = useState(false);
-  const [usedConsolidatedParcel, setUsedConsolidatedParcel] = useState(false);
-  const [easyshipParcelCount, setEasyshipParcelCount] = useState<number | null>(null);
-  const [parcelCount, setParcelCount] = useState<number | null>(null);
-  const [liveAttemptError, setLiveAttemptError] = useState<string | null>(null);
-  const [quoteBoxes, setQuoteBoxes] = useState<QuoteBoxLine[]>([]);
   const [perishableNotice, setPerishableNotice] = useState('');
+  const [shippingZone, setShippingZone] = useState<string | null>(null);
   const [selectedService, setSelectedService] = useState<string | null>(null);
   /** YYYY-MM-DD from `input type="date"` — pickup-only orders */
   const [pickupDate, setPickupDate] = useState('');
@@ -191,14 +184,13 @@ export default function CheckoutPage() {
 
   const fetchQuote = async () => {
     setError(null);
-    setLiveAttemptError(null);
     if (!line1.trim() || !city.trim() || !postalCode.trim()) {
       setError('Please fill in street address, city, and ZIP code.');
       return;
     }
     setQuoteLoading(true);
     setRates([]);
-    setQuoteBoxes([]);
+    setShippingZone(null);
     setSelectedService(null);
     try {
       const res = await fetch('/api/shipping/quote', {
@@ -224,16 +216,8 @@ export default function CheckoutPage() {
         throw new Error(data.error || 'Could not get shipping rates');
       }
       setRates(data.rates || []);
-      setIsFallback(!!data.isFallback);
-      setFallbackForcedByEnv(!!data.fallbackForcedByEnv);
-      setParcelCount(typeof data.parcelCount === 'number' ? data.parcelCount : null);
-      setUsedConsolidatedParcel(!!data.usedConsolidatedParcel);
-      setEasyshipParcelCount(typeof data.easyshipParcelCount === 'number' ? data.easyshipParcelCount : null);
-      setLiveAttemptError(
-        typeof data.liveAttemptError === 'string' ? data.liveAttemptError : null
-      );
       setPerishableNotice(data.perishableNotice || '');
-      setQuoteBoxes(Array.isArray(data.quoteBoxes) ? data.quoteBoxes : []);
+      setShippingZone(typeof data.zone === 'string' ? data.zone : null);
       if (data.rates?.length) {
         setSelectedService(data.rates[0].service);
       }
@@ -552,84 +536,15 @@ export default function CheckoutPage() {
                 Get shipping rates
               </button>
 
-              {rates.length > 0 && quoteBoxes.length > 0 && (
-                <div className="rounded-lg border border-stone-700/80 bg-stone-950/50 p-3 text-xs">
-                  <p className="mb-2 font-semibold text-orange-200/95">Boxes used for this shipping quote</p>
-                  <ul className="space-y-2 text-stone-300">
-                    {quoteBoxes.map((b, i) => (
-                      <li
-                        key={`${b.label}-${b.dimensions}-${i}`}
-                        className="border-b border-stone-800/80 pb-2 last:border-0 last:pb-0"
-                      >
-                        <span className="font-semibold text-white">{b.tier}</span>
-                        {b.label !== b.tier && (
-                          <span className="text-stone-500"> · {b.label}</span>
-                        )}
-                        <div className="mt-0.5 text-stone-400">
-                          {b.dimensions}
-                          <span className="text-stone-500"> · {b.weightLb} lb (for rating)</span>
-                        </div>
-                      </li>
-                    ))}
-                  </ul>
-                  {usedConsolidatedParcel && (
-                    <p className="mt-2 text-stone-500">
-                      Easyship priced this as one consolidated parcel (dimensions above).
-                    </p>
-                  )}
-                  {isFallback && (
-                    <p className="mt-2 text-amber-200/80">
-                      Zone estimate uses the same packing plan; live Easyship was unavailable.
-                    </p>
-                  )}
-                </div>
-              )}
-
-              {isFallback && rates.length > 0 && (
-                <p className="text-xs text-amber-300/95">
-                  {fallbackForcedByEnv ? (
-                    <>
-                      Fallback rates only: set <code className="text-orange-200">USE_FALLBACK_RATES=false</code>{' '}
-                      in <code className="text-orange-200">.env.local</code> and restart the dev server to use
-                      live Easyship pricing.
-                    </>
-                  ) : (
-                    <>
-                      Showing zone estimates (Easyship live call failed).
-                      {liveAttemptError ? (
-                        <span className="mt-1 block font-mono text-[11px] text-amber-200/90">
-                          {liveAttemptError}
-                        </span>
-                      ) : (
-                        <span className="mt-1 block">
-                          Check <code className="text-orange-200">EASYSHIP_API_KEY</code>, set{' '}
-                          <code className="text-orange-200">EASYSHIP_ORIGIN_EMAIL</code> in{' '}
-                          <code className="text-orange-200">.env.local</code>, and server logs — then try again.
-                        </span>
-                      )}
-                    </>
-                  )}
+              {shippingZone && rates.length > 0 && (
+                <p className="text-xs text-stone-400">
+                  Rate region: <span className="font-semibold text-orange-200/90">{shippingZone}</span> (Northeast,
+                  Midwest, South, or West — from your state).
                 </p>
               )}
 
               {perishableNotice && rates.length > 0 && (
                 <p className="text-xs text-amber-200/90">{perishableNotice}</p>
-              )}
-
-              {(easyshipParcelCount != null || parcelCount != null) && (parcelCount ?? easyshipParcelCount ?? 0) > 0 && (
-                <div className="rounded-lg border border-orange-600/30 bg-orange-950/20 p-4">
-                  <p className="mb-2 text-xs font-semibold text-orange-300">📦 Box Details</p>
-                  <p className="text-xs text-stone-300 leading-relaxed">
-                    {usedConsolidatedParcel
-                      ? `1 large consolidated box (24×20×20 in) — all items packed together.`
-                      : `${easyshipParcelCount ?? parcelCount ?? 0} Pirate Ship box${(easyshipParcelCount ?? parcelCount ?? 0) !== 1 ? 'es' : ''}: `}
-                    {!usedConsolidatedParcel && (
-                      <span className="block mt-1 ml-2 text-stone-400">
-                        Small (16×10×12), Medium (20×16×15), or Large (24×20×20) based on your order.
-                      </span>
-                    )}
-                  </p>
-                </div>
               )}
 
               {rates.length > 0 && (
@@ -658,7 +573,7 @@ export default function CheckoutPage() {
                           {r.transitDays} day(s) transit
                         </p>
                         <p className="mt-1 text-orange-200">
-                          Carrier: {formatPrice(Math.round(r.cost * 100))}
+                          Shipping: {formatPrice(Math.round(r.cost * 100))}
                         </p>
                       </div>
                     </label>
@@ -768,8 +683,8 @@ export default function CheckoutPage() {
 
           {hasShippableProducts && (
             <p className="text-center text-xs text-stone-500">
-              Economy and 2-day quotes use Easyship (UPS or FedEx depending on your lane). Rates are verified again
-              before payment.
+              UPS Ground and UPS 2nd Day Air amounts follow our regional rate sheet (per item × quantity). Totals match
+              what you pay at checkout.
             </p>
           )}
         </div>

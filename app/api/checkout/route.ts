@@ -5,9 +5,8 @@ import { getProductById } from '@/lib/products';
 import { getStripe, stripeSecretKeyMissing } from '@/lib/stripe/server';
 import { buildCheckoutMetadata } from '@/lib/stripe/checkoutMetadata';
 import { toAbsoluteUrl } from '@/lib/utils/absoluteUrl';
-import { getRatesWithFallback } from '@/lib/easyship/rates';
-import { selectRateByServiceName } from '@/lib/easyship/selectRate';
-import { SHIPPING_SERVICES, LOCAL_PICKUP, STATE_TO_ZONE, getShippingRate } from '@/lib/constants/shipping';
+import { SHIPPING_SERVICES, LOCAL_PICKUP } from '@/lib/constants/shipping';
+import { shippingUsdForService } from '@/lib/shipping/regionalQuote';
 import { SHIPPING_CONFIG } from '@/lib/shipping';
 
 const ALLOWED_SERVICES = new Set<string>([
@@ -107,7 +106,6 @@ export async function POST(request: NextRequest) {
     // Determine shipping cost
     let shippingCents = 0;
     let destination: any;
-    let isFallback = false;
 
     if (shippingService === 'Local Pickup') {
       // No shipping cost for local pickup
@@ -137,21 +135,11 @@ export async function POST(request: NextRequest) {
         email: email.trim(),
       };
 
-      // Calculate shipping using weight/zone matrix
-      const zone = STATE_TO_ZONE[destination.state] || 'south';
-      let shippingUsd = 0;
-      let itemCount = 0;
-
-      for (const item of validatedItems) {
-        // Use the first variant's SKU as a representative
-        const sku = `${item.product.id.toUpperCase()}-${item.selectedVariant.id.toUpperCase()}`;
-        const service = shippingService === SHIPPING_SERVICES.UPS_GROUND ? 'ground' : 'secondDay';
-        const rate = getShippingRate(sku, zone, service);
-        shippingUsd += rate;
-        itemCount += item.quantity;
+      const shipResult = shippingUsdForService(validatedItems, destination.state, shippingService);
+      if (!shipResult.ok) {
+        return NextResponse.json({ error: shipResult.error }, { status: 400 });
       }
-
-      shippingCents = Math.round(shippingUsd * 100);
+      shippingCents = Math.round(shipResult.totalUsd * 100);
     }
 
     const stripeLineName = (item: CartItem) => {
@@ -229,7 +217,7 @@ export async function POST(request: NextRequest) {
     const metadata = buildCheckoutMetadata(items, {
       customer_email: email.trim(),
       ship_service: shippingService,
-      ship_fallback: isFallback ? 'true' : 'false',
+      ship_fallback: 'false',
       ship_city: destination.city,
       ship_state: destination.state,
       ship_zip: destination.postalCode,
