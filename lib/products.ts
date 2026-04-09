@@ -1,4 +1,4 @@
-import { Product } from '@/types';
+import { Product, ProductVariant } from '@/types';
 
 // CATEGORY 1: CHICKEN
 export const chickenProducts: Product[] = [
@@ -439,6 +439,11 @@ function minVariantPriceCents(product: Product): number {
 /** Cheapest-to-most-expensive by minimum variant price (does not mutate input). */
 export function sortProductsByPriceAsc(products: Product[]): Product[] {
   return [...products].sort((a, b) => minVariantPriceCents(a) - minVariantPriceCents(b));
+}
+
+/** Variant options in price order (e.g. Plate → Half → Big in dropdowns). */
+export function sortVariantsByPriceAsc(variants: ProductVariant[]): ProductVariant[] {
+  return [...variants].sort((a, b) => a.price - b.price);
 }
 
 export function getProductById(id: string): Product | undefined {

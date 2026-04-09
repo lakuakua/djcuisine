@@ -2,10 +2,11 @@
 
 import { JuiceSweetness, Product, SpiceLevel } from '@/types';
 import { formatPrice } from '@/lib/utils';
+import { sortVariantsByPriceAsc } from '@/lib/products';
 import { useCartStore } from '@/store/cartStore';
 import { ShoppingCart } from 'lucide-react';
 import Image from 'next/image';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 
 interface ProductCardProps {
   product: Product;
@@ -13,10 +14,21 @@ interface ProductCardProps {
 
 export default function ProductCard({ product }: ProductCardProps) {
   const addItem = useCartStore((state) => state.addItem);
-  const [selectedVariantId, setSelectedVariantId] = useState(product.variants?.[0]?.id || '');
+  const sortedVariants = useMemo(
+    () => sortVariantsByPriceAsc(product.variants),
+    [product.id]
+  );
+  const [selectedVariantId, setSelectedVariantId] = useState(() => sortedVariants[0]?.id || '');
   const [juiceSweetness, setJuiceSweetness] = useState<JuiceSweetness | ''>('');
   const [spiceLevel, setSpiceLevel] = useState<SpiceLevel | ''>('');
   const [isAdding, setIsAdding] = useState(false);
+
+  useEffect(() => {
+    const cheapest = sortVariantsByPriceAsc(product.variants)[0]?.id ?? '';
+    setSelectedVariantId(cheapest);
+    setJuiceSweetness('');
+    setSpiceLevel('');
+  }, [product.id]);
 
   // Ensure product has variants
   if (!product.variants || product.variants.length === 0) {
@@ -28,7 +40,8 @@ export default function ProductCard({ product }: ProductCardProps) {
     );
   }
 
-  const selectedVariant = product.variants.find(v => v.id === selectedVariantId) || product.variants[0];
+  const selectedVariant =
+    sortedVariants.find((v) => v.id === selectedVariantId) || sortedVariants[0];
   const isJuice = product.category === 'juices';
 
   const handleAddToCart = () => {
@@ -113,7 +126,7 @@ export default function ProductCard({ product }: ProductCardProps) {
         </p>
 
         {/* Size Selector (if product has multiple variants) */}
-        {product.variants.length > 1 && !product.isSingleSize && (
+        {sortedVariants.length > 1 && !product.isSingleSize && (
           <div className="mb-4">
             <label className="mb-1.5 block text-xs font-semibold text-stone-400">Select size</label>
             <select
@@ -121,7 +134,7 @@ export default function ProductCard({ product }: ProductCardProps) {
               onChange={(e) => setSelectedVariantId(e.target.value)}
               className="w-full rounded-lg border border-red-900/40 bg-stone-950 px-3 py-2.5 text-sm text-stone-200 transition-all focus:border-gold-600/60 focus:outline-none focus:ring-2 focus:ring-gold-500/25"
             >
-              {product.variants.map((variant) => (
+              {sortedVariants.map((variant) => (
                 <option key={variant.id} value={variant.id}>
                   {variant.size} - {formatPrice(variant.price)}
                   {variant.servings && ` (${variant.servings})`}
