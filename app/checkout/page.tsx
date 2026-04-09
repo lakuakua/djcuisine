@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Header from '@/components/Header';
 import Cart from '@/components/Cart';
 import { useCartStore } from '@/store/cartStore';
-import { formatPrice, isJuiceOneGallonSize } from '@/lib/utils';
+import { formatPrice } from '@/lib/utils';
 import { SHIPPING_CONFIG } from '@/lib/shipping';
 import { LOCAL_PICKUP } from '@/lib/constants/shipping';
 import { isPickupYmdAllowed, minPickupDateYmd } from '@/lib/pickup/schedule';
@@ -137,7 +137,6 @@ export default function CheckoutPage() {
   const [cartOpen, setCartOpen] = useState(false);
   const items = useCartStore((s) => s.items);
   const getTotal = useCartStore((s) => s.getTotal);
-  const getGallonCount = useCartStore((s) => s.getGallonCount);
 
   const [email, setEmail] = useState('');
   const [firstName, setFirstName] = useState('');
@@ -176,9 +175,6 @@ export default function CheckoutPage() {
     Boolean(pickupDate.trim()) && isPickupYmdAllowed(pickupDate.trim(), Date.now());
 
   const subtotal = getTotal();
-  const gallonCount = getGallonCount();
-  const hasGallonMinimumIssue =
-    items.some((item) => isJuiceOneGallonSize(item.selectedVariant.size)) && gallonCount < 2;
 
   const forcePickup = searchParams.get('pickup') === '1';
   // Check if cart contains ANY shippable products
@@ -258,10 +254,6 @@ export default function CheckoutPage() {
     setError(null);
     setPaymentError(null);
     setPhoneError(null);
-    if (hasGallonMinimumIssue) {
-      setError('Gallon orders require at least 2 gallons.');
-      return;
-    }
     if (!email.trim()) {
       setError('Email is required.');
       return;
@@ -408,16 +400,6 @@ export default function CheckoutPage() {
             : 'Complete your local pickup order. We\'ll notify you when it\'s ready!'}
         </p>
 
-        {hasGallonMinimumIssue && (
-          <div className="mb-6 rounded-lg border border-red-600 bg-red-950/50 p-4 text-sm text-red-200">
-            Gallon juices require a minimum of 2 gallons. You currently have {gallonCount} gallon
-            line(s).{' '}
-            <Link href="/shop" className="font-semibold underline">
-              Add more
-            </Link>
-          </div>
-        )}
-
         <div className="space-y-6 rounded-xl border border-red-900/40 bg-gradient-to-br from-stone-900 to-black p-6 shadow-xl">
           {/* Contact Information */}
           <div>
@@ -559,7 +541,7 @@ export default function CheckoutPage() {
               <button
                 type="button"
                 onClick={fetchQuote}
-                disabled={quoteLoading || hasGallonMinimumIssue}
+                disabled={quoteLoading}
                 className="flex w-full items-center justify-center gap-2 rounded-lg border border-orange-600/50 bg-stone-900 py-3 font-semibold text-orange-200 transition hover:bg-stone-800 disabled:cursor-not-allowed disabled:opacity-50"
               >
                 {quoteLoading ? (
@@ -765,7 +747,6 @@ export default function CheckoutPage() {
               onClick={createPaymentIntent}
               disabled={
                 payLoading ||
-                hasGallonMinimumIssue ||
                 (hasShippableProducts && !selectedService) ||
                 (!hasShippableProducts && !pickupLeadValid())
               }

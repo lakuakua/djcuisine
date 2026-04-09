@@ -2,7 +2,6 @@ import { NextRequest, NextResponse } from 'next/server';
 import Stripe from 'stripe';
 import { CartItem } from '@/types';
 import { getProductById } from '@/lib/products';
-import { isJuiceOneGallonSize } from '@/lib/utils';
 import { getStripe, stripeSecretKeyMissing } from '@/lib/stripe/server';
 import { buildCheckoutMetadata } from '@/lib/stripe/checkoutMetadata';
 import { toAbsoluteUrl } from '@/lib/utils/absoluteUrl';
@@ -103,16 +102,6 @@ export async function POST(request: NextRequest) {
           { status: 400 }
         );
       }
-    }
-
-    const gallonItems = validatedItems.filter((item) => isJuiceOneGallonSize(item.selectedVariant.size));
-    const totalGallons = gallonItems.reduce((sum, item) => sum + item.quantity, 0);
-
-    if (gallonItems.length > 0 && totalGallons < 2) {
-      return NextResponse.json(
-        { error: 'Gallon orders require a minimum of 2 gallons' },
-        { status: 400 }
-      );
     }
 
     // Determine shipping cost

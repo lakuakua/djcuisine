@@ -1,7 +1,6 @@
 import { create } from 'zustand';
 import { persist, createJSONStorage } from 'zustand/middleware';
 import { Product, ProductVariant, CartItem, JuiceSweetness, SpiceLevel } from '@/types';
-import { isJuiceOneGallonSize } from '@/lib/utils';
 
 /** Session-only key: cleared when the tab/window session ends (not localStorage). */
 const CART_STORAGE_KEY = 'djcuisine_cart_session';
@@ -57,7 +56,6 @@ interface CartStore {
   clearCart: () => void;
   getTotal: () => number;
   getItemCount: () => number;
-  getGallonCount: () => number;
 }
 
 export const useCartStore = create<CartStore>()(
@@ -140,13 +138,6 @@ export const useCartStore = create<CartStore>()(
       getItemCount: () => {
         const state = get();
         return state.items.reduce((count, item) => count + item.quantity, 0);
-      },
-
-      getGallonCount: () => {
-        const state = get();
-        return state.items
-          .filter((item) => isJuiceOneGallonSize(item.selectedVariant.size))
-          .reduce((count, item) => count + item.quantity, 0);
       },
     }),
     {

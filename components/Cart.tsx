@@ -2,7 +2,7 @@
 
 import { useRouter } from 'next/navigation';
 import { useCartStore } from '@/store/cartStore';
-import { formatPrice, isJuiceOneGallonSize } from '@/lib/utils';
+import { formatPrice } from '@/lib/utils';
 import { SHIPPING_CONFIG } from '@/lib/shipping';
 import { getProductById } from '@/lib/products';
 import { X, Minus, Plus, ShoppingBag } from 'lucide-react';
@@ -21,18 +21,12 @@ export default function Cart({ isOpen, onClose }: CartProps) {
   const updateQuantity = useCartStore((state) => state.updateQuantity);
   const removeItem = useCartStore((state) => state.removeItem);
   const getTotal = useCartStore((state) => state.getTotal);
-  const getGallonCount = useCartStore((state) => state.getGallonCount);
 
   useEffect(() => {
     setMounted(true);
   }, []);
 
   if (!mounted) return null;
-
-  const gallonCount = getGallonCount();
-  const hasGallonMinimumIssue =
-    items.some((item) => isJuiceOneGallonSize(item.selectedVariant.size)) &&
-    gallonCount < 2;
 
   // Check if cart contains ANY shippable products
   const hasShippableProducts = items.some((item) => {
@@ -46,11 +40,6 @@ export default function Cart({ isOpen, onClose }: CartProps) {
   const totalCents = subtotal + taxCents;
 
   const handleCheckout = (mode: 'ship' | 'pickup') => {
-    if (hasGallonMinimumIssue) {
-      alert('Gallon orders require a minimum of 2 gallons. Please add more gallons to your cart.');
-      return;
-    }
-
     if (items.length === 0) {
       alert('Your cart is empty. Please add items before checkout.');
       return;
@@ -182,15 +171,6 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                     </div>
                   </div>
                 ))}
-
-                {/* Gallon Minimum Warning */}
-                {hasGallonMinimumIssue && (
-                  <div className="bg-red-900/40 border-2 border-red-600 rounded-lg p-4 shadow-lg">
-                    <p className="text-red-200 text-sm font-bold">
-                      ⚠️ Gallon orders require a minimum of 2 gallons. You currently have {gallonCount} gallon(s).
-                    </p>
-                  </div>
-                )}
               </div>
             )}
           </div>
@@ -231,14 +211,14 @@ export default function Cart({ isOpen, onClose }: CartProps) {
                 <div className="grid grid-cols-1 gap-3">
                   <button
                     onClick={() => handleCheckout('ship')}
-                    disabled={hasGallonMinimumIssue || isCheckingOut}
+                    disabled={isCheckingOut}
                     className="w-full bg-gradient-to-r from-red-600 to-orange-500 hover:from-red-500 hover:to-orange-400 disabled:from-gray-800 disabled:to-gray-900 disabled:cursor-not-allowed text-white disabled:text-gray-500 py-4 rounded-lg font-bold text-xl transition-all duration-200 shadow-xl shadow-red-500/50 hover:shadow-2xl hover:scale-105 disabled:shadow-none disabled:scale-100"
                   >
                     {isCheckingOut ? 'Processing...' : 'Checkout (Shipping)'}
                   </button>
                   <button
                     onClick={() => handleCheckout('pickup')}
-                    disabled={hasGallonMinimumIssue || isCheckingOut}
+                    disabled={isCheckingOut}
                     className="w-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 disabled:from-gray-800 disabled:to-gray-900 disabled:cursor-not-allowed text-white disabled:text-gray-500 py-4 rounded-lg font-bold text-xl transition-all duration-200 shadow-xl shadow-emerald-500/40 hover:shadow-2xl hover:scale-105 disabled:shadow-none disabled:scale-100"
                   >
                     {isCheckingOut ? 'Processing...' : 'Checkout (Pickup)'}
@@ -247,7 +227,7 @@ export default function Cart({ isOpen, onClose }: CartProps) {
               ) : (
                 <button
                   onClick={() => handleCheckout('pickup')}
-                  disabled={hasGallonMinimumIssue || isCheckingOut}
+                  disabled={isCheckingOut}
                   className="w-full bg-gradient-to-r from-emerald-600 to-green-500 hover:from-emerald-500 hover:to-green-400 disabled:from-gray-800 disabled:to-gray-900 disabled:cursor-not-allowed text-white disabled:text-gray-500 py-4 rounded-lg font-bold text-xl transition-all duration-200 shadow-xl shadow-emerald-500/40 hover:shadow-2xl hover:scale-105 disabled:shadow-none disabled:scale-100"
                 >
                   {isCheckingOut ? 'Processing...' : 'Checkout (Pickup)'}
