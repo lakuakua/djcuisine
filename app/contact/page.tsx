@@ -92,6 +92,25 @@ export default function ContactPage() {
           </div>
         </div>
 
+        {/* Wholesale beverages */}
+        <div className="bg-gradient-to-br from-amber-950/50 to-stone-900/80 border-2 border-amber-700/40 rounded-xl p-8 mb-12 shadow-xl">
+          <h2 className="text-2xl font-bold text-amber-200 mb-4">Wholesale beverages</h2>
+          <p className="text-stone-200 leading-relaxed text-lg">
+            For wholesale orders of our signature Pineapple Ginger and Zobo beverages, please contact us at{' '}
+            <a
+              href="mailto:Orders@djcuisine.com"
+              className="font-semibold text-amber-300 underline decoration-amber-600/60 hover:text-amber-200"
+            >
+              Orders@djcuisine.com
+            </a>{' '}
+            or{' '}
+            <a href="tel:+19792213114" className="font-semibold text-amber-300 underline decoration-amber-600/60 hover:text-amber-200">
+              979-221-3114
+            </a>
+            .
+          </p>
+        </div>
+
         {/* Important Information */}
         <div className="bg-red-900/20 border-2 border-red-700/50 rounded-lg p-8 mb-12">
           <h2 className="text-2xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent mb-4">
