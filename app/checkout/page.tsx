@@ -8,7 +8,7 @@ import Cart from '@/components/Cart';
 import { useCartStore } from '@/store/cartStore';
 import { formatPrice } from '@/lib/utils';
 import { SHIPPING_CONFIG } from '@/lib/shipping';
-import { LOCAL_PICKUP } from '@/lib/constants/shipping';
+import { LOCAL_PICKUP, SHIPPING_SERVICES } from '@/lib/constants/shipping';
 import { isPickupYmdAllowed, minPickupDateYmd } from '@/lib/pickup/schedule';
 import { US_STATE_CODES } from '@/lib/usStates';
 import { getProductById } from '@/lib/products';
@@ -570,7 +570,9 @@ export default function CheckoutPage() {
                         <p className="font-semibold text-white">{r.service}</p>
                         <p className="text-stone-400">
                           Est. {new Date(r.estimatedDeliveryDate).toLocaleDateString()} ·{' '}
-                          {r.transitDays} day(s) transit
+                          {r.service === SHIPPING_SERVICES.UPS_GROUND
+                            ? '2–3 business days transit'
+                            : `${r.transitDays} day(s) transit`}
                         </p>
                         <p className="mt-1 text-orange-200">
                           Shipping: {formatPrice(Math.round(r.cost * 100))}

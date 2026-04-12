@@ -79,7 +79,7 @@ export async function POST(request: NextRequest) {
     }
 
     const now = new Date();
-    const groundEta = addBusinessDays(now, 5);
+    const groundEta = addBusinessDays(now, 3);
     const secondDayEta = addBusinessDays(now, 2);
 
     const rates = [
@@ -88,7 +88,7 @@ export async function POST(request: NextRequest) {
         cost: quoted.upsGroundUsd,
         currency: 'USD',
         estimatedDeliveryDate: groundEta.toISOString(),
-        transitDays: 5,
+        transitDays: 3,
       },
       {
         service: SHIPPING_SERVICES.UPS_2ND_DAY,
