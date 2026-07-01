@@ -52,8 +52,8 @@ export const turkeyProducts: Product[] = [
     image: '/images/Smoked Turkey wing.png',
     requiresSpiceLevel: true,
     variants: [
-      { id: 'big', size: 'Big Tray', price: 25000, servings: 'Serves 20-30 people' },
-      { id: 'half', size: 'Half Tray', price: 12500, servings: 'Serves 10-15 people' }
+      { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 15000, servings: 'Serves 10-15 people' }
     ]
   },
   {
@@ -64,8 +64,8 @@ export const turkeyProducts: Product[] = [
     image: '/images/smoked turkey legs.jpg',
     requiresSpiceLevel: true,
     variants: [
-      { id: 'big', size: 'Big Tray', price: 22000, servings: 'Serves 20-30 people' },
-      { id: 'half', size: 'Half Tray', price: 11000, servings: 'Serves 10-15 people' }
+      { id: 'big', size: 'Big Tray', price: 25000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 12500, servings: 'Serves 10-15 people' }
     ]
   }
 ];
@@ -80,9 +80,9 @@ export const beefProducts: Product[] = [
     image: '/images/beef ribs.jpg',
     requiresSpiceLevel: true,
     variants: [
-      { id: 'big', size: 'Big Tray', price: 25000, servings: 'Serves 20-30 people' },
-      { id: 'half', size: 'Half Tray', price: 12500, servings: 'Serves 10-15 people' },
-      { id: 'plate', size: 'Plate', price: 2500, servings: '1 person with sides' }
+      { id: 'big', size: 'Big Tray', price: 28000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 14000, servings: 'Serves 10-15 people' },
+      { id: 'plate', size: 'Plate', price: 3000, servings: '1 person with sides' }
     ]
   },
   {
@@ -93,9 +93,9 @@ export const beefProducts: Product[] = [
     image: '/images/beef steak tips.jpg',
     requiresSpiceLevel: true,
     variants: [
-      { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 20-30 people' },
-      { id: 'half', size: 'Half Tray', price: 15000, servings: 'Serves 10-15 people' },
-      { id: 'plate', size: 'Plate', price: 2500, servings: '1 person with sides' }
+      { id: 'big', size: 'Big Tray', price: 33000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 16500, servings: 'Serves 10-15 people' },
+      { id: 'plate', size: 'Plate', price: 3000, servings: '1 person with sides' }
     ]
   },
   {
@@ -106,8 +106,8 @@ export const beefProducts: Product[] = [
     image: '/images/Beef kabob.jpg',
     requiresSpiceLevel: true,
     variants: [
-      { id: 'big', size: 'Big Tray', price: 30000, servings: 'Serves 20-30 people' },
-      { id: 'half', size: 'Half Tray', price: 15000, servings: 'Serves 10-15 people' }
+      { id: 'big', size: 'Big Tray', price: 33000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 16500, servings: 'Serves 10-15 people' }
     ]
   }
 ];
@@ -122,8 +122,8 @@ export const lambProducts: Product[] = [
     image: '/images/grilled lamb.jpg',
     requiresSpiceLevel: true,
     variants: [
-      { id: 'big', size: 'Big Tray', price: 35000, servings: 'Serves 20-30 people' },
-      { id: 'half', size: 'Half Tray', price: 17500, servings: 'Serves 10-15 people' },
+      { id: 'big', size: 'Big Tray', price: 36000, servings: 'Serves 20-30 people' },
+      { id: 'half', size: 'Half Tray', price: 18000, servings: 'Serves 10-15 people' },
       { id: 'plate', size: 'Plate', price: 3000, servings: '1 person with sides' }
     ]
   }

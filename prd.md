@@ -67,38 +67,38 @@ This PRD will be used directly in **Cursor** to guide implementation.
 ### Category 2: Turkey
 
 **Turkey Wings**
-- Big Tray – $250
-- Half Tray – $125
+- Big Tray – $300
+- Half Tray – $150
 
 **Turkey Legs**
-- Big Tray – $220
-- Half Tray – $110
+- Big Tray – $250
+- Half Tray – $125
 
 ---
 
 ### Category 3: Beef
 
 **Beef Ribs**
-- Big Tray – $250
-- Half Tray – $125
-- Plate – $25
+- Big Tray – $280
+- Half Tray – $140
+- Plate – $30
 
 **Beef Steak Tips**
-- Big Tray – $300
-- Half Tray – $150
-- Plate – $25
+- Big Tray – $330
+- Half Tray – $165
+- Plate – $30
 
 **Beef Kabob / Brochettes**
-- Big Tray – $300
-- Half Tray – $150
+- Big Tray – $330
+- Half Tray – $165
 
 ---
 
 ### Category 4: Lamb
 
 **Lamb**
-- Big Tray – $350
-- Half Tray – $175
+- Big Tray – $360
+- Half Tray – $180
 - Plate – $30
 
 ---
