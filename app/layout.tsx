@@ -1,6 +1,11 @@
 import type { Metadata } from 'next';
 import { Inter } from 'next/font/google';
+import FacebookPixel from '@/components/FacebookPixel';
 import './globals.css';
+
+const facebookPixelId =
+  process.env.FACEBOOK_PIXEL?.trim() ||
+  process.env.NEXT_PUBLIC_FACEBOOK_PIXEL_ID?.trim();
 
 const inter = Inter({ subsets: ['latin'] });
 
@@ -18,6 +23,7 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body className={`${inter.className} min-h-screen bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950 text-white antialiased`}>
+        {facebookPixelId ? <FacebookPixel pixelId={facebookPixelId} /> : null}
         {children}
       </body>
     </html>

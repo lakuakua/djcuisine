@@ -5,6 +5,7 @@ import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
 import { CheckCircle, ArrowRight } from 'lucide-react';
 import { useCartStore } from '@/store/cartStore';
+import { trackFacebookPurchase } from '@/lib/facebookPixel';
 
 export default function SuccessPageContent() {
   const searchParams = useSearchParams();
@@ -18,6 +19,11 @@ export default function SuccessPageContent() {
       clearCart();
     }
   }, [sessionId, paymentIntentId, clearCart]);
+
+  useEffect(() => {
+    if (!orderReference) return;
+    trackFacebookPurchase({ orderId: orderReference });
+  }, [orderReference]);
 
   return (
     <div className="flex min-h-screen items-center justify-center bg-gradient-to-b from-black via-stone-950 to-black px-4">

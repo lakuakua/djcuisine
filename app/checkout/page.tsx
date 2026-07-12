@@ -12,6 +12,7 @@ import { LOCAL_PICKUP, SHIPPING_SERVICES } from '@/lib/constants/shipping';
 import { isPickupYmdAllowed, minPickupDateYmd } from '@/lib/pickup/schedule';
 import { US_STATE_CODES } from '@/lib/usStates';
 import { getProductById } from '@/lib/products';
+import { trackFacebookInitiateCheckout } from '@/lib/facebookPixel';
 import { Loader2, Truck, MapPin } from 'lucide-react';
 import { loadStripe } from '@stripe/stripe-js';
 import {
@@ -168,6 +169,10 @@ export default function CheckoutPage() {
     Boolean(pickupDate.trim()) && isPickupYmdAllowed(pickupDate.trim(), Date.now());
 
   const subtotal = getTotal();
+
+  useEffect(() => {
+    trackFacebookInitiateCheckout();
+  }, []);
 
   const forcePickup = searchParams.get('pickup') === '1';
   // Check if cart contains ANY shippable products
