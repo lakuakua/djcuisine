@@ -40,6 +40,7 @@ Next.js 14 ecommerce application for **DJ Cuisine**, a Houston-based African & I
 - [X] Add phone validation and update pay button label
 - [X] Switch cart persistence to sessionStorage
 - [X] Session-only cart key + remove legacy `localStorage` `djcuisine_cart`
+- [X] Cursor skill for Resend email setup (`.cursor/skills/djcuisine-email-setup/SKILL.md`)
 
 ---
 

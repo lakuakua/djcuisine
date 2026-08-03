@@ -50,6 +50,13 @@ export default function Home() {
                 <ChevronRight className="h-4 w-4" />
               </a>
               <a
+                href="/bookings"
+                className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-gold-500 hover:from-orange-500 hover:to-gold-400 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200 shadow-xl shadow-orange-500/50 hover:shadow-2xl hover:scale-105"
+              >
+                Book Catering
+                <ChevronRight className="h-4 w-4" />
+              </a>
+              <a
                 href="/contact"
                 className="inline-flex items-center gap-2 bg-transparent border-2 border-white hover:bg-white/10 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200"
               >
