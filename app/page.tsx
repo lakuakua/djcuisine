@@ -56,12 +56,6 @@ export default function Home() {
                 Book Catering
                 <ChevronRight className="h-4 w-4" />
               </a>
-              <a
-                href="/contact"
-                className="inline-flex items-center gap-2 bg-transparent border-2 border-white hover:bg-white/10 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200"
-              >
-                Learn More
-              </a>
             </div>
           </div>
         </div>
