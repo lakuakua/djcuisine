@@ -16,7 +16,6 @@ export default function GalleryPage() {
     '/gallery/photos/file_00000000ab8481fd8bee9d0d2bddc339.png',
     '/gallery/photos/file_00000000a65481f8864935c6e1418bc1.png',
     '/gallery/photos/file_00000000b39881fdbfd030286565ad11.png',
-    '/gallery/photos/file_00000000e8a881f5851964748acb3820.png',
     '/gallery/photos/file_00000000dde481fd8ea1606508a7672b.png',
     '/gallery/photos/file_00000000d70c81fd8cb32550448c19e4.png',
   ];
