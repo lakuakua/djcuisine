@@ -6,6 +6,7 @@ import Header from '@/components/Header';
 import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import { Phone, Mail, Award, Flame, Heart } from 'lucide-react';
+import { chefBio } from '@/lib/chefBio';
 
 export default function MeetTheChefPage() {
   const [cartOpen, setCartOpen] = useState(false);
@@ -42,7 +43,7 @@ export default function MeetTheChefPage() {
                   <div className="relative aspect-[3/4] rounded-lg overflow-hidden">
                     <Image
                       src="/images/chef.png"
-                      alt="Chef Chardae"
+                      alt="Chef DJ - Founder & Executive Chef of DJCUISINE"
                       fill
                       className="object-cover"
                       priority
@@ -62,41 +63,29 @@ export default function MeetTheChefPage() {
           {/* Chef Bio */}
           <div className="space-y-6">
             <h2 className="text-4xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
-              Chef Chardae Hudson
+              {chefBio.name}
             </h2>
             <p className="text-xl text-orange-300 font-semibold italic">
-              Master of Authentic African & International Cuisine
+              {chefBio.subtitle}
             </p>
 
             <div className="space-y-4 text-stone-300 text-lg leading-relaxed">
-              <p>
-                With over 15 years of culinary excellence, Chef Chardae Hudson has become Houston's premier destination for authentic African and international BBQ and grilled cuisine. Her passion for traditional cooking methods and commitment to quality have earned DJCUISINE a reputation as "The Best BBQ in H-Town."
-              </p>
-              <p>
-                Chef Chardae's journey began with a deep love for authentic flavors and traditional grilling techniques passed down through generations. She believes that true BBQ is an art form that requires patience, skill, and the finest ingredients.
-              </p>
-              <p>
-                At DJCUISINE, we never use ovens. Every dish is prepared using traditional wood and charcoal smoking methods, ensuring that authentic smoky taste that keeps our customers coming back. From premium lamb and beef to fresh poultry and seafood, Chef Chardae personally oversees every preparation to guarantee excellence.
-              </p>
+              {chefBio.paragraphs.map((paragraph, index) => (
+                <p key={index}>{paragraph}</p>
+              ))}
             </div>
 
             {/* Achievements */}
             <div className="grid grid-cols-1 sm:grid-cols-3 gap-4 pt-6">
-              <div className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-4 border-2 border-red-900/40 text-center">
-                <Award className="h-10 w-10 text-red-500 mx-auto mb-2" />
-                <p className="text-2xl font-bold text-orange-300">15+</p>
-                <p className="text-stone-400 text-sm">Years Experience</p>
-              </div>
-              <div className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-4 border-2 border-red-900/40 text-center">
-                <Flame className="h-10 w-10 text-orange-500 mx-auto mb-2" />
-                <p className="text-2xl font-bold text-orange-300">100%</p>
-                <p className="text-stone-400 text-sm">Traditional Methods</p>
-              </div>
-              <div className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-4 border-2 border-red-900/40 text-center">
-                <Heart className="h-10 w-10 text-red-500 mx-auto mb-2" />
-                <p className="text-2xl font-bold text-orange-300">1000+</p>
-                <p className="text-stone-400 text-sm">Happy Clients</p>
-              </div>
+              {chefBio.stats.map((stat, index) => (
+                <div key={index} className="bg-stone-800/70 backdrop-blur-sm rounded-lg p-4 border-2 border-red-900/40 text-center">
+                  {index === 0 && <Award className="h-10 w-10 text-red-500 mx-auto mb-2" />}
+                  {index === 1 && <Flame className="h-10 w-10 text-orange-500 mx-auto mb-2" />}
+                  {index === 2 && <Heart className="h-10 w-10 text-red-500 mx-auto mb-2" />}
+                  <p className="text-2xl font-bold text-orange-300">{stat.value}</p>
+                  <p className="text-stone-400 text-sm">{stat.label}</p>
+                </div>
+              ))}
             </div>
           </div>
         </div>
@@ -104,40 +93,28 @@ export default function MeetTheChefPage() {
         {/* Signature Dishes */}
         <div className="mb-16">
           <h2 className="text-4xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent mb-8 text-center">
-            Signature Specialties
+            Culinary Specialties
           </h2>
           <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6">
-            <div className="bg-stone-800/70 border-2 border-red-700/50 rounded-lg p-6 shadow-xl hover:shadow-red-600/40 transition-all">
-              <h3 className="text-xl font-bold text-orange-300 mb-3">Premium Grilled Lamb</h3>
-              <p className="text-stone-300">
-                Marinated with authentic African spices and grilled to perfection over charcoal
-              </p>
-            </div>
-            <div className="bg-stone-800/70 border-2 border-red-700/50 rounded-lg p-6 shadow-xl hover:shadow-red-600/40 transition-all">
-              <h3 className="text-xl font-bold text-orange-300 mb-3">Smoked Turkey Wings</h3>
-              <p className="text-stone-300">
-                Slowly smoked with wood chips for that rich, tender, fall-off-the-bone texture
-              </p>
-            </div>
-            <div className="bg-stone-800/70 border-2 border-red-700/50 rounded-lg p-6 shadow-xl hover:shadow-red-600/40 transition-all">
-              <h3 className="text-xl font-bold text-orange-300 mb-3">Beef Kabobs</h3>
-              <p className="text-stone-300">
-                Juicy beef marinated in special seasoning, grilled with peppers and onions
-              </p>
-            </div>
+            {chefBio.specialties.map((specialty, index) => (
+              <div key={index} className="bg-stone-800/70 border-2 border-red-700/50 rounded-lg p-6 shadow-xl hover:shadow-red-600/40 transition-all">
+                <h3 className="text-xl font-bold text-orange-300 mb-3">{specialty.title}</h3>
+                <p className="text-stone-300">{specialty.description}</p>
+              </div>
+            ))}
           </div>
         </div>
 
         {/* Philosophy */}
         <div className="bg-gradient-to-br from-amber-950/50 to-stone-900/80 border-2 border-amber-700/40 rounded-xl p-8 mb-16">
           <h2 className="text-3xl font-bold text-amber-200 mb-4 text-center">
-            Chef's Philosophy
+            My Philosophy
           </h2>
           <p className="text-stone-200 text-lg leading-relaxed text-center max-w-3xl mx-auto">
-            "Great food is more than just taste—it's about bringing people together, honoring traditions, and creating memories. Every dish we prepare at DJCUISINE is made with the same care and attention I'd give to my own family's table. That's the DJCUISINE difference."
+            "I believe that dining is more than just enjoying great food—it's about creating meaningful moments and lasting memories. My mission is to provide impeccable service, exquisite flavors, and a luxurious culinary experience that allows you to relax while I take care of every detail."
           </p>
           <p className="text-orange-300 text-xl font-serif italic text-center mt-4">
-            — Chef Chardae Hudson
+            — {chefBio.name}
           </p>
         </div>
 
