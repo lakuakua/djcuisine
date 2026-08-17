@@ -32,7 +32,7 @@ export default function Home() {
         <div className="relative z-10 w-full px-4 sm:px-6 lg:px-8 py-16">
           <div className="max-w-xl mx-auto lg:mx-0 lg:ml-0 text-center lg:text-left">
             <p className="mb-3 text-sm font-semibold uppercase tracking-[0.2em] text-gold-400/95 drop-shadow">
-              Houston · Catering · Nationwide shipping
+              Houston · Nationwide shipping
             </p>
             <h1 className="mb-4 text-3xl font-bold leading-tight tracking-tight text-white drop-shadow-md sm:text-4xl lg:text-5xl">
               Premium grilled &amp; smoked meats
@@ -50,10 +50,10 @@ export default function Home() {
                 <ChevronRight className="h-4 w-4" />
               </a>
               <a
-                href="/bookings"
+                href="/catering"
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-gold-500 hover:from-orange-500 hover:to-gold-400 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200 shadow-xl shadow-orange-500/50 hover:shadow-2xl hover:scale-105"
               >
-                Book Catering
+                Catering
                 <ChevronRight className="h-4 w-4" />
               </a>
             </div>
@@ -73,7 +73,7 @@ export default function Home() {
               </span>
             </h2>
             <p className="mx-auto max-w-2xl text-lg text-stone-400">
-              Catering trays, individual plates, sides, and fresh juices—pick a category to browse.
+              Trays, plates, sides, and fresh juices—pick a category to browse.
             </p>
           </div>
 

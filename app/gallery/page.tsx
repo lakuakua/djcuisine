@@ -6,28 +6,23 @@ import Cart from '@/components/Cart';
 import Footer from '@/components/Footer';
 import { X, Play } from 'lucide-react';
 
+const videos = [
+  '/gallery/videos/Fire up your cravings! Our grill is serving bold flavors, smoky perfection, and juicy goodness i.mp4',
+  '/gallery/videos/VID-20260531-WA0005.mp4',
+  '/gallery/videos/VID-20260712-WA0001.mp4',
+  '/gallery/videos/VID-20260720-WA0004.mp4',
+  '/gallery/videos/VID-20260720-WA0005.mp4',
+  '/gallery/videos/VID-20260720-WA0006.mp4',
+  '/gallery/videos/VID-20260720-WA0007.mp4',
+  '/gallery/videos/VID-20260720-WA0009.mp4',
+  '/gallery/videos/VID-20260720-WA0010.mp4',
+  '/gallery/videos/VID-20260720-WA0011.mp4',
+  '/gallery/videos/VID-20260720-WA0012.mp4',
+];
+
 export default function GalleryPage() {
   const [cartOpen, setCartOpen] = useState(false);
   const [selectedVideo, setSelectedVideo] = useState<string | null>(null);
-
-  const videos = [
-    {
-      src: '/gallery/videos/Fire up your cravings! Our grill is serving bold flavors, smoky perfection, and juicy goodness i.mp4',
-      title: 'Fire up your cravings!',
-    },
-    { src: '/gallery/videos/VID-20260531-WA0005.mp4', title: 'Grilling Session' },
-    { src: '/gallery/videos/VID-20260712-WA0000.mp4', title: 'BBQ Preparation' },
-    { src: '/gallery/videos/VID-20260712-WA0001.mp4', title: 'Chef at Work' },
-    { src: '/gallery/videos/VID-20260720-WA0004.mp4', title: 'Grilling Showcase' },
-    { src: '/gallery/videos/VID-20260720-WA0005.mp4', title: 'Meat on the Grill' },
-    { src: '/gallery/videos/VID-20260720-WA0006.mp4', title: 'BBQ Process' },
-    { src: '/gallery/videos/VID-20260720-WA0007.mp4', title: 'Cooking Demo' },
-    { src: '/gallery/videos/VID-20260720-WA0008.mp4', title: 'Food Preparation' },
-    { src: '/gallery/videos/VID-20260720-WA0009.mp4', title: 'Grill Master' },
-    { src: '/gallery/videos/VID-20260720-WA0010.mp4', title: 'Kitchen Action' },
-    { src: '/gallery/videos/VID-20260720-WA0011.mp4', title: 'BBQ Session' },
-    { src: '/gallery/videos/VID-20260720-WA0012.mp4', title: 'Cooking Show' },
-  ];
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-stone-900 via-stone-800 to-stone-900">
@@ -49,14 +44,14 @@ export default function GalleryPage() {
             Behind the Scenes
           </h2>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-6">
-            {videos.map((video, index) => (
+            {videos.map((src) => (
               <div
-                key={index}
+                key={src}
                 className="relative aspect-video bg-stone-800 rounded-lg overflow-hidden border-2 border-red-700/50 shadow-xl hover:shadow-red-600/40 transition-all hover:scale-105 cursor-pointer group"
-                onClick={() => setSelectedVideo(video.src)}
+                onClick={() => setSelectedVideo(src)}
               >
                 <video
-                  src={video.src}
+                  src={src}
                   className="w-full h-full object-cover"
                   muted
                   playsInline
@@ -65,9 +60,6 @@ export default function GalleryPage() {
                   <div className="w-16 h-16 bg-gradient-to-r from-red-600 to-orange-500 rounded-full flex items-center justify-center group-hover:scale-110 transition-transform">
                     <Play className="h-8 w-8 text-white ml-1" />
                   </div>
-                </div>
-                <div className="absolute bottom-0 left-0 right-0 p-4 bg-gradient-to-t from-black/80 to-transparent">
-                  <p className="text-white font-semibold">{video.title}</p>
                 </div>
               </div>
             ))}
@@ -87,12 +79,7 @@ export default function GalleryPage() {
             <X className="h-8 w-8" />
           </button>
           <div className="relative max-w-5xl w-full" onClick={(e) => e.stopPropagation()}>
-            <video
-              src={selectedVideo}
-              controls
-              autoPlay
-              className="w-full rounded-lg"
-            />
+            <video src={selectedVideo} controls autoPlay className="w-full rounded-lg" />
           </div>
         </div>
       )}

@@ -25,8 +25,7 @@ export default function Header({ onCartOpen }: HeaderProps) {
     { name: 'Our Menu', href: '/#categories' },
     { name: 'Shop', href: '/shop' },
     { name: 'Gallery', href: '/gallery' },
-    { name: 'Meet the Chef', href: '/meet-chef' },
-    { name: 'Bookings', href: '/bookings' },
+    { name: 'Catering', href: '/catering' },
     { name: 'Contact', href: '/contact' },
     { name: 'About Us', href: '/about' },
   ];
