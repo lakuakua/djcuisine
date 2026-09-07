@@ -53,7 +53,7 @@ export default function Home() {
                 href="/catering"
                 className="inline-flex items-center gap-2 bg-gradient-to-r from-orange-600 to-gold-500 hover:from-orange-500 hover:to-gold-400 text-white px-6 py-3 rounded-lg font-bold text-sm transition-all duration-200 shadow-xl shadow-orange-500/50 hover:shadow-2xl hover:scale-105"
               >
-                Catering
+                Private Chef &amp; Catering
                 <ChevronRight className="h-4 w-4" />
               </a>
             </div>

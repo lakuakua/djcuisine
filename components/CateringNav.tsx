@@ -17,9 +17,17 @@ export default function CateringNav() {
   return (
     <header className="sticky top-0 z-50 bg-black/90 backdrop-blur-md border-b border-red-900/30">
       <nav className="mx-auto max-w-6xl px-4 sm:px-6 lg:px-8">
-        <div className="flex h-16 items-center justify-between">
-          <Link href="/catering" className="text-lg font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent">
-            DJCUISINE Catering
+        <div className="flex h-20 items-center justify-between">
+          <Link href="/catering" className="flex items-center">
+            <div className="relative h-16 w-48 sm:h-20 sm:w-56">
+              <Image
+                src="/images/namepng.png"
+                alt="DJCUISINE Logo"
+                fill
+                className="object-contain object-left"
+                priority
+              />
+            </div>
           </Link>
 
           <div className="hidden md:flex items-center gap-8">

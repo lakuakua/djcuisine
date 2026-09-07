@@ -8,7 +8,17 @@ import CateringNav from '@/components/CateringNav';
 import CateringBookingForm from '@/components/CateringBookingForm';
 import { chefBio } from '@/lib/chefBio';
 
-const menuPages = Array.from({ length: 9 }, (_, i) => `/catering/menu/${i + 1}.jpg`);
+const menuPages = [
+  { src: '/catering/menu/1.png', title: 'Brunch / Breakfast', id: 'menu-brunch' },
+  { src: '/catering/menu/2.png', title: 'Appetizer', id: 'menu-appetizer' },
+  { src: '/catering/menu/3.png', title: 'Entree Meats and Poultry', id: 'menu-meats' },
+  { src: '/catering/menu/4.png', title: 'Entree Seafood', id: 'menu-seafood' },
+  { src: '/catering/menu/5.png', title: 'African Dishes', id: 'menu-african' },
+  { src: '/catering/menu/6.png', title: 'Sides', id: 'menu-sides' },
+  { src: '/catering/menu/7.png', title: 'Bread', id: 'menu-bread' },
+  { src: '/catering/menu/8.png', title: 'Desserts', id: 'menu-desserts' },
+  { src: '/catering/menu/9.png', title: 'Drinks & Mocktail', id: 'menu-drinks' },
+];
 
 export default function CateringPage() {
   const [selectedMenuPage, setSelectedMenuPage] = useState<string | null>(null);
@@ -50,7 +60,7 @@ export default function CateringPage() {
       </section>
 
       {/* Meet the Chef */}
-      <section id="chef" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-red-950/40 scroll-mt-16">
+      <section id="chef" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-red-950/40 scroll-mt-20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent mb-4">
@@ -110,8 +120,8 @@ export default function CateringPage() {
       </section>
 
       {/* Catering Menu */}
-      <section id="menu" className="py-20 px-4 sm:px-6 lg:px-8 bg-stone-900/50 border-t border-red-950/40 scroll-mt-16">
-        <div className="max-w-4xl mx-auto">
+      <section id="menu" className="py-20 px-4 sm:px-6 lg:px-8 bg-stone-900/50 border-t border-red-950/40 scroll-mt-20">
+        <div className="max-w-6xl mx-auto">
           <div className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent mb-4">
               Catering Menu
@@ -121,29 +131,53 @@ export default function CateringPage() {
             </p>
           </div>
 
-          <div className="space-y-6">
-            {menuPages.map((src, index) => (
-              <button
-                key={src}
-                type="button"
-                onClick={() => setSelectedMenuPage(src)}
-                className="relative w-full rounded-lg overflow-hidden border-2 border-red-800/40 shadow-xl hover:border-orange-500/50 transition-all hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-orange-500"
-              >
-                <Image
-                  src={src}
-                  alt={`Catering menu page ${index + 1}`}
-                  width={1200}
-                  height={1600}
-                  className="w-full h-auto"
-                />
-              </button>
-            ))}
+          <div className="lg:grid lg:grid-cols-[240px_1fr] lg:gap-10 items-start">
+            <nav
+              aria-label="Catering menu sections"
+              className="mb-8 lg:mb-0 lg:sticky lg:top-24 rounded-lg border border-red-900/40 bg-stone-950/70 p-5"
+            >
+              <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-400 mb-4">
+                Menu
+              </p>
+              <ul className="space-y-2">
+                {menuPages.map((page) => (
+                  <li key={page.id}>
+                    <a
+                      href={`#${page.id}`}
+                      className="block text-orange-200 hover:text-red-400 transition-colors text-sm font-semibold"
+                    >
+                      {page.title}
+                    </a>
+                  </li>
+                ))}
+              </ul>
+            </nav>
+
+            <div className="space-y-8">
+              {menuPages.map((page) => (
+                <div key={page.id} id={page.id} className="scroll-mt-24">
+                  <button
+                    type="button"
+                    onClick={() => setSelectedMenuPage(page.src)}
+                    className="relative w-full rounded-lg overflow-hidden border-2 border-red-800/40 shadow-xl hover:border-orange-500/50 transition-all hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-orange-500"
+                  >
+                    <Image
+                      src={page.src}
+                      alt={page.title}
+                      width={1200}
+                      height={1600}
+                      className="w-full h-auto"
+                    />
+                  </button>
+                </div>
+              ))}
+            </div>
           </div>
         </div>
       </section>
 
       {/* Contact */}
-      <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-red-950/40 scroll-mt-16">
+      <section id="contact" className="py-20 px-4 sm:px-6 lg:px-8 border-t border-red-950/40 scroll-mt-20">
         <div className="max-w-6xl mx-auto">
           <div className="text-center mb-14">
             <h2 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent mb-4">
