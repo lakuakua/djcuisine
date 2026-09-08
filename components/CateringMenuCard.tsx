@@ -1,3 +1,7 @@
+'use client';
+
+import { useEffect, useState } from 'react';
+import { ChevronDown } from 'lucide-react';
 import { Kaushan_Script } from 'next/font/google';
 import type { CateringMenuSection } from '@/lib/cateringMenu';
 
@@ -15,6 +19,21 @@ const logoGradient =
 
 export default function CateringMenuCard({ section }: CateringMenuCardProps) {
   const grainId = `menu-grain-${section.id}`;
+  const panelId = `${section.id}-items`;
+  const [open, setOpen] = useState(false);
+
+  // Jumping here from the section list should reveal the items, not drop the
+  // visitor on a collapsed card.
+  useEffect(() => {
+    const openIfTargeted = () => {
+      if (window.location.hash === `#${section.id}`) {
+        setOpen(true);
+      }
+    };
+    openIfTargeted();
+    window.addEventListener('hashchange', openIfTargeted);
+    return () => window.removeEventListener('hashchange', openIfTargeted);
+  }, [section.id]);
 
   return (
     <article
@@ -45,16 +64,29 @@ export default function CateringMenuCard({ section }: CateringMenuCardProps) {
         <div className="pointer-events-none absolute bottom-3 left-3 h-6 w-6 border-b-2 border-l-2 border-amber-100/25" />
         <div className="pointer-events-none absolute bottom-3 right-3 h-6 w-6 border-b-2 border-r-2 border-amber-100/25" />
 
-        <div className="mb-7 text-center">
-          <h3
-            className={`${script.className} text-3xl sm:text-4xl text-[#ffedae] leading-tight`}
+        <div className={open ? 'mb-7' : ''}>
+          <button
+            type="button"
+            onClick={() => setOpen((isOpen) => !isOpen)}
+            aria-expanded={open}
+            aria-controls={panelId}
+            className="flex w-full items-center justify-center gap-3"
           >
-            {section.title}
-          </h3>
+            <h3
+              className={`${script.className} text-3xl sm:text-4xl text-[#ffedae] leading-tight`}
+            >
+              {section.title}
+            </h3>
+            <ChevronDown
+              className={`h-6 w-6 flex-shrink-0 text-[#eeb16b] transition-transform ${
+                open ? 'rotate-180' : ''
+              }`}
+            />
+          </button>
           <span className="mx-auto mt-3 block h-px w-24 bg-amber-100/30" />
         </div>
 
-        <div className="space-y-8">
+        <div id={panelId} className={`space-y-8 ${open ? 'block' : 'hidden'}`}>
           {section.groups.map((group) => (
             <div key={group.heading ?? section.id}>
               {group.heading ? (

@@ -69,7 +69,7 @@ export default function MeetTheChefPage() {
               {chefBio.subtitle}
             </p>
 
-            <div className="space-y-4 text-stone-300 text-lg leading-relaxed">
+            <div className="space-y-4 text-stone-300 text-lg leading-relaxed text-justify">
               {chefBio.paragraphs.map((paragraph, index) => (
                 <p key={index}>{paragraph}</p>
               ))}

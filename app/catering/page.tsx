@@ -81,7 +81,7 @@ export default function CateringPage() {
             <div className="space-y-6">
               <h3 className="text-3xl font-bold text-orange-300">{chefBio.name}</h3>
               <p className="text-stone-400 font-semibold">{chefBio.title}</p>
-              <div className="space-y-4 text-stone-300 text-lg leading-relaxed">
+              <div className="space-y-4 text-stone-300 text-lg leading-relaxed text-justify">
                 {chefBio.paragraphs.map((paragraph, index) => (
                   <p key={index}>{paragraph}</p>
                 ))}
@@ -108,8 +108,8 @@ export default function CateringPage() {
 
       {/* Catering Menu */}
       <section id="menu" className="py-20 px-4 sm:px-6 lg:px-8 bg-stone-900/50 border-t border-red-950/40 scroll-mt-20">
-        <div className="max-w-6xl mx-auto lg:grid lg:grid-cols-[240px_1fr] lg:grid-rows-[auto_1fr] lg:gap-x-10 items-start">
-          <div className="text-center mb-12 lg:col-start-2 lg:row-start-1">
+        <div className="max-w-6xl mx-auto">
+          <div className="text-center mb-12">
             <h2 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent mb-4">
               Catering Menu
             </h2>
@@ -121,28 +121,7 @@ export default function CateringPage() {
             </p>
           </div>
 
-          <nav
-            aria-label="Catering menu sections"
-            className="mb-8 lg:mb-0 lg:col-start-1 lg:row-start-1 lg:row-span-2 lg:sticky lg:top-24 rounded-lg border border-red-900/40 bg-stone-950/70 p-5"
-          >
-            <p className="text-xs font-semibold uppercase tracking-[0.2em] text-gold-400 mb-4">
-              Menu
-            </p>
-            <ul className="space-y-2">
-              {cateringMenu.map((section) => (
-                <li key={section.id}>
-                  <a
-                    href={`#${section.id}`}
-                    className="block text-orange-200 hover:text-red-400 transition-colors text-sm font-semibold"
-                  >
-                    {section.title}
-                  </a>
-                </li>
-              ))}
-            </ul>
-          </nav>
-
-          <div className="space-y-8 lg:col-start-2 lg:row-start-2">
+          <div className="space-y-8">
             {cateringMenu.map((section) => (
               <CateringMenuCard key={section.id} section={section} />
             ))}
