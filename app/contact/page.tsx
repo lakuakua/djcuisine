@@ -70,7 +70,7 @@ export default function ContactPage() {
                 <p className="text-orange-200 text-lg font-semibold">
                   Richmond, Texas
                 </p>
-                <p className="text-stone-400 text-sm mt-2">Serving Houston and surrounding areas</p>
+                <p className="text-stone-400 text-sm mt-2">Serving anywhere within the USA.</p>
               </div>
             </div>
           </div>

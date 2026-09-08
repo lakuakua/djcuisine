@@ -132,7 +132,7 @@ export default function BookingsPage() {
                   <h3 className="text-xl font-bold text-orange-300 mb-2">Location</h3>
                   <p className="text-orange-200 text-lg font-semibold">Richmond, Texas</p>
                   <p className="text-stone-400 text-sm mt-2">
-                    Serving Houston and surrounding areas
+                    Serving anywhere within the USA.
                   </p>
                 </div>
               </div>

@@ -1,28 +1,15 @@
 'use client';
 
-import { useState } from 'react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { Award, Flame, Heart, ChevronRight, X } from 'lucide-react';
+import { Award, Flame, Heart, ChevronRight } from 'lucide-react';
 import CateringNav from '@/components/CateringNav';
 import CateringBookingForm from '@/components/CateringBookingForm';
+import CateringMenuCard from '@/components/CateringMenuCard';
 import { chefBio } from '@/lib/chefBio';
-
-const menuPages = [
-  { src: '/catering/menu/1.png', title: 'Brunch / Breakfast', id: 'menu-brunch' },
-  { src: '/catering/menu/2.png', title: 'Appetizer', id: 'menu-appetizer' },
-  { src: '/catering/menu/3.png', title: 'Entree Meats and Poultry', id: 'menu-meats' },
-  { src: '/catering/menu/4.png', title: 'Entree Seafood', id: 'menu-seafood' },
-  { src: '/catering/menu/5.png', title: 'African Dishes', id: 'menu-african' },
-  { src: '/catering/menu/6.png', title: 'Sides', id: 'menu-sides' },
-  { src: '/catering/menu/7.png', title: 'Bread', id: 'menu-bread' },
-  { src: '/catering/menu/8.png', title: 'Desserts', id: 'menu-desserts' },
-  { src: '/catering/menu/9.png', title: 'Drinks & Mocktail', id: 'menu-drinks' },
-];
+import { cateringMenu } from '@/lib/cateringMenu';
 
 export default function CateringPage() {
-  const [selectedMenuPage, setSelectedMenuPage] = useState<string | null>(null);
-
   return (
     <div className="min-h-screen bg-gradient-to-b from-stone-950 via-stone-900 to-stone-950 text-white">
       <CateringNav />
@@ -32,7 +19,7 @@ export default function CateringPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-red-950/40 via-stone-950 to-orange-950/30" />
         <div className="relative max-w-4xl mx-auto text-center">
           <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-gold-400">
-            Private Chef · Events · Celebrations
+            Private Chef | Events | Celebrations
           </p>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent mb-6">
             DJCUISINE Catering
@@ -126,8 +113,11 @@ export default function CateringPage() {
             <h2 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent mb-4">
               Catering Menu
             </h2>
+            <p className="text-stone-300 text-lg max-w-2xl mx-auto mb-3">
+              Not sure what to choose? Let Chef DJ create a customize menu for your event.
+            </p>
             <p className="text-stone-400 text-lg">
-              Chef DJ Private Chef Menu — tap any page to enlarge
+              Chef DJ&apos;s Private Menu, - tap any page to enlarge
             </p>
           </div>
 
@@ -140,13 +130,13 @@ export default function CateringPage() {
                 Menu
               </p>
               <ul className="space-y-2">
-                {menuPages.map((page) => (
-                  <li key={page.id}>
+                {cateringMenu.map((section) => (
+                  <li key={section.id}>
                     <a
-                      href={`#${page.id}`}
+                      href={`#${section.id}`}
                       className="block text-orange-200 hover:text-red-400 transition-colors text-sm font-semibold"
                     >
-                      {page.title}
+                      {section.title}
                     </a>
                   </li>
                 ))}
@@ -154,22 +144,8 @@ export default function CateringPage() {
             </nav>
 
             <div className="space-y-8">
-              {menuPages.map((page) => (
-                <div key={page.id} id={page.id} className="scroll-mt-24">
-                  <button
-                    type="button"
-                    onClick={() => setSelectedMenuPage(page.src)}
-                    className="relative w-full rounded-lg overflow-hidden border-2 border-red-800/40 shadow-xl hover:border-orange-500/50 transition-all hover:scale-[1.01] focus:outline-none focus:ring-2 focus:ring-orange-500"
-                  >
-                    <Image
-                      src={page.src}
-                      alt={page.title}
-                      width={1200}
-                      height={1600}
-                      className="w-full h-auto"
-                    />
-                  </button>
-                </div>
+              {cateringMenu.map((section) => (
+                <CateringMenuCard key={section.id} section={section} />
               ))}
             </div>
           </div>
@@ -201,30 +177,6 @@ export default function CateringPage() {
         </Link>
       </footer>
 
-      {selectedMenuPage && (
-        <div
-          className="fixed inset-0 z-50 bg-black/95 flex items-center justify-center p-4 overflow-y-auto"
-          onClick={() => setSelectedMenuPage(null)}
-        >
-          <button
-            type="button"
-            className="fixed top-4 right-4 text-white hover:text-red-400 z-10"
-            onClick={() => setSelectedMenuPage(null)}
-            aria-label="Close menu view"
-          >
-            <X className="h-8 w-8" />
-          </button>
-          <div className="relative max-w-3xl w-full my-8" onClick={(e) => e.stopPropagation()}>
-            <Image
-              src={selectedMenuPage}
-              alt="Catering menu enlarged"
-              width={1200}
-              height={1600}
-              className="w-full h-auto rounded-lg"
-            />
-          </div>
-        </div>
-      )}
     </div>
   );
 }
