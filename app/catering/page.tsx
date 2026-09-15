@@ -113,11 +113,11 @@ export default function CateringPage() {
             <h2 className="text-4xl sm:text-5xl font-bold bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent mb-4">
               Catering Menu
             </h2>
-            <p className="text-stone-300 text-lg max-w-2xl mx-auto mb-3">
+            <p className="inline-block max-w-2xl mb-4 rounded-2xl border border-gold-500/50 bg-stone-950/70 px-6 py-4 text-lg sm:text-xl font-semibold text-gold-200 shadow-lg shadow-black/40">
               Not sure what to choose? Let Chef DJ create a customize menu for your event.
             </p>
             <p className="text-stone-400 text-lg">
-              Chef DJ&apos;s Private Menu, - tap any page to enlarge
+              Chef DJ&apos;s Private Menu, tap any page to enlarge
             </p>
           </div>
 
