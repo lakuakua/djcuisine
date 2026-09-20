@@ -35,7 +35,7 @@
 - Server logs show: `GET / 200 in 2019ms` (initial) and `GET / 200 in 18ms` (cached)
 - HTML contains all expected elements:
   - Header with logo and navigation
-  - Hero section with "DJ Cuisine - The Best BBQ in H-Town"
+  - Hero section with "DJ Cuisine - Elevated Flavor Experience"
   - Category cards for all 9 categories
   - Footer with contact info
   - Cart icon in header

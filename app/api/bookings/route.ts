@@ -80,7 +80,7 @@ If you have any immediate questions, please call us at (979) 221-3114 or reply t
 
 Best regards,
 DJCUISINE Team
-The Best BBQ in H-Town
+Elevated Flavor Experience
 
 ---
 Event Details:

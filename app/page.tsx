@@ -131,7 +131,6 @@ export default function Home() {
               description="Zobo and Pineapple Ginger—pick size and sweetened or unsweetened. Tropical blends and fresh gallon juices."
               href="/category/juices"
               image="/images/juices/zobo.png"
-              variant="juice"
             />
           </div>
         </div>

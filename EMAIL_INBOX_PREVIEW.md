@@ -58,7 +58,7 @@ If you have any questions about your order, reply to
 this email or contact us at support@djcuisine.com
 
 ─────────────────────────────────────────────────────────
-DJ Cuisine — The Best BBQ in H-Town
+DJ Cuisine — Elevated Flavor Experience
 This is an automated message, please do not reply directly.
 ```
 

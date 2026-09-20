@@ -104,7 +104,7 @@ DJCUISINE/
 - **Colors**: Black background with gold accents
 - **Primary Gold**: `#ca8a04` (Tailwind gold-600)
 - **Logo**: `/public/logo.png`
-- **Tagline**: "The Best BBQ in H-Town"
+- **Tagline**: "Elevated Flavor Experience"
 
 ## 📱 Features
 

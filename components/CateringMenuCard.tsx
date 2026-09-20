@@ -11,11 +11,10 @@ interface CateringMenuCardProps {
   section: CateringMenuSection;
 }
 
-// Stops sampled from the DJCUISINE logo: cream-gold highlight down to the
-// darkest maroon in the lettering. Laid over a dark base at partial opacity so
-// the card stays calm behind the text.
+// The red of the "DJ" in the logo (mean #cf1e1b) cut with 10% orange, darkened
+// and fading to black so the card stays calm behind the text.
 const logoGradient =
-  'linear-gradient(to bottom, #ffedae 0%, #f4c98a 6%, #eeb16b 13%, #d4804e 26%, #d24b30 45%, #c8352f 62%, #8a1a12 82%, #5b0000 100%)';
+  'linear-gradient(to bottom, #871c0e 0%, #4e1008 35%, #1e0603 70%, #000000 100%)';
 
 export default function CateringMenuCard({ section }: CateringMenuCardProps) {
   const grainId = `menu-grain-${section.id}`;
@@ -40,8 +39,8 @@ export default function CateringMenuCard({ section }: CateringMenuCardProps) {
       id={section.id}
       className="scroll-mt-28 relative overflow-hidden rounded-2xl border border-red-950/70 shadow-2xl shadow-black/50"
     >
-      <div className="absolute inset-0 bg-[#2a0806]" />
-      <div className="absolute inset-0 opacity-20" style={{ backgroundImage: logoGradient }} />
+      <div className="absolute inset-0 bg-black" />
+      <div className="absolute inset-0" style={{ backgroundImage: logoGradient }} />
 
       <svg
         className="pointer-events-none absolute inset-0 h-full w-full opacity-15 mix-blend-soft-light"

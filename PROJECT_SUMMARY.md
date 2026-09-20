@@ -4,7 +4,7 @@
 
 A production-ready e-commerce website for **DJ Cuisine**, a BBQ and catering business in Houston, Texas. The site features online ordering, shopping cart functionality, and Stripe payment integration.
 
-**Tagline:** "The Best BBQ in H-Town"
+**Tagline:** "Elevated Flavor Experience"
 
 ## ✨ Key Features Implemented
 
@@ -310,7 +310,7 @@ All core features implemented and tested. Ready for:
 ---
 
 **Built with ❤️ for DJ Cuisine**
-*The Best BBQ in H-Town*
+*Elevated Flavor Experience*
 
 Last Updated: January 2026
 Version: 1.0.0

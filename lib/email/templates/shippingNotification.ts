@@ -107,7 +107,7 @@ ${data.shippingAddress.city}, ${data.shippingAddress.state} ${data.shippingAddre
       </div>
 
       <div class="footer">
-        <p>DJ Cuisine — The Best BBQ in H-Town<br/>
+        <p>DJ Cuisine — Elevated Flavor Experience<br/>
         This is an automated message, please do not reply directly.</p>
       </div>
     </div>
@@ -141,7 +141,7 @@ IMPORTANT: Please plan to be available to receive your package. Our BBQ items ne
 If you have any questions, contact us at orders@djcuisine.com or (979) 221-3114
 
 ---
-DJ Cuisine — The Best BBQ in H-Town
+DJ Cuisine — Elevated Flavor Experience
 This is an automated message, please do not reply directly.
   `;
 

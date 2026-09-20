@@ -7,7 +7,7 @@ export default function Footer() {
           <div>
             <h3 className="bg-gradient-to-r from-red-400 to-orange-400 bg-clip-text text-transparent font-bold text-lg mb-4">DJCUISINE</h3>
             <p className="italic text-orange-200 text-sm mb-2 font-semibold">
-              the best bbq in H-Town
+              Elevated Flavor Experience
             </p>
             <p className="text-stone-400 text-sm">
               Serving Houston with authentic BBQ and catering since 2010.

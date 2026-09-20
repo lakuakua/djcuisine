@@ -32,7 +32,7 @@ export default function AboutPage() {
             About DJCUISINE
           </h1>
           <p className="text-2xl italic text-orange-200 font-serif mb-8">
-            the best bbq in H-Town
+            Elevated Flavor Experience
           </p>
           <p className="text-xl text-stone-300 leading-relaxed">
             From intimate family dinners to large catering events, we bring the finest 
@@ -110,7 +110,7 @@ export default function AboutPage() {
       <section className="py-16 px-4 sm:px-6 lg:px-8 bg-white">
         <div className="max-w-3xl mx-auto text-center">
           <h2 className="text-4xl font-bold text-gray-900 mb-6">
-            Ready to Experience the Best BBQ in H-Town?
+            Ready for an Elevated Flavor Experience?
           </h2>
           <p className="text-gray-700 text-lg mb-8">
             Contact us today to discuss your catering needs or place an order

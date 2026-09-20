@@ -235,7 +235,7 @@ Next.js 14 ecommerce application for **DJ Cuisine**, a Houston-based African & I
 
 ### Tasks:
 - [X] Create Homepage (`app/page.tsx`)
-  - Hero section: "DJ Cuisine - The Best BBQ in H-Town"
+  - Hero section: "DJ Cuisine - Elevated Flavor Experience"
   - Tagline and value proposition
   - Primary CTA: "Order Now" → scrolls to categories
   - Secondary CTA: "Call to Order" with phone link
@@ -1130,4 +1130,4 @@ When helping with this project:
 
 **Project Goal**: Create a professional, reliable ecommerce site for DJ Cuisine that delights customers and drives sales.
 
-**Tagline**: The Best BBQ in H-Town 🍖
+**Tagline**: Elevated Flavor Experience

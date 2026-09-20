@@ -10,9 +10,9 @@ const facebookPixelId =
 const inter = Inter({ subsets: ['latin'] });
 
 export const metadata: Metadata = {
-  title: 'DJCUISINE - The Best BBQ in H-Town',
+  title: 'DJCUISINE - Elevated Flavor Experience',
   description: 'Premium BBQ catering and plates in Houston. Order big trays, individual plates, and fresh juices for your next event.',
-  keywords: 'DJCUISINE, BBQ, catering, Houston, H-Town, ribs, brisket, pulled pork, catering trays',
+  keywords: 'DJCUISINE, Elevated Flavor Experience, BBQ, catering, Houston, H-Town, ribs, brisket, pulled pork, catering trays',
 };
 
 export default function RootLayout({

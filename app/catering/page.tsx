@@ -19,7 +19,7 @@ export default function CateringPage() {
         <div className="absolute inset-0 bg-gradient-to-br from-red-950/40 via-stone-950 to-orange-950/30" />
         <div className="relative max-w-4xl mx-auto text-center">
           <p className="mb-4 text-sm font-semibold uppercase tracking-[0.25em] text-gold-400">
-            Private Chef | Events | Celebrations
+            Private Chef Services | Events &amp; Celebrations
           </p>
           <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold bg-gradient-to-r from-red-400 via-orange-400 to-gold-400 bg-clip-text text-transparent mb-6">
             DJCUISINE Catering
